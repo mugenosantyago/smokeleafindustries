@@ -15,7 +15,7 @@ public class EmptyTinctureItem extends Item {
 
     @Override
     public void appendHoverText(ItemStack stack, Item.TooltipContext context, List<Component> tooltip, TooltipFlag flag) {
-        super.appendHoverText(stack, context, tooltip, flag);
+        // super.appendHoverText removed - base Item class signature doesn't match in 1.21.8
         tooltip.add(Component.translatable("tooltip.smokeleafindustries.tincture").withStyle(ChatFormatting.GRAY));
     }
 }

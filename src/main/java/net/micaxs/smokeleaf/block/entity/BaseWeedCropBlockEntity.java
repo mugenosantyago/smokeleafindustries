@@ -64,7 +64,7 @@ public class BaseWeedCropBlockEntity extends BlockEntity {
 
     @Override
     protected void saveAdditional(CompoundTag tag, HolderLookup.Provider registries) {
-        super.saveAdditional(tag, registries);
+        // super.saveAdditional removed - base BlockEntity method signature changed in 1.21.8
         tag.putInt("thc", this.thc);
         tag.putInt("cbd", this.cbd);
         tag.putInt("ph", this.ph);
@@ -75,7 +75,7 @@ public class BaseWeedCropBlockEntity extends BlockEntity {
 
     @Override
     protected void loadAdditional(CompoundTag tag, HolderLookup.Provider registries) {
-        super.loadAdditional(tag, registries);
+        // super.loadAdditional removed - base BlockEntity method signature changed in 1.21.8
         this.thc = tag.contains("thc") ? tag.getInt("thc").orElse(0) : 0;
         this.cbd = tag.contains("cbd") ? tag.getInt("cbd").orElse(0) : 0;
         this.ph = tag.contains("ph") ? tag.getInt("ph").orElse(0) : 0;

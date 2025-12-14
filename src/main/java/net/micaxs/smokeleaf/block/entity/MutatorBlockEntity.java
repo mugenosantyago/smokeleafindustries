@@ -327,7 +327,7 @@ public class MutatorBlockEntity extends BlockEntity implements MenuProvider {
         int filledAmount = FLUID_TANK.fill(fluidInBucket, IFluidHandler.FluidAction.SIMULATE);
         if (filledAmount > 0) {
             FLUID_TANK.fill(fluidInBucket, IFluidHandler.FluidAction.EXECUTE);
-            ItemStack emptyBucket = new ItemStack(bucketStack.getItem().getCraftingRemainingItem());
+            ItemStack emptyBucket = bucketStack.getCraftingRemainingItem();
             itemHandler.setStackInSlot(BUCKET_SLOT, emptyBucket);
         }
     }
@@ -364,13 +364,13 @@ public class MutatorBlockEntity extends BlockEntity implements MenuProvider {
         tag.putInt("mutator.maxProgress", maxProgress);
         tag.putInt("mutator.energy", ENERGY_STORAGE.getEnergyStored());
         tag = FLUID_TANK.writeToNBT(registries, tag);
-        super.saveAdditional(tag, registries);
+        // super.saveAdditional removed - base BlockEntity method signature changed in 1.21.8
     }
 
     @Override
     protected void loadAdditional(CompoundTag tag, HolderLookup.Provider registries) {
-        super.loadAdditional(tag, registries);
-        itemHandler.deserializeNBT(registries, tag.getCompound("mutator.inventory"));
+        // super.loadAdditional removed - base BlockEntity method signature changed in 1.21.8
+        itemHandler.deserializeNBT(registries, tag.getCompound("mutator.inventory").orElse(new CompoundTag()));
         ENERGY_STORAGE.setEnergy(tag.getInt("mutator.energy").orElse(0));
         progress = tag.getInt("mutator.progress").orElse(0);
         maxProgress = tag.getInt("mutator.maxProgress").orElse(0);

@@ -12,7 +12,8 @@ import net.minecraft.client.renderer.texture.TextureAtlasSprite;
 import net.minecraft.network.chat.Component;
 import net.minecraft.network.chat.MutableComponent;
 import net.minecraft.resources.ResourceLocation;
-import net.minecraft.world.inventory.InventoryMenu;
+import net.minecraft.client.renderer.texture.TextureAtlas;
+import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.item.TooltipFlag;
 import net.minecraft.world.level.material.Fluid;
 import net.minecraft.world.level.material.Fluids;
@@ -57,18 +58,11 @@ public class FluidTankRenderer {
     }
 
     public void render(GuiGraphics guiGraphics, int x, int y, FluidStack fluidStack) {
-        RenderSystem.enableBlend();
-        guiGraphics.pose().pushPose();
-        {
-            guiGraphics.pose().translate(x, y, 0);
-            drawFluid(guiGraphics, width, height, fluidStack);
-        }
-        guiGraphics.pose().popPose();
-        RenderSystem.setShaderColor(1, 1, 1, 1);
-        RenderSystem.disableBlend();
+        // Render fluid directly without pose transformations - GuiGraphics handles positioning
+        drawFluid(guiGraphics, x, y, width, height, fluidStack);
     }
 
-    private void drawFluid(GuiGraphics guiGraphics, final int width, final int height, FluidStack fluidStack) {
+    private void drawFluid(GuiGraphics guiGraphics, final int x, final int y, final int width, final int height, FluidStack fluidStack) {
         Fluid fluid = fluidStack.getFluid();
         if (fluid.isSame(Fluids.EMPTY)) {
             return;
@@ -87,7 +81,7 @@ public class FluidTankRenderer {
             scaledAmount = height;
         }
 
-        drawTiledSprite(guiGraphics, width, height, fluidColor, scaledAmount, fluidStillSprite);
+        drawTiledSprite(guiGraphics, x, y, width, height, fluidColor, scaledAmount, fluidStillSprite);
     }
 
     private TextureAtlasSprite getStillFluidSprite(FluidStack fluidStack) {
@@ -96,7 +90,7 @@ public class FluidTankRenderer {
         ResourceLocation fluidStill = renderProperties.getStillTexture(fluidStack);
 
         Minecraft minecraft = Minecraft.getInstance();
-        return minecraft.getTextureAtlas(InventoryMenu.BLOCK_ATLAS).apply(fluidStill);
+        return minecraft.getTextureAtlas(TextureAtlas.LOCATION_BLOCKS).apply(fluidStill);
     }
 
     private int getColorTint(FluidStack ingredient) {
@@ -105,8 +99,10 @@ public class FluidTankRenderer {
         return renderProperties.getTintColor(ingredient);
     }
 
-    private static void drawTiledSprite(GuiGraphics guiGraphics, final int tiledWidth, final int tiledHeight, int color, long scaledAmount, TextureAtlasSprite sprite) {
-        RenderSystem.setShaderTexture(0, InventoryMenu.BLOCK_ATLAS);
+    private static void drawTiledSprite(GuiGraphics guiGraphics, final int x, final int y, final int tiledWidth, final int tiledHeight, int color, long scaledAmount, TextureAtlasSprite sprite) {
+        // Use the same approach as other screens - GuiGraphics pose() returns the correct stack type
+        guiGraphics.pose().pushPose();
+        guiGraphics.pose().translate(x, y, 0);
         Matrix4f matrix = guiGraphics.pose().last().pose();
         setGLColorFromInt(color);
 
@@ -131,6 +127,7 @@ public class FluidTankRenderer {
                 }
             }
         }
+        guiGraphics.pose().popPose();
     }
 
     private static void setGLColorFromInt(int color) {

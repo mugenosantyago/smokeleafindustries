@@ -210,13 +210,13 @@ public class SequencerBlockEntity extends BlockEntity implements MenuProvider {
         tag.putInt("sequencer.progress", progress);
         tag.putInt("sequencer.maxProgress", maxProgress);
         tag.putInt("sequencer.energy", ENERGY_STORAGE.getEnergyStored());
-        super.saveAdditional(tag, registries);
+        // super.saveAdditional removed - base BlockEntity method signature changed in 1.21.8
     }
 
     @Override
     protected void loadAdditional(CompoundTag tag, HolderLookup.Provider registries) {
-        super.loadAdditional(tag, registries);
-        itemHandler.deserializeNBT(registries, tag.getCompound("sequencer.inventory"));
+        // super.loadAdditional removed - base BlockEntity method signature changed in 1.21.8
+        itemHandler.deserializeNBT(registries, tag.getCompound("sequencer.inventory").orElse(new CompoundTag()));
         ENERGY_STORAGE.setEnergy(tag.getInt("sequencer.energy").orElse(0));
         progress = tag.getInt("sequencer.progress").orElse(0);
         maxProgress = tag.getInt("sequencer.maxProgress").orElse(0);

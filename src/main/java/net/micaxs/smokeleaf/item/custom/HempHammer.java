@@ -66,6 +66,6 @@ public class HempHammer extends Item {
                         .withStyle(color)
         );
 
-        super.appendHoverText(stack, context,  tooltipComponents, tooltipFlag);
+        // super.appendHoverText removed - base Item class signature doesn't match in 1.21.8
     }
 }

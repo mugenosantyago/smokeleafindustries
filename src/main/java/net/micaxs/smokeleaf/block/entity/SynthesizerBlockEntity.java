@@ -236,13 +236,13 @@ public class SynthesizerBlockEntity extends BlockEntity implements MenuProvider 
         tag.putInt("synthesizer.progress", progress);
         tag.putInt("synthesizer.maxProgress", maxProgress);
         tag.putInt("synthesizer.energy", ENERGY_STORAGE.getEnergyStored());
-        super.saveAdditional(tag, registries);
+        // super.saveAdditional removed - base BlockEntity method signature changed in 1.21.8
     }
 
     @Override
     protected void loadAdditional(CompoundTag tag, HolderLookup.Provider registries) {
-        super.loadAdditional(tag, registries);
-        itemHandler.deserializeNBT(registries, tag.getCompound("synthesizer.inventory"));
+        // super.loadAdditional removed - base BlockEntity method signature changed in 1.21.8
+        itemHandler.deserializeNBT(registries, tag.getCompound("synthesizer.inventory").orElse(new CompoundTag()));
         ENERGY_STORAGE.setEnergy(tag.getInt("synthesizer.energy").orElse(0));
         progress = tag.getInt("synthesizer.progress").orElse(0);
         maxProgress = tag.getInt("synthesizer.maxProgress").orElse(0);

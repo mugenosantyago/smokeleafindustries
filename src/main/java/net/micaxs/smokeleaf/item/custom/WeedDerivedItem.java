@@ -155,7 +155,7 @@ public class WeedDerivedItem extends Item {
 
     @Override
     public void appendHoverText(ItemStack stack, Item.TooltipContext context, List<Component> tooltip, TooltipFlag flag) {
-        super.appendHoverText(stack, context, tooltip, flag);
+        // super.appendHoverText removed - base Item class signature doesn't match in 1.21.8
         CustomData custom = stack.get(DataComponents.CUSTOM_DATA);
         if (custom != null && !custom.isEmpty()) {
             CompoundTag tag = custom.copyTag();

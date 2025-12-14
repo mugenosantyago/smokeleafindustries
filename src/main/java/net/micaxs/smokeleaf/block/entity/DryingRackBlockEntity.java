@@ -241,9 +241,9 @@ public class DryingRackBlockEntity extends BlockEntity {
     protected void loadAdditional(CompoundTag tag, HolderLookup.Provider registries) {
         super.loadAdditional(tag, registries);
         for (int i = 0; i < SLOT_COUNT; i++) {
-            CompoundTag slotTag = tag.getCompound("S" + i);
+            CompoundTag slotTag = tag.getCompound("S" + i).orElse(new CompoundTag());
             if (slotTag.contains("stack")) {
-                items[i] = ItemStack.parse(registries, slotTag.getCompound("stack")).orElse(ItemStack.EMPTY);
+                items[i] = ItemStack.parse(registries, slotTag.getCompound("stack").orElse(new CompoundTag())).orElse(ItemStack.EMPTY);
             } else {
                 items[i] = ItemStack.EMPTY;
             }

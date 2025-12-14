@@ -301,7 +301,7 @@ public class ExtractorBlockEntity extends BlockEntity implements MenuProvider {
     @Override
     protected void loadAdditional(CompoundTag tag, HolderLookup.Provider registries) {
         super.loadAdditional(tag, registries);
-        itemHandler.deserializeNBT(registries, tag.getCompound("extractor.inventory"));
+        itemHandler.deserializeNBT(registries, tag.getCompound("extractor.inventory").orElse(new CompoundTag()));
         ENERGY_STORAGE.setEnergy(tag.getInt("extractor.energy").orElse(0));
         progress = tag.getInt("extractor.progress").orElse(0);
         maxProgress = tag.getInt("extractor.maxProgress").orElse(0);

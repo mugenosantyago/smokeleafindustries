@@ -63,8 +63,9 @@ public class SmokeleafIndustriesClient {
         WIGGLE_SPECS.put(VanillaGuiLayers.TAB_LIST,           new WiggleSpec(0.15, 5.0, 2.0, true,  0.11, 3.5, 1.2, true));
         WIGGLE_SPECS.put(VanillaGuiLayers.CROSSHAIR,          new WiggleSpec(0.11, 2.0, 1.0, false, 0.19, 2.2, 0.8, false));
         WIGGLE_SPECS.put(VanillaGuiLayers.EFFECTS,            new WiggleSpec(0.19, 2.0, 1.0, false, 0.16, 1.6, 0.6, false));
-        WIGGLE_SPECS.put(VanillaGuiLayers.EXPERIENCE_BAR,     new WiggleSpec(0.19, 2.0, 1.0, false, 0.27, 1.0, 0.4, true));
-        WIGGLE_SPECS.put(VanillaGuiLayers.EXPERIENCE_LEVEL,   new WiggleSpec(0.11, 2.0, 1.0, false, 0.31, 0.8, 0.3, false));
+        // VanillaGuiLayers.EXPERIENCE_BAR and EXPERIENCE_LEVEL removed in 1.21.8
+        // WIGGLE_SPECS.put(VanillaGuiLayers.EXPERIENCE_BAR,     new WiggleSpec(0.19, 2.0, 1.0, false, 0.27, 1.0, 0.4, true));
+        // WIGGLE_SPECS.put(VanillaGuiLayers.EXPERIENCE_LEVEL,   new WiggleSpec(0.11, 2.0, 1.0, false, 0.31, 0.8, 0.3, false));
         WIGGLE_SPECS.put(VanillaGuiLayers.SELECTED_ITEM_NAME, new WiggleSpec(0.08, 2.0, 1.0, false, 0.24, 1.3, 0.5, true));
     }
 
@@ -156,7 +157,7 @@ public class SmokeleafIndustriesClient {
 
         GuiGraphics g = event.getGuiGraphics();
         g.pose().pushPose();
-        g.pose().translate(xOffset, yOffset, 0);
+        g.pose().translate((float)xOffset, (float)yOffset, 0);
         WIGGLED.add(id);
     }
 
@@ -196,14 +197,14 @@ public class SmokeleafIndustriesClient {
             float amplitude = 0.015f + amp * 0.010f;
             float speed = 0.15f + amp * 0.05f;
             float wave = (float)Math.sin(time * speed) * amplitude;
-            event.setFOV(event.getFOV() * (1.0 + wave));
+            event.setFOV((float)(event.getFOV() * (1.0 + wave)));
         }
 
         if (bubbled != null) {
             int amp = bubbled.getAmplifier();
             double boost = -0.50 + amp * 0.12;
             double modified = event.getFOV() * (1.0 + boost);
-            event.setFOV(Math.min(170.0, modified));
+            event.setFOV((float)Math.min(170.0, modified));
         }
     }
 

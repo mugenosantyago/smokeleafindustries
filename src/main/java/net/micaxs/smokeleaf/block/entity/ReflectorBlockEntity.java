@@ -215,7 +215,7 @@ public class ReflectorBlockEntity extends BlockEntity {
     @Override
     protected void loadAdditional(CompoundTag tag, HolderLookup.Provider provider) {
         super.loadAdditional(tag, provider);
-        lamp = tag.contains("Lamp") ? ItemStack.parseOptional(provider, tag.getCompound("Lamp")) : ItemStack.EMPTY;
+        lamp = tag.contains("Lamp") ? ItemStack.parseOptional(provider, tag.getCompound("Lamp").orElse(new CompoundTag())) : ItemStack.EMPTY;
         tickCounter = tag.getInt("TickCounter").orElse(0);
     }
 
