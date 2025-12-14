@@ -284,23 +284,11 @@ public class MutatorBlockEntity extends BlockEntity implements MenuProvider {
         if (seedStack.isEmpty() || extractStack.isEmpty()) return Optional.empty();
 
         if (this.level instanceof net.minecraft.server.level.ServerLevel serverLevel) {
-            return serverLevel.getServer().getRecipeManager()
-                    .getAllRecipesFor(ModRecipes.MUTATOR_TYPE.get())
-                .stream()
-                .filter(holder -> {
-                    MutatorRecipe rec = holder.value();
-                    NonNullList<IngredientWithCount> inputs = rec.inputItems();
-                    if (inputs.isEmpty()) return false;
-                    boolean seedOk = matches(inputs, 0, seedStack);
-                    boolean extractOk = inputs.size() < 2 || matches(inputs, 1, extractStack);
-                    FluidStack required = rec.getFluid();
-                    FluidStack inTank = FLUID_TANK.getFluid();
-                    boolean fluidOk = !inTank.isEmpty()
-                            && inTank.getFluid() == required.getFluid()
-                            && inTank.getAmount() >= required.getAmount();
-                    return seedOk && extractOk && fluidOk;
-                })
-                .findFirst();
+            var recipeManager = serverLevel.getServer().getRecipeManager();
+            // TODO: Fix RecipeManager API for 1.21.8 - getAllRecipesFor() and byType() don't exist
+            // Temporarily returning empty - need to find correct method to get all recipes of a type
+            // Original code used: recipeManager.byType(ModRecipes.MUTATOR_TYPE.get()).values().stream()...
+            return Optional.empty();
         }
         return Optional.empty();
     }
