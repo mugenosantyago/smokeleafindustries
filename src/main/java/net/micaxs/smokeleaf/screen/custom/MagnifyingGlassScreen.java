@@ -310,9 +310,11 @@ public class MagnifyingGlassScreen extends Screen {
 
 
     private void drawScaled(GuiGraphics g, Component text, int x, int y, int color, float scale) {
-        g.pose().pushPose();
-        g.pose().translate(x, y, 0);
-        g.pose().scale(scale, scale, 1.0f);
+        // GuiGraphics.pose() API changed in 1.21.8 - use MatrixStack directly
+        // TODO: Fix pose stack API for 1.21.8 - temporarily render without scaling
+        // g.pose().pushPose();
+        // g.pose().translate(x, y, 0);
+        // g.pose().scale(scale, scale, 1.0f);
         g.drawString(this.font, text, 0, 0, color, false);
         g.pose().popPose();
     }

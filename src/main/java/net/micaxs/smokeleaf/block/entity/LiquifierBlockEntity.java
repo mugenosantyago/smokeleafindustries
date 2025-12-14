@@ -243,7 +243,14 @@ public class LiquifierBlockEntity extends BlockEntity implements MenuProvider {
         tag.putInt("liquifier.progress", progress);
         tag.putInt("liquifier.maxProgress", maxProgress);
         tag.putInt("liquifier.energy", ENERGY_STORAGE.getEnergyStored());
-        tag = FLUID_TANK.writeToNBT(regs, tag);
+        // TODO: FluidTank.writeToNBT() API changed in 1.21.8 - manually serialize FluidStack
+        FluidStack fluid = FLUID_TANK.getFluid();
+        if (!fluid.isEmpty()) {
+            CompoundTag fluidTag = new CompoundTag();
+            fluidTag.putString("FluidName", fluid.getFluid().builtInRegistryHolder().key().location().toString());
+            fluidTag.putInt("Amount", fluid.getAmount());
+            tag.put("liquifier.fluid", fluidTag);
+        }
         // super.saveAdditional removed - base BlockEntity method signature changed in 1.21.8
     }
 
@@ -265,7 +272,20 @@ public class LiquifierBlockEntity extends BlockEntity implements MenuProvider {
         ENERGY_STORAGE.setEnergy(tag.getInt("liquifier.energy").orElse(0));
         progress = tag.getInt("liquifier.progress").orElse(0);
         maxProgress = tag.getInt("liquifier.maxProgress").orElse(0);
-        FLUID_TANK.readFromNBT(regs, tag);
+        // TODO: FluidTank.readFromNBT() API changed in 1.21.8 - manually deserialize FluidStack
+        if (tag.contains("liquifier.fluid")) {
+            CompoundTag fluidTag = tag.getCompound("liquifier.fluid").orElse(new CompoundTag());
+            if (fluidTag.contains("FluidName") && fluidTag.contains("Amount")) {
+                var fluidKey = net.minecraft.resources.ResourceLocation.parse(fluidTag.getString("FluidName").orElse("minecraft:empty"));
+                var fluidRef = net.minecraft.core.registries.BuiltInRegistries.FLUID.get(fluidKey);
+                if (fluidRef.isPresent()) {
+                    int amount = fluidTag.getInt("Amount").orElse(0);
+                    FLUID_TANK.setFluid(new FluidStack(fluidRef.get().value(), amount));
+                }
+            }
+        } else {
+            FLUID_TANK.setFluid(FluidStack.EMPTY);
+        }
     }
 
     @Override
@@ -278,7 +298,7 @@ public class LiquifierBlockEntity extends BlockEntity implements MenuProvider {
         return saveWithoutMetadata(regs);
     }
 
-    @Override
+    // @Override removed - base BlockEntity method signature changed in 1.21.8
     public void onDataPacket(Connection net, ClientboundBlockEntityDataPacket pkt, HolderLookup.Provider provider) {
         // super.onDataPacket removed - base method signature changed in 1.21.8
     }

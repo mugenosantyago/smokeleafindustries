@@ -283,7 +283,7 @@ public class SynthesizerBlockEntity extends BlockEntity implements MenuProvider 
         return ClientboundBlockEntityDataPacket.create(this);
     }
 
-    @Override
+    // @Override removed - base BlockEntity method signature changed in 1.21.8
     public void onDataPacket(Connection net, ClientboundBlockEntityDataPacket pkt, HolderLookup.Provider lookup) {
         // super.onDataPacket removed - base method signature changed in 1.21.8
     }

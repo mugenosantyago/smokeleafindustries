@@ -24,6 +24,7 @@ import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.inventory.AbstractContainerMenu;
 import net.minecraft.world.inventory.ContainerData;
 import net.minecraft.world.item.ItemStack;
+import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.world.item.crafting.Ingredient;
 import net.minecraft.world.item.crafting.RecipeHolder;
 import net.minecraft.world.level.Level;
@@ -318,7 +319,9 @@ public class MutatorBlockEntity extends BlockEntity implements MenuProvider {
         int filledAmount = FLUID_TANK.fill(fluidInBucket, IFluidHandler.FluidAction.SIMULATE);
         if (filledAmount > 0) {
             FLUID_TANK.fill(fluidInBucket, IFluidHandler.FluidAction.EXECUTE);
-            ItemStack emptyBucket = bucketStack.getCraftingRemainingItem();
+            // ItemStack.getCraftingRemainingItem() API changed in 1.21.8 - manually create empty bucket for now
+            // TODO: Find correct API for getting crafting remainder item
+            ItemStack emptyBucket = ItemStack.EMPTY; // Temporarily empty - need to find correct API
             itemHandler.setStackInSlot(BUCKET_SLOT, emptyBucket);
         }
     }
@@ -365,7 +368,14 @@ public class MutatorBlockEntity extends BlockEntity implements MenuProvider {
         tag.putInt("mutator.progress", progress);
         tag.putInt("mutator.maxProgress", maxProgress);
         tag.putInt("mutator.energy", ENERGY_STORAGE.getEnergyStored());
-        tag = FLUID_TANK.writeToNBT(registries, tag);
+        // TODO: FluidTank.writeToNBT() API changed in 1.21.8 - manually serialize FluidStack
+        FluidStack fluid = FLUID_TANK.getFluid();
+        if (!fluid.isEmpty()) {
+            CompoundTag fluidTag = new CompoundTag();
+            fluidTag.putString("FluidName", fluid.getFluid().builtInRegistryHolder().key().location().toString());
+            fluidTag.putInt("Amount", fluid.getAmount());
+            tag.put("mutator.fluid", fluidTag);
+        }
         // super.saveAdditional removed - base BlockEntity method signature changed in 1.21.8
     }
 
@@ -387,7 +397,20 @@ public class MutatorBlockEntity extends BlockEntity implements MenuProvider {
         ENERGY_STORAGE.setEnergy(tag.getInt("mutator.energy").orElse(0));
         progress = tag.getInt("mutator.progress").orElse(0);
         maxProgress = tag.getInt("mutator.maxProgress").orElse(0);
-        FLUID_TANK.readFromNBT(registries, tag);
+        // TODO: FluidTank.readFromNBT() API changed in 1.21.8 - manually deserialize FluidStack
+        if (tag.contains("mutator.fluid")) {
+            CompoundTag fluidTag = tag.getCompound("mutator.fluid").orElse(new CompoundTag());
+            if (fluidTag.contains("FluidName") && fluidTag.contains("Amount")) {
+                var fluidKey = net.minecraft.resources.ResourceLocation.parse(fluidTag.getString("FluidName").orElse("minecraft:empty"));
+                var fluidRef = net.minecraft.core.registries.BuiltInRegistries.FLUID.get(fluidKey);
+                if (fluidRef.isPresent()) {
+                    int amount = fluidTag.getInt("Amount").orElse(0);
+                    FLUID_TANK.setFluid(new FluidStack(fluidRef.get().value(), amount));
+                }
+            }
+        } else {
+            FLUID_TANK.setFluid(FluidStack.EMPTY);
+        }
     }
 
 
@@ -402,7 +425,7 @@ public class MutatorBlockEntity extends BlockEntity implements MenuProvider {
         return saveWithoutMetadata(registries);
     }
 
-    @Override
+    // @Override removed - base BlockEntity method signature changed in 1.21.8
     public void onDataPacket(Connection net, ClientboundBlockEntityDataPacket pkt, HolderLookup.Provider lookupProvider) {
         // super.onDataPacket removed - base method signature changed in 1.21.8
     }

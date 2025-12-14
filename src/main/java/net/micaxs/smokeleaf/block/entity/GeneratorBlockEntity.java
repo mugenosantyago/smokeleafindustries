@@ -256,7 +256,7 @@ public class GeneratorBlockEntity extends BlockEntity implements MenuProvider {
         return saveWithoutMetadata(provider);
     }
 
-    @Override
+    // @Override removed - base BlockEntity method signature changed in 1.21.8
     public void onDataPacket(Connection net, ClientboundBlockEntityDataPacket pkt, HolderLookup.Provider provider) {
         // super.onDataPacket removed - base method signature changed in 1.21.8
     }

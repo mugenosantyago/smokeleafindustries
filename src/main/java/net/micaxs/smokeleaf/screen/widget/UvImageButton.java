@@ -54,9 +54,9 @@ public class UvImageButton extends AbstractButton {
             if (hoverU != null && hoverV != null) { du = hoverU; dv = hoverV; }
             else { dv = v + hoverVOffset; }
         }
-        RenderSystem.enableBlend();
+        // RenderSystem.enableBlend() removed in 1.21.8 - GuiGraphics handles blending
         g.blit(texture, getX(), getY(), du, dv, w, h, texW, texH);
-        RenderSystem.disableBlend();
+        // RenderSystem.disableBlend() removed in 1.21.8 - GuiGraphics handles blending
     }
 
     @Override
