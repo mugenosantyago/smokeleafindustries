@@ -65,10 +65,7 @@ public record GeneratorRecipe(Ingredient ingredient, int totalEnergy) implements
         return net.minecraft.world.item.crafting.RecipeBookCategory.MISC;
     }
 
-    @Override
-    public net.minecraft.world.item.crafting.Recipe.PlacementInfo placementInfo() {
-        return net.minecraft.world.item.crafting.Recipe.PlacementInfo.NONE;
-    }
+
 
     public static class Serializer implements RecipeSerializer<GeneratorRecipe> {
         public static final MapCodec<GeneratorRecipe> CODEC = RecordCodecBuilder.mapCodec(inst -> inst.group(

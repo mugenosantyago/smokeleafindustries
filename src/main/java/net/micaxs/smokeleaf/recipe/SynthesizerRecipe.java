@@ -72,10 +72,6 @@ public record SynthesizerRecipe(Ingredient dnaIngredient,
         return net.minecraft.world.item.crafting.RecipeBookCategory.MISC;
     }
 
-    @Override
-    public net.minecraft.world.item.crafting.Recipe.PlacementInfo placementInfo() {
-        return net.minecraft.world.item.crafting.Recipe.PlacementInfo.NONE;
-    }
 
     @Override
     public NonNullList<Ingredient> getIngredients() {

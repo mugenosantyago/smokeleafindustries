@@ -61,10 +61,11 @@ public record ExtractorRecipe(Ingredient inputItem, ItemStack output) implements
         return net.minecraft.world.item.crafting.RecipeBookCategory.MISC;
     }
 
-    @Override
-    public net.minecraft.world.item.crafting.Recipe.PlacementInfo placementInfo() {
-        return net.minecraft.world.item.crafting.Recipe.PlacementInfo.NONE;
-    }
+    // @Override - placementInfo() method signature needs to be checked
+    // public net.minecraft.world.item.crafting.RecipePlacementInfo placementInfo() {
+    //     return net.minecraft.world.item.crafting.RecipePlacementInfo.NONE;
+    // }
+
 
 
     public static class Serializer implements RecipeSerializer<ExtractorRecipe> {

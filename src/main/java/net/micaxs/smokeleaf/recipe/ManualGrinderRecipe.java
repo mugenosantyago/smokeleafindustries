@@ -76,10 +76,7 @@ public record ManualGrinderRecipe(Ingredient ingredient, ItemStack result, int g
         return net.minecraft.world.item.crafting.RecipeBookCategory.MISC;
     }
 
-    @Override
-    public net.minecraft.world.item.crafting.Recipe.PlacementInfo placementInfo() {
-        return net.minecraft.world.item.crafting.Recipe.PlacementInfo.NONE;
-    }
+
 
     public static class Serializer implements RecipeSerializer<ManualGrinderRecipe> {
         public static final MapCodec<ManualGrinderRecipe> CODEC = RecordCodecBuilder.mapCodec(inst -> inst.group(

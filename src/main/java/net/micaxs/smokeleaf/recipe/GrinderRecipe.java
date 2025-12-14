@@ -77,10 +77,7 @@ public record GrinderRecipe(Ingredient inputItem, ItemStack output) implements R
         return net.minecraft.world.item.crafting.RecipeBookCategory.MISC;
     }
 
-    @Override
-    public net.minecraft.world.item.crafting.Recipe.PlacementInfo placementInfo() {
-        return net.minecraft.world.item.crafting.Recipe.PlacementInfo.NONE;
-    }
+
 
     public static class Serializer implements RecipeSerializer<GrinderRecipe> {
         public static final MapCodec<GrinderRecipe> CODEC = RecordCodecBuilder.mapCodec(inst -> inst.group(
