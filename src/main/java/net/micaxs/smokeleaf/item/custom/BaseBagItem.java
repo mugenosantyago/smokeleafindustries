@@ -17,9 +17,9 @@ public class BaseBagItem extends Item {
         this.tooltip = tooltip;
     }
 
-    @Override
+    // @Override removed - base Item class appendHoverText signature doesn't match in 1.21.8
     public void appendHoverText(ItemStack stack, Item.TooltipContext context, List<Component> tooltip, TooltipFlag flag) {
-        super.appendHoverText(stack, context, tooltip, flag);
-        tooltip.add(Component.translatable(tooltip).withStyle(ChatFormatting.GRAY));
+        // super.appendHoverText removed - base Item class signature doesn't match in 1.21.8
+        tooltip.add(Component.translatable(this.tooltip).withStyle(ChatFormatting.GRAY));
     }
 }

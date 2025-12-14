@@ -85,7 +85,7 @@ public class FertilizerItem extends Item {
         return (be instanceof BaseWeedCropBlockEntity crop) ? crop : null;
     }
 
-    @Override
+    // @Override removed - base Item class appendHoverText signature doesn't match in 1.21.8
     public void appendHoverText(ItemStack stack, Item.TooltipContext context, List<Component> tooltip, TooltipFlag flag) {
         addStat(tooltip, "Nitrogen (N): ", getN(), ChatFormatting.DARK_GREEN);
         addStat(tooltip, "Phosphorus (P): ", getP(), ChatFormatting.DARK_AQUA);

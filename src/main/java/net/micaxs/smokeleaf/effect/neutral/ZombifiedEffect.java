@@ -24,7 +24,7 @@ public class ZombifiedEffect extends MobEffect {
             if (player.isCreative() || player.isSpectator()) return false;
 
             BlockPos pos = BlockPos.containing(player.getX(), player.getEyeY(), player.getZ());
-            boolean inSunlight = !level.isNight()
+            boolean inSunlight = level.getDayTime() % 24000 >= 0 && level.getDayTime() % 24000 < 12000 // Daytime check
                     && level.canSeeSky(pos)
                     && !player.isInWaterOrRain();
 

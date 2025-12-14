@@ -46,7 +46,7 @@ public class LoadManualGrinderRecipe extends CustomRecipe {
         if (stack.isEmpty()) return false;
         ManualGrinderInput in = new ManualGrinderInput(stack.copyWithCount(1));
         if (level instanceof net.minecraft.server.level.ServerLevel serverLevel) {
-            return serverLevel.getRecipeManager()
+            return serverLevel.getServer().getRecipeManager()
                     .getRecipeFor(ModRecipes.MANUAL_GRINDER_TYPE.get(), in, level)
                     .isPresent();
         }

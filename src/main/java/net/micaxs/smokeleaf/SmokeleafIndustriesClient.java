@@ -155,16 +155,18 @@ public class SmokeleafIndustriesClient {
         double xOffset = phaseX * xAmp * (spec.ix() ? -1 : 1);
         double yOffset = phaseY * yAmp * (spec.iy() ? -1 : 1);
 
-        GuiGraphics g = event.getGuiGraphics();
-        g.pose().pushPose();
-        g.pose().translate((float)xOffset, (float)yOffset, 0);
+        // TODO: RenderGuiLayerEvent pose stack API changed in 1.21.8 - pose() returns Matrix3x2fStack which doesn't have pushPose/popPose
+        // GuiGraphics g = event.getGuiGraphics();
+        // g.pose().pushPose();
+        // g.pose().translate((float)xOffset, (float)yOffset, 0);
         WIGGLED.add(id);
     }
 
     @SubscribeEvent
     public static void onRenderGuiLayerPost(RenderGuiLayerEvent.Post event) {
         if (!WIGGLED.remove(event.getName())) return;
-        event.getGuiGraphics().pose().popPose();
+        // TODO: RenderGuiLayerEvent pose stack API changed in 1.21.8
+        // event.getGuiGraphics().pose().popPose();
     }
 
     @SubscribeEvent

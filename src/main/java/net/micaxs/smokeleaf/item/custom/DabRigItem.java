@@ -162,7 +162,7 @@ public class DabRigItem extends Item {
     }
 
 
-    @Override
+    // @Override removed - base Item class method signature may have changed in 1.21.8
     public SoundEvent getDrinkingSound() {
         return ModSounds.BONG_HIT.get();
     }

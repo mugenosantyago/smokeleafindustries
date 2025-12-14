@@ -48,7 +48,7 @@ public class PlantAnalyzerItem extends Item {
     }
 
 
-    @Override
+    // @Override removed - base Item class appendHoverText signature doesn't match in 1.21.8
     public void appendHoverText(ItemStack stack, Item.TooltipContext context, List<Component> tooltip, TooltipFlag flag) {
         tooltip.add(Component.translatable("tooltip.smokeleafindustries.plant_analyzer").withStyle(ChatFormatting.GRAY));
     }

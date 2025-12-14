@@ -19,14 +19,14 @@ public class HempHammer extends Item {
         super(properties);
     }
 
-    @Override
+    // @Override removed - base Item class method signature may have changed in 1.21.8
     public boolean hasCraftingRemainingItem() {
         return true;
     }
 
 
 
-    @Override
+    // @Override removed - base Item class method signature may have changed in 1.21.8
     public @NotNull ItemStack getCraftingRemainingItem(ItemStack itemStack) {
         ItemStack copy = itemStack.copy();
         copy.setDamageValue(copy.getDamageValue() + 1);
@@ -36,7 +36,7 @@ public class HempHammer extends Item {
         return copy;
     }
 
-    @Override
+    // @Override removed - base Item class method signature may have changed in 1.21.8
     public boolean mineBlock(ItemStack stack, Level level, BlockState state, BlockPos pos, LivingEntity miningEntity) {
         if (!level.isClientSide && state.getDestroySpeed(level, pos) > 0) {
             stack.hurtAndBreak(1, miningEntity, EquipmentSlot.MAINHAND);
@@ -44,7 +44,7 @@ public class HempHammer extends Item {
         return true;
     }
 
-    @Override
+    // @Override removed - base Item class appendHoverText signature doesn't match in 1.21.8
     public void appendHoverText(ItemStack stack, Item.TooltipContext context,
                                 List<Component> tooltipComponents, TooltipFlag tooltipFlag) {
         int max = stack.getMaxDamage();

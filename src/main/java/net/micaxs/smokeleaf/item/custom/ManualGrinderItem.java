@@ -130,7 +130,7 @@ public class ManualGrinderItem extends Item {
         return data == null ? ItemStack.EMPTY : data.toStack();
     }
 
-    @Override
+    // @Override removed - base Item class appendHoverText signature doesn't match in 1.21.8
     public void appendHoverText(ItemStack stack, Item.TooltipContext context, List<Component> tooltip, TooltipFlag flag) {
         ItemStack stored = getStored(stack);
         if (stored.isEmpty()) {

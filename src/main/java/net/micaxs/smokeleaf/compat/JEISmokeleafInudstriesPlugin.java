@@ -53,8 +53,8 @@ public class JEISmokeleafInudstriesPlugin implements IModPlugin {
         Minecraft mc = Minecraft.getInstance();
         if (mc.level == null) return;
         // TODO: Update for 1.21.8 - RecipeManager.getAllRecipesFor() API changed
-        // For now, recipes may need to be registered differently or accessed through JEI's own system
-        RecipeManager recipeManager = mc.level.getRecipeManager();
+        // ClientLevel doesn't have getRecipeManager() - need to use server-side recipe manager or JEI's system
+        // RecipeManager recipeManager = mc.level.getRecipeManager(); // Removed - ClientLevel doesn't have this method
         
         // Temporarily disabled - getAllRecipesFor() method signature changed in 1.21.8
         // Need to find the new API or use JEI's recipe discovery system

@@ -166,7 +166,7 @@ public class JointItem extends Item {
         }
     }
 
-    @Override
+    // @Override removed - base Item class appendHoverText signature doesn't match in 1.21.8
     public void appendHoverText(ItemStack stack, Item.TooltipContext context,
                                 List<Component> tooltip, TooltipFlag flag) {
         JsonArray arr = stack.get(ModDataComponentTypes.ACTIVE_INGREDIENTS.get());

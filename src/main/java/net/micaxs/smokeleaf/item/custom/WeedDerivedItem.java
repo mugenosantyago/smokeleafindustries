@@ -156,7 +156,7 @@ public class WeedDerivedItem extends Item {
     }
 
 
-    @Override
+    // @Override removed - base Item class appendHoverText signature doesn't match in 1.21.8
     public void appendHoverText(ItemStack stack, Item.TooltipContext context, List<Component> tooltip, TooltipFlag flag) {
         // super.appendHoverText removed - base Item class signature doesn't match in 1.21.8
         CustomData custom = stack.get(DataComponents.CUSTOM_DATA);
