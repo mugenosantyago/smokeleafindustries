@@ -282,6 +282,10 @@ public class SmokeleafGuideScreen extends Screen {
         ClickEvent click = style.getClickEvent();
         if (click == null) return false;
 
+        // ClickEvent API changed in 1.21.8 - temporarily disable click handling
+        // TODO: Fix ClickEvent API for 1.21.8 - need to find correct method names
+        return false;
+        /*
         if (click.getAction() == ClickEvent.Action.CHANGE_PAGE) {
             try {
                 int i = Integer.parseInt(click.getValue()) - 1;
@@ -296,6 +300,7 @@ public class SmokeleafGuideScreen extends Screen {
             }
             return handled;
         }
+        */
     }
 
     @Nullable

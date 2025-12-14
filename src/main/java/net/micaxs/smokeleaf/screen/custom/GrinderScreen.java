@@ -39,9 +39,11 @@ public class GrinderScreen extends AbstractContainerScreen<GrinderMenu> {
 
     @Override
     protected void renderBg(GuiGraphics guiGraphics, float v, int i, int i1) {
-        RenderSystem.setShader(GameRenderer::getPositionTexShader);
-        RenderSystem.setShaderColor(1.0f, 1.0f, 1.0f, 1.0f);
-        RenderSystem.setShaderTexture(0, GUI_TEXTURE);
+        // RenderSystem.setShader() and setShaderColor() API changed in 1.21.8
+        // GuiGraphics handles shader setup automatically
+        // RenderSystem.setShader(GameRenderer::getPositionTexShader);
+        // RenderSystem.setShaderColor(1.0f, 1.0f, 1.0f, 1.0f);
+        // RenderSystem.setShaderTexture(0, GUI_TEXTURE);
         int x = (width - imageWidth) / 2;
         int y = (height - imageHeight) / 2;
         guiGraphics.blit(GUI_TEXTURE, x, y, 0, 0, imageWidth, imageHeight);

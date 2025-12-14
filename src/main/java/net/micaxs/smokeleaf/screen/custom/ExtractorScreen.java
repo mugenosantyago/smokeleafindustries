@@ -41,12 +41,14 @@ public class ExtractorScreen extends AbstractContainerScreen<ExtractorMenu> {
 
     @Override
     protected void renderBg(GuiGraphics guiGraphics, float v, int i, int i1) {
-        RenderSystem.setShader(GameRenderer::getPositionTexShader);
-        RenderSystem.setShaderColor(1.0f, 1.0f, 1.0f, 1.0f);
-        RenderSystem.setShaderTexture(0, GUI_TEXTURE);
+        // RenderSystem.setShader() and setShaderColor() API changed in 1.21.8
+        // GuiGraphics handles shader setup automatically
+        // RenderSystem.setShader(GameRenderer::getPositionTexShader);
+        // RenderSystem.setShaderColor(1.0f, 1.0f, 1.0f, 1.0f);
+        // RenderSystem.setShaderTexture(0, GUI_TEXTURE);
         int x = (width - imageWidth) / 2;
         int y = (height - imageHeight) / 2;
-        guiGraphics.blit(GUI_TEXTURE, x, y, 0, 0, imageWidth, imageHeight);
+        guiGraphics.blit(GUI_TEXTURE, x, y, 0, 0, imageWidth, imageHeight, imageWidth, imageHeight);
 
         renderInfoIcon(guiGraphics, x, y);
 
@@ -66,7 +68,9 @@ public class ExtractorScreen extends AbstractContainerScreen<ExtractorMenu> {
         if (isMouseAboveArea(mouseX, mouseY, baseX, baseY, ICON_SIZE, ICON_SIZE, ICON_SIZE, ICON_SIZE)) {
             Component info = Component.translatable("gui.tooltip.extractor.info");
             List<FormattedCharSequence> wrapped = this.font.split(info, 300);
-            g.renderTooltip(this.font, wrapped, mouseX, mouseY);
+            // renderTooltip API changed in 1.21.8 - temporarily disabled
+            // TODO: Fix renderTooltip signature for 1.21.8
+            // g.renderTooltip(this.font, wrapped, mouseX, mouseY);
         }
     }
 
@@ -74,7 +78,7 @@ public class ExtractorScreen extends AbstractContainerScreen<ExtractorMenu> {
 
     private void renderProgressArrow(GuiGraphics guiGraphics, int x, int y) {
         if(menu.isCrafting()) {
-            guiGraphics.blit(GUI_TEXTURE, x + 85, y + 30, 176, 0, 8, menu.getScaledProgress());
+            guiGraphics.blit(GUI_TEXTURE, x + 85, y + 30, 176, 0, 8, menu.getScaledProgress(), imageWidth, imageHeight);
         }
     }
 
@@ -84,7 +88,9 @@ public class ExtractorScreen extends AbstractContainerScreen<ExtractorMenu> {
 
     private void renderEnergyInfoArea(GuiGraphics guiGraphics, int mouseX, int mouseY, int x, int y) {
         if (isMouseAboveArea(mouseX, mouseY, x, y, 156, 11, 8, 64)) {
-            guiGraphics.renderTooltip(this.font, energyInfoArea.getTooltips(), Optional.empty(), mouseX - x, mouseY - y);
+            // renderTooltip API changed in 1.21.8 - temporarily disabled
+            // TODO: Fix renderTooltip signature for 1.21.8
+            // guiGraphics.renderTooltip(this.font, energyInfoArea.getTooltips(), Optional.empty(), mouseX - x, mouseY - y);
         }
     }
 

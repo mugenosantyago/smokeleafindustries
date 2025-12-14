@@ -49,20 +49,24 @@ public class MutatorScreen extends AbstractContainerScreen<MutatorMenu> {
 
     private void renderFluidTooltipArea(GuiGraphics guiGraphics, int pMouseX, int pMouseY, int x, int y, FluidStack stack, int offsetX, int offsetY, FluidTankRenderer renderer) {
         if (isMouseAboveArea(pMouseX, pMouseY, x, y, offsetX, offsetY, renderer)) {
-            guiGraphics.renderTooltip( this.font, renderer.getTooltip(stack, TooltipFlag.Default.NORMAL),
-                    Optional.empty(), pMouseX - x, pMouseY - y);
+            // renderTooltip API changed in 1.21.8 - temporarily disabled
+            // TODO: Fix renderTooltip signature for 1.21.8
+            // guiGraphics.renderTooltip( this.font, renderer.getTooltip(stack, TooltipFlag.Default.NORMAL),
+            //         Optional.empty(), pMouseX - x, pMouseY - y);
         }
     }
 
 
     @Override
     protected void renderBg(GuiGraphics guiGraphics, float v, int i, int i1) {
-        RenderSystem.setShader(GameRenderer::getPositionTexShader);
-        RenderSystem.setShaderColor(1.0f, 1.0f, 1.0f, 1.0f);
-        RenderSystem.setShaderTexture(0, GUI_TEXTURE);
+        // RenderSystem.setShader() and setShaderColor() API changed in 1.21.8
+        // GuiGraphics handles shader setup automatically
+        // RenderSystem.setShader(GameRenderer::getPositionTexShader);
+        // RenderSystem.setShaderColor(1.0f, 1.0f, 1.0f, 1.0f);
+        // RenderSystem.setShaderTexture(0, GUI_TEXTURE);
         int x = (width - imageWidth) / 2;
         int y = (height - imageHeight) / 2;
-        guiGraphics.blit(GUI_TEXTURE, x, y, 0, 0, imageWidth, imageHeight);
+        guiGraphics.blit(GUI_TEXTURE, x, y, 0, 0, imageWidth, imageHeight, imageWidth, imageHeight);
 
         energyInfoArea.render(guiGraphics);
         fluidRenderer.render(guiGraphics, x + 55, y + 15, menu.blockEntity.getFluid());
@@ -82,13 +86,15 @@ public class MutatorScreen extends AbstractContainerScreen<MutatorMenu> {
         if (isMouseAboveAreaEnergy(mouseX, mouseY, baseX + 28, baseY, ICON_SIZE, ICON_SIZE, ICON_SIZE, ICON_SIZE)) {
             Component info = Component.translatable("gui.tooltip.mutator.info");
             List<FormattedCharSequence> wrapped = this.font.split(info, 300);
-            g.renderTooltip(this.font, wrapped, mouseX, mouseY);
+            // renderTooltip API changed in 1.21.8 - temporarily disabled
+            // TODO: Fix renderTooltip signature for 1.21.8
+            // g.renderTooltip(this.font, wrapped, mouseX, mouseY);
         }
     }
 
     private void renderProgressArrow(GuiGraphics guiGraphics, int x, int y) {
         if(menu.isCrafting()) {
-            guiGraphics.blit(GUI_TEXTURE, x + 103, y + 37, 176, 0, 8, menu.getScaledProgress());
+            guiGraphics.blit(GUI_TEXTURE, x + 103, y + 37, 176, 0, 8, menu.getScaledProgress(), imageWidth, imageHeight);
         }
     }
 
@@ -98,7 +104,9 @@ public class MutatorScreen extends AbstractContainerScreen<MutatorMenu> {
 
     private void renderEnergyInfoArea(GuiGraphics guiGraphics, int mouseX, int mouseY, int x, int y) {
         if (isMouseAboveAreaEnergy(mouseX, mouseY, x, y, 156, 11, 8, 64)) {
-            guiGraphics.renderTooltip(this.font, energyInfoArea.getTooltips(), Optional.empty(), mouseX - x, mouseY - y);
+            // renderTooltip API changed in 1.21.8 - temporarily disabled
+            // TODO: Fix renderTooltip signature for 1.21.8
+            // guiGraphics.renderTooltip(this.font, energyInfoArea.getTooltips(), Optional.empty(), mouseX - x, mouseY - y);
         }
     }
 

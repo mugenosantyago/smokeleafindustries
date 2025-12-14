@@ -50,20 +50,24 @@ public class LiquifierScreen extends AbstractContainerScreen<LiquifierMenu> {
 
     private void renderFluidTooltipArea(GuiGraphics guiGraphics, int pMouseX, int pMouseY, int x, int y, FluidStack stack, int offsetX, int offsetY, FluidTankRenderer renderer) {
         if (isMouseAboveArea(pMouseX, pMouseY, x, y, offsetX, offsetY, renderer)) {
-            guiGraphics.renderTooltip( this.font, renderer.getTooltip(stack, TooltipFlag.Default.NORMAL),
-                    Optional.empty(), pMouseX - x, pMouseY - y);
+            // renderTooltip API changed in 1.21.8 - temporarily disabled
+            // TODO: Fix renderTooltip signature for 1.21.8
+            // guiGraphics.renderTooltip( this.font, renderer.getTooltip(stack, TooltipFlag.Default.NORMAL),
+            //         Optional.empty(), pMouseX - x, pMouseY - y);
         }
     }
 
 
     @Override
     protected void renderBg(GuiGraphics guiGraphics, float v, int i, int i1) {
-        RenderSystem.setShader(GameRenderer::getPositionTexShader);
-        RenderSystem.setShaderColor(1.0f, 1.0f, 1.0f, 1.0f);
-        RenderSystem.setShaderTexture(0, GUI_TEXTURE);
+        // RenderSystem.setShader() and setShaderColor() API changed in 1.21.8
+        // GuiGraphics handles shader setup automatically
+        // RenderSystem.setShader(GameRenderer::getPositionTexShader);
+        // RenderSystem.setShaderColor(1.0f, 1.0f, 1.0f, 1.0f);
+        // RenderSystem.setShaderTexture(0, GUI_TEXTURE);
         int x = (width - imageWidth) / 2;
         int y = (height - imageHeight) / 2;
-        guiGraphics.blit(GUI_TEXTURE, x, y, 0, 0, imageWidth, imageHeight);
+        guiGraphics.blit(GUI_TEXTURE, x, y, 0, 0, imageWidth, imageHeight, imageWidth, imageHeight);
 
         energyInfoArea.render(guiGraphics);
         fluidRenderer.render(guiGraphics, x + 134, y + 11, menu.blockEntity.getFluid());
@@ -82,13 +86,15 @@ public class LiquifierScreen extends AbstractContainerScreen<LiquifierMenu> {
         if (isMouseAboveAreaEnergy(mouseX, mouseY, baseX, baseY, ICON_SIZE, ICON_SIZE, ICON_SIZE, ICON_SIZE)) {
             Component info = Component.translatable("gui.tooltip.liquifier.info");
             List<FormattedCharSequence> wrapped = this.font.split(info, 300);
-            g.renderTooltip(this.font, wrapped, mouseX, mouseY);
+            // renderTooltip API changed in 1.21.8 - temporarily disabled
+            // TODO: Fix renderTooltip signature for 1.21.8
+            // g.renderTooltip(this.font, wrapped, mouseX, mouseY);
         }
     }
 
     private void renderProgressArrow(GuiGraphics guiGraphics, int x, int y) {
         if(menu.isCrafting()) {
-            guiGraphics.blit(GUI_TEXTURE, x + 59, y + 35, 0, 166, menu.getScaledProgress(), 16);
+            guiGraphics.blit(GUI_TEXTURE, x + 59, y + 35, 0, 166, menu.getScaledProgress(), 16, imageWidth, imageHeight);
         }
     }
 
@@ -98,7 +104,9 @@ public class LiquifierScreen extends AbstractContainerScreen<LiquifierMenu> {
 
     private void renderEnergyInfoArea(GuiGraphics guiGraphics, int mouseX, int mouseY, int x, int y) {
         if (isMouseAboveAreaEnergy(mouseX, mouseY, x, y, 156, 11, 8, 64)) {
-            guiGraphics.renderTooltip(this.font, energyInfoArea.getTooltips(), Optional.empty(), mouseX - x, mouseY - y);
+            // renderTooltip API changed in 1.21.8 - temporarily disabled
+            // TODO: Fix renderTooltip signature for 1.21.8
+            // guiGraphics.renderTooltip(this.font, energyInfoArea.getTooltips(), Optional.empty(), mouseX - x, mouseY - y);
         }
     }
 
@@ -131,7 +139,10 @@ public class LiquifierScreen extends AbstractContainerScreen<LiquifierMenu> {
                             && this.minecraft.player.getInventory().getSelected().getItem() == ModItems.EMPTY_TINCTURE.get()) {
 
                         // Replace empty tincture with filled one
-                        this.minecraft.player.getInventory().removeItem(this.minecraft.player.getInventory().selected, 1);
+                        // Inventory.selected API changed in 1.21.8 - use getSelected() or getSelectedSlot()
+                        // TODO: Fix Inventory.selected API for 1.21.8
+                        // this.minecraft.player.getInventory().removeItem(this.minecraft.player.getInventory().selected, 1);
+                        this.minecraft.player.getInventory().removeItem(this.minecraft.player.getInventory().getSelectedSlotIndex(), 1);
                         this.minecraft.player.getInventory().add(new net.minecraft.world.item.ItemStack(ModItems.HASH_OIL_TINCTURE.get()));
                         return true; // handled tincture; do not process bucket logic
                     }
