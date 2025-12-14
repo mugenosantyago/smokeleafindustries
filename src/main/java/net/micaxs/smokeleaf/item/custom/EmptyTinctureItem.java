@@ -14,8 +14,8 @@ public class EmptyTinctureItem extends Item {
     }
 
     @Override
-    public void appendHoverText(ItemStack stack, Item.TooltipContext context, List<Component> tooltipComponents, TooltipFlag tooltipFlag) {
+    public void appendHoverText(ItemStack stack, Item.TooltipContext context, TooltipDisplay tooltipDisplay, Consumer<Component> tooltipComponents, TooltipFlag tooltipFlag) {
         super.appendHoverText(stack, context,  tooltipComponents, tooltipFlag);
-        tooltipComponents.add(Component.translatable("tooltip.smokeleafindustries.tincture").withStyle(ChatFormatting.GRAY));
+        tooltipComponents.accept(Component.translatable("tooltip.smokeleafindustries.tincture").withStyle(ChatFormatting.GRAY));
     }
 }

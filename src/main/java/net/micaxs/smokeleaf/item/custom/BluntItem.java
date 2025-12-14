@@ -168,7 +168,7 @@ public class BluntItem extends Item {
     }
 
     @Override
-    public void appendHoverText(ItemStack stack, TooltipContext context,
+    public void appendHoverText(ItemStack stack, Item.TooltipContext context,
                                 List<Component> tooltip, TooltipFlag flag) {
         JsonArray arr = stack.get(ModDataComponentTypes.ACTIVE_INGREDIENTS.get());
         if (arr == null || arr.isEmpty()) {

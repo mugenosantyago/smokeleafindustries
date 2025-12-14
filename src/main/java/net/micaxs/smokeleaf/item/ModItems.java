@@ -156,7 +156,7 @@ public class ModItems {
             () -> new BaseWeedItem(new Item.Properties(), MobEffects.LUCK.value(), 140, 1, 16, 9,
                     "Purple", "Haze"));
     public static final DeferredItem<Item> OG_KUSH_WEED = ITEMS.register("og_kush_weed",
-            () -> new BaseWeedItem(new Item.Properties(), MobEffects.DAMAGE_RESISTANCE.value(), 210, 1, 25, 10,
+            () -> new BaseWeedItem(new Item.Properties(), MobEffects.RESISTANCE.value(), 210, 1, 25, 10,
                     "OG", "Kush"));
     public static final DeferredItem<Item> JACK_HERER_WEED = ITEMS.register("jack_herer_weed",
             () -> new BaseWeedItem(new Item.Properties(), ModEffects.R_TREES.value(), 205, 1, 18, 7,
@@ -218,9 +218,9 @@ public class ModItems {
     public static final DeferredItem<Item> BUBBLE_KUSH_EXTRACT = ITEMS.register("bubble_kush_extract",
             () -> new BaseWeedItem(new Item.Properties(), MobEffects.STRENGTH.value(), 360, 2, 20, 5, false));
     public static final DeferredItem<Item> LEMON_HAZE_EXTRACT = ITEMS.register("lemon_haze_extract",
-            () -> new BaseWeedItem(new Item.Properties(), MobEffects.MOVEMENT_SPEED.value(), 320, 2, 19, 6, false));
+            () -> new BaseWeedItem(new Item.Properties(), MobEffects.SPEED.value(), 320, 2, 19, 6, false));
     public static final DeferredItem<Item> SOUR_DIESEL_EXTRACT = ITEMS.register("sour_diesel_extract",
-            () -> new BaseWeedItem(new Item.Properties(), MobEffects.DIG_SPEED.value(), 340, 2, 19, 6, false));
+            () -> new BaseWeedItem(new Item.Properties(), MobEffects.HASTE.value(), 340, 2, 19, 6, false));
     public static final DeferredItem<Item> BLUE_ICE_EXTRACT = ITEMS.register("blue_ice_extract",
             () -> new BaseWeedItem(new Item.Properties(), MobEffects.NIGHT_VISION.value(), 380, 2, 20, 5, false));
     public static final DeferredItem<Item> BUBBLEGUM_EXTRACT = ITEMS.register("bubblegum_extract",
@@ -228,7 +228,7 @@ public class ModItems {
     public static final DeferredItem<Item> PURPLE_HAZE_EXTRACT = ITEMS.register("purple_haze_extract",
             () -> new BaseWeedItem(new Item.Properties(), MobEffects.LUCK.value(), 280, 2, 16, 9, false));
     public static final DeferredItem<Item> OG_KUSH_EXTRACT = ITEMS.register("og_kush_extract",
-            () -> new BaseWeedItem(new Item.Properties(), MobEffects.DAMAGE_RESISTANCE.value(), 420, 2, 25, 0, false));
+            () -> new BaseWeedItem(new Item.Properties(), MobEffects.RESISTANCE.value(), 420, 2, 25, 0, false));
     public static final DeferredItem<Item> JACK_HERER_EXTRACT = ITEMS.register("jack_herer_extract",
             () -> new BaseWeedItem(new Item.Properties(), ModEffects.R_TREES.value(), 410, 2, 18, 7, false));
     public static final DeferredItem<Item> GARY_PEYTON_EXTRACT = ITEMS.register("gary_peyton_extract",

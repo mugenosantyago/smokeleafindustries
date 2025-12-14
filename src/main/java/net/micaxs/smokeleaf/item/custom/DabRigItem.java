@@ -62,13 +62,13 @@ public class DabRigItem extends Item {
     }
 
     private Holder<MobEffect> toHolder(MobEffect effect, LivingEntity entity) {
-        return BuiltInRegistries.MOB_EFFECT
-                .getResourceKey(effect)
-                .flatMap(key -> entity.level()
-                        .registryAccess()
-                        .registryOrThrow(Registries.MOB_EFFECT)
-                        .getHolder(key))
-                .orElseThrow(() -> new IllegalStateException("Unregistered MobEffect: " + effect));
+        if (entity.level() instanceof net.minecraft.server.level.ServerLevel serverLevel) {
+            var registry = serverLevel.registryAccess().registryOrThrow(net.minecraft.core.registries.Registries.MOB_EFFECT);
+            return registry.getResourceKey(effect)
+                    .flatMap(registry::getHolder)
+                    .orElseThrow(() -> new IllegalStateException("Unregistered MobEffect: " + effect));
+        }
+        return Holder.direct(effect);
     }
 
     // @Override - temporarily removed to check base class signature

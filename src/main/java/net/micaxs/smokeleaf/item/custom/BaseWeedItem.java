@@ -84,8 +84,8 @@ public class BaseWeedItem extends Item {
     }
 
     @Override
-    public void appendHoverText(ItemStack stack, Item.TooltipContext context, List<Component> tooltipComponents, TooltipFlag tooltipFlag) {
-        super.appendHoverText(stack, context, tooltipComponents, tooltipFlag);
+    public void appendHoverText(ItemStack stack, Item.TooltipContext context, TooltipDisplay tooltipDisplay, Consumer<Component> tooltipComponents, TooltipFlag tooltipFlag) {
+        super.appendHoverText(stack, context, tooltipDisplay, tooltipComponents, tooltipFlag);
 
         List<MobEffectInstance> previews = buildEffectInstances(stack);
         if (previews.isEmpty()) {
@@ -95,10 +95,10 @@ public class BaseWeedItem extends Item {
         MobEffectInstance first = previews.get(0);
         MobEffect eff = first.getEffect().value();
         int dur = first.getDuration();
-        tooltipComponents.add(WeedEffectHelper.getEffectTooltip(eff, dur, true));
+        tooltipComponents.accept(WeedEffectHelper.getEffectTooltip(eff, dur, true));
 
-        tooltipComponents.add(Component.empty());
-        tooltipComponents.add(getLevelsText(stack));
+        tooltipComponents.accept(Component.empty());
+        tooltipComponents.accept(getLevelsText(stack));
 
         if (previews.size() > 1) {
             // use MutableComponent so .append(...) is available
@@ -111,14 +111,14 @@ public class BaseWeedItem extends Item {
                 }
                 joined = joined.append(name);
             }
-            tooltipComponents.add(
+            tooltipComponents.accept(
                     Component.translatable("tooltip.smokeleafindustries.extra_effects", joined)
                             .withStyle(ChatFormatting.GRAY)
             );
         }
 
         if (this.variableDuration) {
-            tooltipComponents.add(Component.translatable("tooltip.smokeleafindustries.base_weed").withStyle(ChatFormatting.DARK_GRAY));
+            tooltipComponents.accept(Component.translatable("tooltip.smokeleafindustries.base_weed").withStyle(ChatFormatting.DARK_GRAY));
         }
     }
 
@@ -218,7 +218,10 @@ public class BaseWeedItem extends Item {
         var registry = BuiltInRegistries.MOB_EFFECT;
         var keyOpt = registry.getResourceKey(effect);
         if (keyOpt.isPresent()) {
-            return registry.getHolder(keyOpt.get()).orElse(Holder.direct(effect));
+            var holderOpt = registry.getHolder(keyOpt.get());
+            if (holderOpt.isPresent()) {
+                return holderOpt.get();
+            }
         }
         return Holder.direct(effect);
     }

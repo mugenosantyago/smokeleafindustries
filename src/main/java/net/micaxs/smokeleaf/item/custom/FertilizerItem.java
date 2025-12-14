@@ -10,6 +10,8 @@ import net.minecraft.world.InteractionResult;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.TooltipFlag;
+import net.minecraft.world.item.TooltipDisplay;
+import java.util.function.Consumer;
 import net.minecraft.world.item.context.UseOnContext;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.entity.BlockEntity;
@@ -86,7 +88,7 @@ public class FertilizerItem extends Item {
     }
 
     @Override
-    public void appendHoverText(ItemStack stack, TooltipContext context, List<Component> tooltip, TooltipFlag flag) {
+    public void appendHoverText(ItemStack stack, Item.TooltipContext context, List<Component> tooltip, TooltipFlag flag) {
         addStat(tooltip, "Nitrogen (N): ", getN(), ChatFormatting.DARK_GREEN);
         addStat(tooltip, "Phosphorus (P): ", getP(), ChatFormatting.DARK_AQUA);
         addStat(tooltip, "Potassium (K): ", getK(), ChatFormatting.GOLD);

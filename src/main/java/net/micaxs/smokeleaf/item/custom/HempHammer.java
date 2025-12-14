@@ -45,7 +45,7 @@ public class HempHammer extends Item {
     }
 
     @Override
-    public void appendHoverText(ItemStack stack, TooltipContext context,
+    public void appendHoverText(ItemStack stack, Item.TooltipContext context,
                                 List<Component> tooltipComponents, TooltipFlag tooltipFlag) {
         int max = stack.getMaxDamage();
         int used = stack.getDamageValue();

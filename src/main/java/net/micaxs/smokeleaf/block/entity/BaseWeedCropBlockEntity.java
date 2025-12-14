@@ -76,12 +76,12 @@ public class BaseWeedCropBlockEntity extends BlockEntity {
     @Override
     protected void loadAdditional(CompoundTag tag, HolderLookup.Provider registries) {
         super.loadAdditional(tag, registries);
-        this.thc = tag.getInt("thc");
-        this.cbd = tag.getInt("cbd");
-        this.ph = tag.getInt("ph");
-        this.nitrogen = tag.getInt("nitrogen");
-        this.phosphorus = tag.getInt("phosphorus");
-        this.potassium = tag.getInt("potassium");
+        this.thc = tag.contains("thc") ? tag.getInt("thc") : 0;
+        this.cbd = tag.contains("cbd") ? tag.getInt("cbd") : 0;
+        this.ph = tag.contains("ph") ? tag.getInt("ph") : 0;
+        this.nitrogen = tag.contains("nitrogen") ? tag.getInt("nitrogen") : 0;
+        this.phosphorus = tag.contains("phosphorus") ? tag.getInt("phosphorus") : 0;
+        this.potassium = tag.contains("potassium") ? tag.getInt("potassium") : 0;
     }
 
 

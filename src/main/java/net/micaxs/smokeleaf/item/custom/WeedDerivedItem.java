@@ -129,12 +129,13 @@ public class WeedDerivedItem extends Item {
 
 
     private static Holder<MobEffect> mobEffectToHolder(MobEffect effect, Level level) {
-        return BuiltInRegistries.MOB_EFFECT
-                .getResourceKey(effect)
-                .flatMap(key -> level.registryAccess()
-                        .registryOrThrow(Registries.MOB_EFFECT)
-                        .getHolder(key))
-                .orElseThrow(() -> new IllegalStateException("Unregistered MobEffect: " + effect));
+        if (level instanceof net.minecraft.server.level.ServerLevel serverLevel) {
+            var registry = serverLevel.registryAccess().registryOrThrow(net.minecraft.core.registries.Registries.MOB_EFFECT);
+            return registry.getResourceKey(effect)
+                    .flatMap(registry::getHolder)
+                    .orElseThrow(() -> new IllegalStateException("Unregistered MobEffect: " + effect));
+        }
+        return Holder.direct(effect);
     }
 
 
@@ -153,7 +154,7 @@ public class WeedDerivedItem extends Item {
 
 
     @Override
-    public void appendHoverText(ItemStack stack, Item.TooltipContext context, List<Component> tooltipComponents, TooltipFlag tooltipFlag) {
+    public void appendHoverText(ItemStack stack, Item.TooltipContext context, TooltipDisplay tooltipDisplay, Consumer<Component> tooltipComponents, TooltipFlag tooltipFlag) {
         super.appendHoverText(stack, context,  tooltipComponents, tooltipFlag);
         CustomData custom = stack.get(DataComponents.CUSTOM_DATA);
         if (custom != null && !custom.isEmpty()) {
@@ -165,7 +166,7 @@ public class WeedDerivedItem extends Item {
             if (activeIngredient == null) {
                 return;
             }
-            tooltipComponents.add(WeedEffectHelper.getEffectTooltip(activeIngredient.getEffect(),
+            tooltipComponents.accept(WeedEffectHelper.getEffectTooltip(activeIngredient.getEffect(),
                     tag.getInt("duration").orElse(0), !activeIngredient.isVariableDuration()));
         }
     }

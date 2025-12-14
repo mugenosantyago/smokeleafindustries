@@ -36,7 +36,8 @@ public class ApplyBudStats extends LootItemConditionalFunction {
 
     @Override
     protected ItemStack run(ItemStack stack, LootContext ctx) {
-        BlockEntity be = ctx.getParamOrNull(LootContextParams.BLOCK_ENTITY);
+        if (!ctx.hasParam(LootContextParams.BLOCK_ENTITY)) return stack;
+        BlockEntity be = ctx.getParam(LootContextParams.BLOCK_ENTITY);
         if (be instanceof BaseWeedCropBlockEntity crop) {
             int buds = Mth.clamp(crop.getBudCount(), 1, 3);
             stack.setCount(buds);

@@ -16,6 +16,8 @@ import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.TooltipFlag;
+import net.minecraft.world.item.TooltipDisplay;
+import java.util.function.Consumer;
 import net.minecraft.world.level.Level;
 
 import java.util.List;
@@ -114,7 +116,7 @@ public class ManualGrinderItem extends Item {
         if (level == null || ingredient.isEmpty()) return Optional.empty();
         ManualGrinderInput input = new ManualGrinderInput(ingredient.copyWithCount(1));
         if (level instanceof net.minecraft.server.level.ServerLevel serverLevel) {
-            return serverLevel.getRecipeManager()
+            return level.getRecipeManager()
                     .getRecipeFor(ModRecipes.MANUAL_GRINDER_TYPE.get(), input, level)
                     .map(holder -> holder.value());
         }
@@ -131,7 +133,7 @@ public class ManualGrinderItem extends Item {
     }
 
     @Override
-    public void appendHoverText(ItemStack stack, TooltipContext context, List<Component> tooltip, TooltipFlag flag) {
+    public void appendHoverText(ItemStack stack, Item.TooltipContext context, List<Component> tooltip, TooltipFlag flag) {
         ItemStack stored = getStored(stack);
         if (stored.isEmpty()) {
             tooltip.add(Component.translatable("tooltip.smokeleafindustries.manual_grinder.empty").withStyle(ChatFormatting.GRAY));
