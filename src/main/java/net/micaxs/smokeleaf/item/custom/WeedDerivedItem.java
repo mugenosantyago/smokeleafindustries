@@ -154,8 +154,8 @@ public class WeedDerivedItem extends Item {
 
 
     @Override
-    public void appendHoverText(ItemStack stack, Item.TooltipContext context, TooltipDisplay tooltipDisplay, Consumer<Component> tooltipComponents, TooltipFlag tooltipFlag) {
-        super.appendHoverText(stack, context,  tooltipComponents, tooltipFlag);
+    public void appendHoverText(ItemStack stack, Item.TooltipContext context, List<Component> tooltip, TooltipFlag flag) {
+        super.appendHoverText(stack, context, tooltip, flag);
         CustomData custom = stack.get(DataComponents.CUSTOM_DATA);
         if (custom != null && !custom.isEmpty()) {
             CompoundTag tag = custom.copyTag();
@@ -166,7 +166,7 @@ public class WeedDerivedItem extends Item {
             if (activeIngredient == null) {
                 return;
             }
-            tooltipComponents.accept(WeedEffectHelper.getEffectTooltip(activeIngredient.getEffect(),
+            tooltip.add(WeedEffectHelper.getEffectTooltip(activeIngredient.getEffect(),
                     tag.getInt("duration").orElse(0), !activeIngredient.isVariableDuration()));
         }
     }

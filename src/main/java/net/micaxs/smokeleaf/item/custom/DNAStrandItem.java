@@ -51,29 +51,29 @@ public class DNAStrandItem extends Item {
     }
 
     @Override
-    public void appendHoverText(ItemStack stack, Item.TooltipContext context, TooltipDisplay tooltipDisplay, Consumer<Component> tooltipComponents, TooltipFlag tooltipFlag) {
+    public void appendHoverText(ItemStack stack, Item.TooltipContext context, List<Component> tooltip, TooltipFlag flag) {
         DNAContents contents = getContents(stack);
         int shown = 0;
         for (int i = 0; i < 3; i++) {
             ItemStack slot = contents.get(i);
             if (!slot.isEmpty()) {
                 if (shown == 0) {
-                    tooltipComponents.accept(Component.literal("Contents:").withStyle(ChatFormatting.GOLD));
+                    tooltip.add(Component.literal("Contents:").withStyle(ChatFormatting.GOLD));
                 }
-                tooltipComponents.accept(slot.getHoverName().copy().withStyle(ChatFormatting.AQUA));
+                tooltip.add(slot.getHoverName().copy().withStyle(ChatFormatting.AQUA));
                 shown++;
             }
         }
         if (shown == 0) {
-            tooltipComponents.accept(Component.literal("Empty").withStyle(ChatFormatting.DARK_GRAY));
+            tooltip.add(Component.literal("Empty").withStyle(ChatFormatting.DARK_GRAY));
         }
 
         Level level = context.level();
         if (level != null && contents.isFull()) {
             if (isValidCombination(level, contents)) {
-                tooltipComponents.accept(Component.literal("Valid Strain").withStyle(ChatFormatting.GREEN));
+                tooltip.add(Component.literal("Valid Strain").withStyle(ChatFormatting.GREEN));
             } else {
-                tooltipComponents.accept(Component.literal("Invalid Strain").withStyle(ChatFormatting.RED));
+                tooltip.add(Component.literal("Invalid Strain").withStyle(ChatFormatting.RED));
             }
         }
     }

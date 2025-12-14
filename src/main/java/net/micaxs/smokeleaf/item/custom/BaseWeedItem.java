@@ -83,9 +83,9 @@ public class BaseWeedItem extends Item {
         stack.set(ModDataComponentTypes.CBD.get(), this.cbdLevel);
     }
 
-    @Override
-    public void appendHoverText(ItemStack stack, Item.TooltipContext context, TooltipDisplay tooltipDisplay, Consumer<Component> tooltipComponents, TooltipFlag tooltipFlag) {
-        super.appendHoverText(stack, context, tooltipDisplay, tooltipComponents, tooltipFlag);
+    // Note: Using new 1.21.8 signature with List<Component> instead of Consumer<Component>
+    // Cannot call super.appendHoverText as base class still uses old signature
+    public void appendHoverText(ItemStack stack, Item.TooltipContext context, List<Component> tooltip, TooltipFlag flag) {
 
         List<MobEffectInstance> previews = buildEffectInstances(stack);
         if (previews.isEmpty()) {
@@ -95,10 +95,10 @@ public class BaseWeedItem extends Item {
         MobEffectInstance first = previews.get(0);
         MobEffect eff = first.getEffect().value();
         int dur = first.getDuration();
-        tooltipComponents.accept(WeedEffectHelper.getEffectTooltip(eff, dur, true));
+        tooltip.add(WeedEffectHelper.getEffectTooltip(eff, dur, true));
 
-        tooltipComponents.accept(Component.empty());
-        tooltipComponents.accept(getLevelsText(stack));
+        tooltip.add(Component.empty());
+        tooltip.add(getLevelsText(stack));
 
         if (previews.size() > 1) {
             // use MutableComponent so .append(...) is available
@@ -111,14 +111,14 @@ public class BaseWeedItem extends Item {
                 }
                 joined = joined.append(name);
             }
-            tooltipComponents.accept(
+            tooltip.add(
                     Component.translatable("tooltip.smokeleafindustries.extra_effects", joined)
                             .withStyle(ChatFormatting.GRAY)
             );
         }
 
         if (this.variableDuration) {
-            tooltipComponents.accept(Component.translatable("tooltip.smokeleafindustries.base_weed").withStyle(ChatFormatting.DARK_GRAY));
+            tooltip.add(Component.translatable("tooltip.smokeleafindustries.base_weed").withStyle(ChatFormatting.DARK_GRAY));
         }
     }
 

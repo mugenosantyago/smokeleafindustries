@@ -18,8 +18,8 @@ public class BaseBagItem extends Item {
     }
 
     @Override
-    public void appendHoverText(ItemStack stack, Item.TooltipContext context, TooltipDisplay tooltipDisplay, Consumer<Component> tooltipComponents, TooltipFlag tooltipFlag) {
-        super.appendHoverText(stack, context,  tooltipComponents, tooltipFlag);
-        tooltipComponents.accept(Component.translatable(tooltip).withStyle(ChatFormatting.GRAY));
+    public void appendHoverText(ItemStack stack, Item.TooltipContext context, List<Component> tooltip, TooltipFlag flag) {
+        super.appendHoverText(stack, context, tooltip, flag);
+        tooltip.add(Component.translatable(tooltip).withStyle(ChatFormatting.GRAY));
     }
 }
