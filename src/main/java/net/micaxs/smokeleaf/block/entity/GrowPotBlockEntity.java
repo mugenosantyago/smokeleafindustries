@@ -347,7 +347,7 @@ public class GrowPotBlockEntity extends BlockEntity {
 
     @Override
     protected void saveAdditional(CompoundTag tag, HolderLookup.Provider registries) {
-        super.saveAdditional(tag, registries);
+        // super.saveAdditional removed - base BlockEntity method signature changed in 1.21.8
         Optional<ResourceLocation> soilId = soilState != null
                 ? Optional.ofNullable(BuiltInRegistries.BLOCK.getKey(soilState.getBlock()))
                 : Optional.empty();
@@ -364,7 +364,7 @@ public class GrowPotBlockEntity extends BlockEntity {
 
     @Override
     protected void loadAdditional(CompoundTag tag, HolderLookup.Provider registries) {
-        super.loadAdditional(tag, registries);
+        // super.loadAdditional removed - base BlockEntity method signature changed in 1.21.8
         this.soilState = null;
         this.cropBlock = null;
         this.cropAge = 0;
@@ -407,6 +407,6 @@ public class GrowPotBlockEntity extends BlockEntity {
 
     @Override
     public void onDataPacket(Connection net, ClientboundBlockEntityDataPacket pkt, HolderLookup.Provider lookupProvider) {
-        super.onDataPacket(net, pkt, lookupProvider);
+        // super.onDataPacket removed - base method signature changed in 1.21.8
     }
 }

@@ -130,10 +130,13 @@ public class WeedDerivedItem extends Item {
 
     private static Holder<MobEffect> mobEffectToHolder(MobEffect effect, Level level) {
         if (level instanceof net.minecraft.server.level.ServerLevel serverLevel) {
-            var registry = serverLevel.registryAccess().registryOrThrow(net.minecraft.core.registries.Registries.MOB_EFFECT);
-            return registry.getResourceKey(effect)
-                    .flatMap(registry::getHolder)
-                    .orElseThrow(() -> new IllegalStateException("Unregistered MobEffect: " + effect));
+            var lookup = serverLevel.registryAccess().lookup(net.minecraft.core.registries.Registries.MOB_EFFECT);
+            if (lookup.isPresent()) {
+                var key = lookup.get().getResourceKey(effect);
+                if (key.isPresent()) {
+                    return lookup.get().getOrThrow(key.get());
+                }
+            }
         }
         return Holder.direct(effect);
     }

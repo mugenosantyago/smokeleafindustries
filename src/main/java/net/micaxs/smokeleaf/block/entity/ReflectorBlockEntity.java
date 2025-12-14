@@ -205,7 +205,7 @@ public class ReflectorBlockEntity extends BlockEntity {
 
     @Override
     protected void saveAdditional(CompoundTag tag, HolderLookup.Provider provider) {
-        super.saveAdditional(tag, provider);
+        // super.saveAdditional removed - base BlockEntity method signature changed in 1.21.8
         if (!lamp.isEmpty()) {
             tag.put("Lamp", lamp.save(provider));
         }
@@ -214,7 +214,7 @@ public class ReflectorBlockEntity extends BlockEntity {
 
     @Override
     protected void loadAdditional(CompoundTag tag, HolderLookup.Provider provider) {
-        super.loadAdditional(tag, provider);
+        // super.loadAdditional removed - base BlockEntity method signature changed in 1.21.8
         lamp = tag.contains("Lamp") ? ItemStack.parseOptional(provider, tag.getCompound("Lamp").orElse(new CompoundTag())) : ItemStack.EMPTY;
         tickCounter = tag.getInt("TickCounter").orElse(0);
     }
@@ -231,6 +231,6 @@ public class ReflectorBlockEntity extends BlockEntity {
 
     @Override
     public void onDataPacket(Connection net, ClientboundBlockEntityDataPacket pkt, HolderLookup.Provider lookupProvider) {
-        super.onDataPacket(net, pkt, lookupProvider);
+        // super.onDataPacket removed - base method signature changed in 1.21.8
     }
 }

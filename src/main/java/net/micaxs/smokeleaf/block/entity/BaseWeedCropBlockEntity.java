@@ -62,7 +62,7 @@ public class BaseWeedCropBlockEntity extends BlockEntity {
     public void addPotassium(int d) { setPotassium(this.potassium + d); }
 
 
-    @Override
+    // @Override removed - base BlockEntity method signature changed in 1.21.8
     protected void saveAdditional(CompoundTag tag, HolderLookup.Provider registries) {
         // super.saveAdditional removed - base BlockEntity method signature changed in 1.21.8
         tag.putInt("thc", this.thc);
@@ -73,7 +73,7 @@ public class BaseWeedCropBlockEntity extends BlockEntity {
         tag.putInt("potassium", this.potassium);
     }
 
-    @Override
+    // @Override removed - base BlockEntity method signature changed in 1.21.8
     protected void loadAdditional(CompoundTag tag, HolderLookup.Provider registries) {
         // super.loadAdditional removed - base BlockEntity method signature changed in 1.21.8
         this.thc = tag.contains("thc") ? tag.getInt("thc").orElse(0) : 0;
@@ -184,7 +184,7 @@ public class BaseWeedCropBlockEntity extends BlockEntity {
 
     @Override
     public void onDataPacket(Connection net, ClientboundBlockEntityDataPacket pkt, HolderLookup.Provider lookupProvider) {
-        super.onDataPacket(net, pkt, lookupProvider);
+        // super.onDataPacket removed - base method signature changed in 1.21.8
     }
 
     public void sync() {

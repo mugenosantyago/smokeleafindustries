@@ -260,6 +260,6 @@ public class SynthesizerBlockEntity extends BlockEntity implements MenuProvider 
 
     @Override
     public void onDataPacket(Connection net, ClientboundBlockEntityDataPacket pkt, HolderLookup.Provider lookup) {
-        super.onDataPacket(net, pkt, lookup);
+        // super.onDataPacket removed - base method signature changed in 1.21.8
     }
 }

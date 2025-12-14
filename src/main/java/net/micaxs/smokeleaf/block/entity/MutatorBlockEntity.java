@@ -391,6 +391,6 @@ public class MutatorBlockEntity extends BlockEntity implements MenuProvider {
 
     @Override
     public void onDataPacket(Connection net, ClientboundBlockEntityDataPacket pkt, HolderLookup.Provider lookupProvider) {
-        super.onDataPacket(net, pkt, lookupProvider);
+        // super.onDataPacket removed - base method signature changed in 1.21.8
     }
 }

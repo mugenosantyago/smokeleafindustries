@@ -215,14 +215,7 @@ public class BaseWeedItem extends Item {
 
     private static Holder<MobEffect> toHolder(MobEffect effect) {
         if (effect == null) return null;
-        var registry = BuiltInRegistries.MOB_EFFECT;
-        var keyOpt = registry.getResourceKey(effect);
-        if (keyOpt.isPresent()) {
-            var holderOpt = registry.getHolder(keyOpt.get());
-            if (holderOpt.isPresent()) {
-                return holderOpt.get();
-            }
-        }
+        // BuiltInRegistries doesn't have getHolder in 1.21.8, use Holder.direct for built-in effects
         return Holder.direct(effect);
     }
 

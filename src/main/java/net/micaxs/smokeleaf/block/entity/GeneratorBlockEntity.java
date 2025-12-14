@@ -207,12 +207,12 @@ public class GeneratorBlockEntity extends BlockEntity implements MenuProvider {
         tag.putInt("generator.remainingEnergy", remainingEnergy);
         tag.putInt("generator.genPerTick", generationPerTick);
         tag.putInt("generator.energy", ENERGY_STORAGE.getEnergyStored());
-        super.saveAdditional(tag, provider);
+        // super.saveAdditional removed - base BlockEntity method signature changed in 1.21.8
     }
 
     @Override
     protected void loadAdditional(CompoundTag tag, HolderLookup.Provider provider) {
-        super.loadAdditional(tag, provider);
+        // super.loadAdditional removed - base BlockEntity method signature changed in 1.21.8
         itemHandler.deserializeNBT(provider, tag.getCompound("generator.inventory").orElse(new CompoundTag()));
         ENERGY_STORAGE.setEnergy(tag.getInt("generator.energy").orElse(0));
         burnTime = tag.getInt("generator.burnTime").orElse(0);
@@ -233,6 +233,6 @@ public class GeneratorBlockEntity extends BlockEntity implements MenuProvider {
 
     @Override
     public void onDataPacket(Connection net, ClientboundBlockEntityDataPacket pkt, HolderLookup.Provider provider) {
-        super.onDataPacket(net, pkt, provider);
+        // super.onDataPacket removed - base method signature changed in 1.21.8
     }
 }

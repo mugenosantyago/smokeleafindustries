@@ -228,7 +228,7 @@ public class DryingRackBlockEntity extends BlockEntity {
 
     @Override
     protected void saveAdditional(CompoundTag tag, HolderLookup.Provider registries) {
-        super.saveAdditional(tag, registries);
+        // super.saveAdditional removed - base BlockEntity method signature changed in 1.21.8
         for (int i = 0; i < SLOT_COUNT; i++) {
             CompoundTag slotTag = new CompoundTag();
             if (!items[i].isEmpty()) slotTag.put("stack", items[i].save(registries));
@@ -239,7 +239,7 @@ public class DryingRackBlockEntity extends BlockEntity {
 
     @Override
     protected void loadAdditional(CompoundTag tag, HolderLookup.Provider registries) {
-        super.loadAdditional(tag, registries);
+        // super.loadAdditional removed - base BlockEntity method signature changed in 1.21.8
         for (int i = 0; i < SLOT_COUNT; i++) {
             CompoundTag slotTag = tag.getCompound("S" + i).orElse(new CompoundTag());
             if (slotTag.contains("stack")) {
@@ -263,6 +263,6 @@ public class DryingRackBlockEntity extends BlockEntity {
 
     @Override
     public void onDataPacket(Connection net, ClientboundBlockEntityDataPacket pkt, HolderLookup.Provider lookupProvider) {
-        super.onDataPacket(net, pkt, lookupProvider);
+        // super.onDataPacket removed - base method signature changed in 1.21.8
     }
 }

@@ -227,12 +227,12 @@ public class LiquifierBlockEntity extends BlockEntity implements MenuProvider {
         tag.putInt("liquifier.maxProgress", maxProgress);
         tag.putInt("liquifier.energy", ENERGY_STORAGE.getEnergyStored());
         tag = FLUID_TANK.writeToNBT(regs, tag);
-        super.saveAdditional(tag, regs);
+        // super.saveAdditional removed - base BlockEntity method signature changed in 1.21.8
     }
 
     @Override
     protected void loadAdditional(CompoundTag tag, HolderLookup.Provider regs) {
-        super.loadAdditional(tag, regs);
+        // super.loadAdditional removed - base BlockEntity method signature changed in 1.21.8
         itemHandler.deserializeNBT(regs, tag.getCompound("liquifier.inventory").orElse(new CompoundTag()));
         ENERGY_STORAGE.setEnergy(tag.getInt("liquifier.energy").orElse(0));
         progress = tag.getInt("liquifier.progress").orElse(0);
@@ -252,6 +252,6 @@ public class LiquifierBlockEntity extends BlockEntity implements MenuProvider {
 
     @Override
     public void onDataPacket(Connection net, ClientboundBlockEntityDataPacket pkt, HolderLookup.Provider provider) {
-        super.onDataPacket(net, pkt, provider);
+        // super.onDataPacket removed - base method signature changed in 1.21.8
     }
 }

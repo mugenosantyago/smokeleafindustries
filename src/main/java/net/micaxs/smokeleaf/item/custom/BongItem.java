@@ -67,13 +67,14 @@ public class BongItem extends Item {
     }
 
     private Holder<MobEffect> toHolder(MobEffect effect, LivingEntity entity) {
-        return BuiltInRegistries.MOB_EFFECT
-                .getResourceKey(effect)
-                .flatMap(key -> entity.level()
-                        .registryAccess()
-                        .registryOrThrow(Registries.MOB_EFFECT)
-                        .getHolder(key))
-                .orElseThrow(() -> new IllegalStateException("Unregistered MobEffect: " + effect));
+        var keyOpt = BuiltInRegistries.MOB_EFFECT.getResourceKey(effect);
+        if (keyOpt.isPresent() && entity.level() instanceof net.minecraft.server.level.ServerLevel serverLevel) {
+            var lookup = serverLevel.registryAccess().lookup(Registries.MOB_EFFECT);
+            if (lookup.isPresent()) {
+                return lookup.get().getOrThrow(keyOpt.get());
+            }
+        }
+        return Holder.direct(effect);
     }
 
 

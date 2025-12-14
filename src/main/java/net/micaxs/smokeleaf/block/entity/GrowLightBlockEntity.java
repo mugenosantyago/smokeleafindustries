@@ -117,13 +117,13 @@ public class GrowLightBlockEntity extends BlockEntity {
 
     @Override
     protected void saveAdditional(CompoundTag tag, HolderLookup.Provider provider) {
-        super.saveAdditional(tag, provider);
+        // super.saveAdditional removed - base BlockEntity method signature changed in 1.21.8
         tag.putInt("TickCounter", tickCounter);
     }
 
     @Override
     protected void loadAdditional(CompoundTag tag, HolderLookup.Provider provider) {
-        super.loadAdditional(tag, provider);
+        // super.loadAdditional removed - base BlockEntity method signature changed in 1.21.8
         tickCounter = tag.getInt("TickCounter").orElse(0);
     }
 
@@ -140,6 +140,6 @@ public class GrowLightBlockEntity extends BlockEntity {
 
     @Override
     public void onDataPacket(Connection net, ClientboundBlockEntityDataPacket pkt, HolderLookup.Provider lookupProvider) {
-        super.onDataPacket(net, pkt, lookupProvider);
+        // super.onDataPacket removed - base method signature changed in 1.21.8
     }
 }

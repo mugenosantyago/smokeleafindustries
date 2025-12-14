@@ -274,12 +274,12 @@ public class GrinderBlockEntity extends BlockEntity implements MenuProvider {
         tag.putInt("grinder.maxProgress", maxProgress);
         tag.putInt("grinder.energy", ENERGY_STORAGE.getEnergyStored());
 
-        super.saveAdditional(tag, registries);
+        // super.saveAdditional removed - base BlockEntity method signature changed in 1.21.8
     }
 
     @Override
     protected void loadAdditional(CompoundTag tag, HolderLookup.Provider registries) {
-        super.loadAdditional(tag, registries);
+        // super.loadAdditional removed - base BlockEntity method signature changed in 1.21.8
         itemHandler.deserializeNBT(registries, tag.getCompound("grinder.inventory").orElse(new CompoundTag()));
         ENERGY_STORAGE.setEnergy(tag.getInt("grinder.energy").orElse(0));
         progress = tag.getInt("grinder.progress").orElse(0);
@@ -299,6 +299,6 @@ public class GrinderBlockEntity extends BlockEntity implements MenuProvider {
 
     @Override
     public void onDataPacket(Connection net, ClientboundBlockEntityDataPacket pkt, HolderLookup.Provider lookupProvider) {
-        super.onDataPacket(net, pkt, lookupProvider);
+        // super.onDataPacket removed - base method signature changed in 1.21.8
     }
 }
