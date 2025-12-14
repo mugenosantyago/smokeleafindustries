@@ -13,9 +13,11 @@ import net.minecraft.world.effect.MobEffect;
 import net.minecraft.world.effect.MobEffectInstance;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.TooltipDisplay;
 import net.minecraft.world.item.TooltipFlag;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.entity.LivingEntity;
+import java.util.function.Consumer;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -84,8 +86,8 @@ public class BaseWeedItem extends Item {
     }
 
     @Override
-    public void appendHoverText(ItemStack stack, TooltipContext context, List<Component> tooltipComponents, TooltipFlag tooltipFlag) {
-        super.appendHoverText(stack, context, tooltipComponents, tooltipFlag);
+    public void appendHoverText(ItemStack stack, Item.TooltipContext context, TooltipDisplay tooltipDisplay, Consumer<Component> tooltipComponents, TooltipFlag tooltipFlag) {
+        super.appendHoverText(stack, context, tooltipDisplay, tooltipComponents, tooltipFlag);
 
         List<MobEffectInstance> previews = buildEffectInstances(stack);
         if (previews.isEmpty()) {
@@ -95,10 +97,10 @@ public class BaseWeedItem extends Item {
         MobEffectInstance first = previews.get(0);
         MobEffect eff = first.getEffect().value();
         int dur = first.getDuration();
-        tooltipComponents.add(WeedEffectHelper.getEffectTooltip(eff, dur, true));
+        tooltipComponents.accept(WeedEffectHelper.getEffectTooltip(eff, dur, true));
 
-        tooltipComponents.add(Component.empty());
-        tooltipComponents.add(getLevelsText(stack));
+        tooltipComponents.accept(Component.empty());
+        tooltipComponents.accept(getLevelsText(stack));
 
         if (previews.size() > 1) {
             // use MutableComponent so .append(...) is available
@@ -111,14 +113,14 @@ public class BaseWeedItem extends Item {
                 }
                 joined = joined.append(name);
             }
-            tooltipComponents.add(
+            tooltipComponents.accept(
                     Component.translatable("tooltip.smokeleafindustries.extra_effects", joined)
                             .withStyle(ChatFormatting.GRAY)
             );
         }
 
         if (this.variableDuration) {
-            tooltipComponents.add(Component.translatable("tooltip.smokeleafindustries.base_weed").withStyle(ChatFormatting.DARK_GRAY));
+            tooltipComponents.accept(Component.translatable("tooltip.smokeleafindustries.base_weed").withStyle(ChatFormatting.DARK_GRAY));
         }
     }
 
