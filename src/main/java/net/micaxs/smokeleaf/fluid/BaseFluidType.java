@@ -1,10 +1,9 @@
 package net.micaxs.smokeleaf.fluid;
 
-import com.mojang.blaze3d.shaders.FogShape;
 import com.mojang.blaze3d.systems.RenderSystem;
 import net.minecraft.client.Camera;
 import net.minecraft.client.multiplayer.ClientLevel;
-import net.minecraft.client.renderer.FogRenderer;
+import net.minecraft.client.renderer.FogType;
 import net.minecraft.resources.ResourceLocation;
 import net.neoforged.neoforge.client.extensions.common.IClientFluidTypeExtensions;
 import net.neoforged.neoforge.fluids.FluidType;
@@ -59,8 +58,8 @@ public class BaseFluidType extends FluidType {
             }
 
             @Override
-            public void modifyFogRender(Camera camera, FogRenderer.FogMode mode, float renderDistance, float partialTick,
-                                        float nearDistance, float farDistance, FogShape shape) {
+            public void modifyFogRender(Camera camera, FogType mode, float renderDistance, float partialTick,
+                                        float nearDistance, float farDistance, net.minecraft.client.renderer.FogRenderer.FogShape shape) {
                 RenderSystem.setShaderFogStart(1f);
                 RenderSystem.setShaderFogEnd(6f); // distance when the fog starts
             }
