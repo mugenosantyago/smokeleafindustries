@@ -10,6 +10,7 @@ import net.minecraft.core.registries.Registries;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.sounds.SoundEvent;
 import net.minecraft.world.InteractionHand;
+import net.minecraft.world.InteractionResult;
 import net.minecraft.world.effect.MobEffect;
 import net.minecraft.world.effect.MobEffectInstance;
 import net.minecraft.world.entity.LivingEntity;
@@ -71,16 +72,16 @@ public class DabRigItem extends Item {
     }
 
     // @Override - temporarily removed to check base class signature
-    public ItemStack use(Level level, Player player, InteractionHand hand) {
+    public InteractionResult use(Level level, Player player, InteractionHand hand) {
         ItemStack rigStack = player.getItemInHand(hand);
         ItemStack offhandExtract = getOffhandExtract(player);
 
         if (offhandExtract.isEmpty()) {
-            return rigStack; // fail case
+            return InteractionResult.FAIL;
         }
 
         player.startUsingItem(hand);
-        return rigStack; // consume case
+        return InteractionResult.CONSUME;
     }
 
     private ItemStack findExtract(Player player) {

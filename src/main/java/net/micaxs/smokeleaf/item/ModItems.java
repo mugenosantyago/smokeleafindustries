@@ -141,10 +141,10 @@ public class ModItems {
             () -> new BaseWeedItem(new Item.Properties(), MobEffects.STRENGTH.value(), 180, 1, 20, 5,
                     "Bubble", "Kush"));
     public static final DeferredItem<Item> LEMON_HAZE_WEED = ITEMS.register("lemon_haze_weed",
-            () -> new BaseWeedItem(new Item.Properties(), MobEffects.MOVEMENT_SPEED.value(), 160, 1, 19, 6,
+            () -> new BaseWeedItem(new Item.Properties(), MobEffects.SPEED.value(), 160, 1, 19, 6,
                     "Lemon", "Haze"));
     public static final DeferredItem<Item> SOUR_DIESEL_WEED = ITEMS.register("sour_diesel_weed",
-            () -> new BaseWeedItem(new Item.Properties(), MobEffects.DIG_SPEED.value(), 170, 1, 19, 6,
+            () -> new BaseWeedItem(new Item.Properties(), MobEffects.HASTE.value(), 170, 1, 19, 6,
                     "Sour", "Diesel"));
     public static final DeferredItem<Item> BLUE_ICE_WEED = ITEMS.register("blue_ice_weed",
             () -> new BaseWeedItem(new Item.Properties(), MobEffects.NIGHT_VISION.value(), 190, 1, 20, 5,
@@ -216,7 +216,7 @@ public class ModItems {
     public static final DeferredItem<Item> WHITE_WIDOW_EXTRACT = ITEMS.register("white_widow_extract",
             () -> new BaseWeedItem(new Item.Properties(), MobEffects.WIND_CHARGED.value(), 400, 2, 15, 10, false));
     public static final DeferredItem<Item> BUBBLE_KUSH_EXTRACT = ITEMS.register("bubble_kush_extract",
-            () -> new BaseWeedItem(new Item.Properties(), MobEffects.DAMAGE_BOOST.value(), 360, 2, 20, 5, false));
+            () -> new BaseWeedItem(new Item.Properties(), MobEffects.STRENGTH.value(), 360, 2, 20, 5, false));
     public static final DeferredItem<Item> LEMON_HAZE_EXTRACT = ITEMS.register("lemon_haze_extract",
             () -> new BaseWeedItem(new Item.Properties(), MobEffects.MOVEMENT_SPEED.value(), 320, 2, 19, 6, false));
     public static final DeferredItem<Item> SOUR_DIESEL_EXTRACT = ITEMS.register("sour_diesel_extract",

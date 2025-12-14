@@ -10,6 +10,7 @@ import net.minecraft.ChatFormatting;
 import net.minecraft.network.chat.Component;
 import net.minecraft.sounds.SoundSource;
 import net.minecraft.world.InteractionHand;
+import net.minecraft.world.InteractionResult;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.Item;
@@ -37,13 +38,14 @@ public class ManualGrinderItem extends Item {
     }
 
     // @Override - temporarily removed to check base class signature
-    public ItemStack use(Level level, Player player, InteractionHand hand) {
+    @Override
+    public InteractionResult use(Level level, Player player, InteractionHand hand) {
         ItemStack grinder = player.getItemInHand(hand);
         ItemStack stored = getStored(grinder);
-        if (stored.isEmpty()) return grinder; // pass case
-        if (!isValidIngredient(level, stored)) return grinder; // fail case
+        if (stored.isEmpty()) return InteractionResult.PASS;
+        if (!isValidIngredient(level, stored)) return InteractionResult.FAIL;
         player.startUsingItem(hand);
-        return grinder; // consume case
+        return InteractionResult.CONSUME;
     }
 
     @Override

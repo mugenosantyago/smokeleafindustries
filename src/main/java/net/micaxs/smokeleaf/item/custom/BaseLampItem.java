@@ -17,8 +17,8 @@ public class BaseLampItem extends Item {
     }
 
     @Override
-    public void appendHoverText(ItemStack stack, Item.TooltipContext context, TooltipDisplay tooltipDisplay, Consumer<Component> tooltipComponents, TooltipFlag tooltipFlag) {
-        super.appendHoverText(stack, context, tooltipDisplay, tooltipComponents, tooltipFlag);
+    public void appendHoverText(ItemStack stack, Item.TooltipContext context, List<Component> tooltipComponents, TooltipFlag tooltipFlag) {
+        super.appendHoverText(stack, context,  tooltipComponents, tooltipFlag);
 
         int remainingTicks = stack.getMaxDamage() - stack.getDamageValue();
         if (remainingTicks < 0) remainingTicks = 0;
@@ -27,8 +27,8 @@ public class BaseLampItem extends Item {
         long minutes = totalSeconds / 60;
         long seconds = totalSeconds % 60;
 
-        tooltipComponents.accept(Component.literal(String.format("Lifespan: %02d:%02d", minutes, seconds)).withStyle(ChatFormatting.GRAY));
-        tooltipComponents.accept(Component.translatable("tooltip.smokeleafindustries.hps_lamp").withStyle(ChatFormatting.DARK_GRAY));
+        tooltipComponents.add(Component.literal(String.format("Lifespan: %02d:%02d", minutes, seconds)).withStyle(ChatFormatting.GRAY));
+        tooltipComponents.add(Component.translatable("tooltip.smokeleafindustries.hps_lamp").withStyle(ChatFormatting.DARK_GRAY));
 
     }
 }

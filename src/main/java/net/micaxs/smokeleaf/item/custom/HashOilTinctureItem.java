@@ -20,8 +20,8 @@ public class HashOilTinctureItem extends Item {
     }
 
     @Override
-    public void appendHoverText(ItemStack stack, Item.TooltipContext context, TooltipDisplay tooltipDisplay, Consumer<Component> tooltipComponents, TooltipFlag tooltipFlag) {
-        super.appendHoverText(stack, context, tooltipDisplay, tooltipComponents, tooltipFlag);
+    public void appendHoverText(ItemStack stack, Item.TooltipContext context, List<Component> tooltipComponents, TooltipFlag tooltipFlag) {
+        super.appendHoverText(stack, context,  tooltipComponents, tooltipFlag);
 
 
         JsonArray activeIngredients = stack.get(ModDataComponentTypes.ACTIVE_INGREDIENTS);
@@ -29,7 +29,7 @@ public class HashOilTinctureItem extends Item {
 
         var weedItems = WeedEffectHelper.jsonArrayToWeedList(activeIngredients);
         if (!weedItems.isEmpty()) {
-            tooltipComponents.accept(Component.empty().append(
+            tooltipComponents.add(Component.empty().append(
                     WeedEffectHelper.getEffectTooltip(weedItems, true)
             ));
         }

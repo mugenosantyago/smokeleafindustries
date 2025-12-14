@@ -14,6 +14,7 @@ import net.minecraft.resources.ResourceKey;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.util.RandomSource;
 import net.minecraft.world.InteractionHand;
+import net.minecraft.world.InteractionResult;
 import net.minecraft.world.effect.MobEffect;
 import net.minecraft.world.effect.MobEffectInstance;
 import net.minecraft.world.entity.LivingEntity;
@@ -46,10 +47,11 @@ public class BluntItem extends Item {
     }
 
     // @Override - temporarily removed to check base class signature
-    public ItemStack use(Level level, Player player, InteractionHand hand) {
+    @Override
+    public InteractionResult use(Level level, Player player, InteractionHand hand) {
         ItemStack stack = player.getItemInHand(hand);
         player.startUsingItem(hand);
-        return stack;
+        return InteractionResult.CONSUME;
     }
 
     @Override

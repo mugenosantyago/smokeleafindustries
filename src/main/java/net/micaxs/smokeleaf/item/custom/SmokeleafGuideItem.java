@@ -2,6 +2,7 @@ package net.micaxs.smokeleaf.item.custom;
 
 import net.micaxs.smokeleaf.screen.custom.SmokeleafGuideScreen;
 import net.minecraft.world.InteractionHand;
+import net.minecraft.world.InteractionResult;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
@@ -12,11 +13,11 @@ public class SmokeleafGuideItem extends Item {
         super(properties);
     }
 
-    // @Override - temporarily removed to check base class signature
-    public ItemStack use(Level level, Player player, InteractionHand usedHand) {
+    @Override
+    public InteractionResult use(Level level, Player player, InteractionHand usedHand) {
         if (level.isClientSide) {
             SmokeleafGuideScreen.open();
         }
-        return player.getItemInHand(usedHand); // success case
+        return InteractionResult.SUCCESS;
     }
 }

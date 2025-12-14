@@ -11,6 +11,7 @@ import net.minecraft.core.registries.Registries;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.chat.Component;
 import net.minecraft.world.InteractionHand;
+import net.minecraft.world.InteractionResult;
 import net.minecraft.world.effect.MobEffect;
 import net.minecraft.world.effect.MobEffectInstance;
 import net.minecraft.world.entity.LivingEntity;
@@ -51,14 +52,14 @@ public class WeedDerivedItem extends Item {
         return this.useDuration;
     }
 
-    // @Override - temporarily removed to check base class signature
-    public ItemStack use(Level level, Player player, InteractionHand usedHand) {
+    @Override
+    public InteractionResult use(Level level, Player player, InteractionHand usedHand) {
         if (usedHand == InteractionHand.MAIN_HAND) {
             ItemStack itemstack = player.getItemInHand(usedHand);
             player.startUsingItem(usedHand);
-            return itemstack; // consume case
+            return InteractionResult.CONSUME;
         } else {
-            return player.getItemInHand(usedHand); // pass case
+            return InteractionResult.PASS;
         }
     }
 
@@ -153,7 +154,7 @@ public class WeedDerivedItem extends Item {
 
     @Override
     public void appendHoverText(ItemStack stack, Item.TooltipContext context, List<Component> tooltipComponents, TooltipFlag tooltipFlag) {
-        super.appendHoverText(stack, context, tooltipDisplay, tooltipComponents, tooltipFlag);
+        super.appendHoverText(stack, context,  tooltipComponents, tooltipFlag);
         CustomData custom = stack.get(DataComponents.CUSTOM_DATA);
         if (custom != null && !custom.isEmpty()) {
             CompoundTag tag = custom.copyTag();
@@ -164,7 +165,7 @@ public class WeedDerivedItem extends Item {
             if (activeIngredient == null) {
                 return;
             }
-            tooltipComponents.accept(WeedEffectHelper.getEffectTooltip(activeIngredient.getEffect(),
+            tooltipComponents.add(WeedEffectHelper.getEffectTooltip(activeIngredient.getEffect(),
                     tag.getInt("duration").orElse(0), !activeIngredient.isVariableDuration()));
         }
     }

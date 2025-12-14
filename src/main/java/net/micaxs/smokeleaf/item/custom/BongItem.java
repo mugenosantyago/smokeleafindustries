@@ -8,6 +8,7 @@ import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.core.registries.Registries;
 import net.minecraft.sounds.SoundEvent;
 import net.minecraft.world.InteractionHand;
+import net.minecraft.world.InteractionResult;
 import net.minecraft.world.effect.MobEffect;
 import net.minecraft.world.effect.MobEffectInstance;
 import net.minecraft.world.entity.LivingEntity;
@@ -77,16 +78,16 @@ public class BongItem extends Item {
 
 
     // @Override - temporarily removed to check base class signature
-    public ItemStack use(Level level, Player player, InteractionHand usedHand) {
+    public InteractionResult use(Level level, Player player, InteractionHand usedHand) {
         ItemStack itemstack = player.getItemInHand(usedHand);
 
         // Check if the offhand item is valid
         if (!isValidOffhandItem(player.getItemInHand(InteractionHand.OFF_HAND))) {
-            return itemstack; // fail case
+            return InteractionResult.FAIL;
         }
 
         player.startUsingItem(usedHand);
-        return itemstack; // consume case
+        return InteractionResult.CONSUME;
     }
 
 

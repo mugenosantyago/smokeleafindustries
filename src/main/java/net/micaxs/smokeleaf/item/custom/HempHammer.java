@@ -61,11 +61,11 @@ public class HempHammer extends Item {
             color = ChatFormatting.RED;
         }
 
-        tooltipComponents.accept(
+        tooltipComponents.add(
                 Component.translatable("tooltip.smokeleafindustries.hemp_hammer.uses", remaining, max)
                         .withStyle(color)
         );
 
-        super.appendHoverText(stack, context, tooltipDisplay, tooltipComponents, tooltipFlag);
+        super.appendHoverText(stack, context,  tooltipComponents, tooltipFlag);
     }
 }
