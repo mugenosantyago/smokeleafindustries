@@ -12,7 +12,6 @@ import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.item.Items;
 import net.neoforged.neoforge.common.data.AdvancementProvider;
-import net.neoforged.neoforge.common.data.ExistingFileHelper;
 
 import java.util.List;
 import java.util.concurrent.CompletableFuture;
@@ -22,7 +21,7 @@ public class ModAdvancementProvider extends AdvancementProvider {
 
     public ModAdvancementProvider(PackOutput output,
                                   CompletableFuture<HolderLookup.Provider> registries,
-                                  ExistingFileHelper existingFileHelper) {
+                                  Object existingFileHelper) {
         super(output, registries, existingFileHelper,
                 List.of(new SmokeleafIndustriesAdvancements()));
     }
@@ -32,7 +31,7 @@ public class ModAdvancementProvider extends AdvancementProvider {
         @Override
         public void generate(HolderLookup.Provider provider,
                              Consumer<AdvancementHolder> consumer,
-                             ExistingFileHelper existingFileHelper) {
+                             Object existingFileHelper) {
 
             AdvancementHolder root = Advancement.Builder.advancement()
                     .display(
