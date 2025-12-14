@@ -81,7 +81,7 @@ public final class HallucinationManager {
 
     // Render ghosts with translucency
     @SubscribeEvent
-    public static void onRenderLivingPre(RenderLivingEvent.Pre<?, ?> evt) {
+    public static void onRenderLivingPre(RenderLivingEvent.Pre<?, ?, ?> evt) {
         if (!isHallucination(evt.getEntity())) return;
 
         // Enable blending and set global shader alpha
@@ -91,7 +91,7 @@ public final class HallucinationManager {
     }
 
     @SubscribeEvent
-    public static void onRenderLivingPost(RenderLivingEvent.Post<?, ?> evt) {
+    public static void onRenderLivingPost(RenderLivingEvent.Post<?, ?, ?> evt) {
         if (!isHallucination(evt.getEntity())) return;
 
         // Restore default state

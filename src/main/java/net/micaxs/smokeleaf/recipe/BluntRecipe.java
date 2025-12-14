@@ -119,7 +119,7 @@ public class BluntRecipe extends CustomRecipe {
                 ).apply(instance, (resultRL, cat) ->
                         new BluntRecipe(
                                 cat,
-                                BuiltInRegistries.ITEM.getOrThrow(resultRL)
+                                BuiltInRegistries.ITEM.get(resultRL).orElseThrow().value()
                         ))
         );
 
@@ -134,7 +134,7 @@ public class BluntRecipe extends CustomRecipe {
                             CraftingBookCategory cat = buf.readEnum(CraftingBookCategory.class);
                             return new BluntRecipe(
                                     cat,
-                                    BuiltInRegistries.ITEM.getOrThrow(res)
+                                    BuiltInRegistries.ITEM.get(res).orElseThrow().value()
                             );
                         }
                 );

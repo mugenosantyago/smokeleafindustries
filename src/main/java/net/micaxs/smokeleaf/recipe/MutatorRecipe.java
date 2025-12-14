@@ -107,7 +107,7 @@ public record MutatorRecipe(NonNullList<IngredientWithCount> inputItems, FluidSt
             }
             DataResult<ResourceLocation> id = ResourceLocation.CODEC.parse(ops, idElem);
             DataResult<Integer> amt = Codec.INT.parse(ops, amtElem);
-            return id.apply2((rl, a) -> new FluidStack(BuiltInRegistries.FLUID.getOrThrow(rl), Math.max(0, a)), amt);
+            return id.apply2((rl, a) -> new FluidStack(BuiltInRegistries.FLUID.get(rl).orElseThrow().value(), Math.max(0, a)), amt);
         }
 
         @Override
@@ -143,7 +143,7 @@ public record MutatorRecipe(NonNullList<IngredientWithCount> inputItems, FluidSt
                 count = 1;
             }
             return id.map(rl -> {
-                Item it = BuiltInRegistries.ITEM.getOrThrow(rl);
+                Item it = BuiltInRegistries.ITEM.get(rl).orElseThrow().value();
                 return new ItemStack(it, Math.max(1, count));
             });
         }

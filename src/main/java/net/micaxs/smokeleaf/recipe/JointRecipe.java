@@ -112,8 +112,8 @@ public class JointRecipe extends CustomRecipe {
                 ).apply(instance, (tobaccoRL, resultRL, cat) ->
                         new JointRecipe(
                                 cat,
-                                BuiltInRegistries.ITEM.getOrThrow(tobaccoRL),
-                                BuiltInRegistries.ITEM.getOrThrow(resultRL)
+                                BuiltInRegistries.ITEM.get(tobaccoRL).orElseThrow().value(),
+                                BuiltInRegistries.ITEM.get(resultRL).orElseThrow().value()
                         ))
         );
 
@@ -130,8 +130,8 @@ public class JointRecipe extends CustomRecipe {
                             CraftingBookCategory cat = buf.readEnum(CraftingBookCategory.class);
                             return new JointRecipe(
                                     cat,
-                                    BuiltInRegistries.ITEM.getOrThrow(tob),
-                                    BuiltInRegistries.ITEM.getOrThrow(res)
+                                    BuiltInRegistries.ITEM.get(tob).orElseThrow().value(),
+                                    BuiltInRegistries.ITEM.get(res).orElseThrow().value()
                             );
                         }
                 );

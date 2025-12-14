@@ -70,14 +70,11 @@ public record IngredientWithCount(Ingredient ingredient, int count) {
                     IngredientWithCount::new
             );
 
-    // Builds a display ingredient that carries the required count in getItems()[0].getCount()
+    // Builds a display ingredient that carries the required count
+    // TODO: Update for 1.21.8 - Ingredient API changed, getItems() and of() methods removed
     public Ingredient asDisplayIngredient() {
-        ItemStack[] items = ingredient.getItems();
-        if (items.length == 0) return ingredient; // nothing to show
-        ItemStack[] counted = new ItemStack[items.length];
-        for (int i = 0; i < items.length; i++) {
-            counted[i] = items[i].copyWithCount(count);
-        }
-        return Ingredient.of(counted);
+        // For now, return the original ingredient - count display may need to be handled differently
+        // The count is still available via the count() field of this record
+        return ingredient;
     }
 }
