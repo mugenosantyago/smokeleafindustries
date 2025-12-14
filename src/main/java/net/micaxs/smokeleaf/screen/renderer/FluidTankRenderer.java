@@ -100,9 +100,12 @@ public class FluidTankRenderer {
     }
 
     private static void drawTiledSprite(GuiGraphics guiGraphics, final int x, final int y, final int tiledWidth, final int tiledHeight, int color, long scaledAmount, TextureAtlasSprite sprite) {
-        // Get matrix from pose stack without manipulating it
-        Matrix4f matrix = guiGraphics.pose().last().pose();
-        setGLColorFromInt(color);
+        // Use GuiGraphics methods directly - manual matrix access changed in 1.21.8
+        // Extract color components for tinting
+        float red = (color >> 16 & 0xFF) / 255.0F;
+        float green = (color >> 8 & 0xFF) / 255.0F;
+        float blue = (color & 0xFF) / 255.0F;
+        float alpha = ((color >> 24) & 0xFF) / 255F;
 
         final int xTileCount = tiledWidth / TEXTURE_SIZE;
         final int xRemainder = tiledWidth - (xTileCount * TEXTURE_SIZE);
@@ -119,42 +122,26 @@ public class FluidTankRenderer {
                 int drawY = yStart - ((int)((yTile + 1) * TEXTURE_SIZE));
 
                 if (currentWidth > 0 && currentHeight > 0) {
-                    long maskTop = TEXTURE_SIZE - currentHeight;
+                    int maskTop = (int)(TEXTURE_SIZE - currentHeight);
                     int maskRight = TEXTURE_SIZE - currentWidth;
-
-                    drawTextureWithMasking(matrix, drawX, drawY, sprite, maskTop, maskRight, 100);
+                    
+                    // Use GuiGraphics.blit with color tinting - API changed in 1.21.8
+                    // Calculate UV coordinates with masking
+                    float u0 = sprite.getU0();
+                    float u1 = sprite.getU1() - (maskRight / 16F * (sprite.getU1() - sprite.getU0()));
+                    float v0 = sprite.getV0() + (maskTop / 16F * (sprite.getV1() - sprite.getV0()));
+                    float v1 = sprite.getV1();
+                    
+                    // Render using GuiGraphics with color tint
+                    guiGraphics.setColor(red, green, blue, alpha);
+                    guiGraphics.blit(sprite.atlasLocation(), drawX, drawY + maskTop, 0, 
+                            (int)(u0 * sprite.contents().width()), (int)(v0 * sprite.contents().height()),
+                            currentWidth, (int)currentHeight, 
+                            sprite.contents().width(), sprite.contents().height());
+                    guiGraphics.setColor(1.0f, 1.0f, 1.0f, 1.0f); // Reset color
                 }
             }
         }
-        RenderSystem.setShaderColor(1.0f, 1.0f, 1.0f, 1.0f); // Reset color
-    }
-
-    private static void setGLColorFromInt(int color) {
-        float red = (color >> 16 & 0xFF) / 255.0F;
-        float green = (color >> 8 & 0xFF) / 255.0F;
-        float blue = (color & 0xFF) / 255.0F;
-        float alpha = ((color >> 24) & 0xFF) / 255F;
-
-        RenderSystem.setShaderColor(red, green, blue, alpha);
-    }
-
-    private static void drawTextureWithMasking(Matrix4f matrix, float xCoord, float yCoord, TextureAtlasSprite textureSprite, long maskTop, long maskRight, float zLevel) {
-        float uMin = textureSprite.getU0();
-        float uMax = textureSprite.getU1();
-        float vMin = textureSprite.getV0();
-        float vMax = textureSprite.getV1();
-        uMax = uMax - (maskRight / 16F * (uMax - uMin));
-        vMax = vMax - (maskTop / 16F * (vMax - vMin));
-
-        RenderSystem.setShader(GameRenderer::getPositionTexShader);
-
-        Tesselator tessellator = Tesselator.getInstance();
-        BufferBuilder bufferBuilder = tessellator.begin(VertexFormat.Mode.QUADS, DefaultVertexFormat.POSITION_TEX);
-        bufferBuilder.addVertex(matrix, xCoord, yCoord + 16, zLevel).setUv(uMin, vMax);
-        bufferBuilder.addVertex(matrix, xCoord + 16 - maskRight, yCoord + 16, zLevel).setUv(uMax, vMax);
-        bufferBuilder.addVertex(matrix, xCoord + 16 - maskRight, yCoord + maskTop, zLevel).setUv(uMax, vMin);
-        bufferBuilder.addVertex(matrix, xCoord, yCoord + maskTop, zLevel).setUv(uMin, vMin);
-        BufferUploader.drawWithShader(bufferBuilder.build());
     }
 
     public List<Component> getTooltip(FluidStack fluidStack, TooltipFlag tooltipFlag) {

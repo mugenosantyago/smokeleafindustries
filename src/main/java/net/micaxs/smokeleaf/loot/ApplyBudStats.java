@@ -8,6 +8,7 @@ import net.minecraft.util.Mth;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.storage.loot.LootContext;
+import net.minecraft.world.level.storage.loot.LootParams;
 import net.minecraft.world.level.storage.loot.functions.LootItemConditionalFunction;
 import net.minecraft.world.level.storage.loot.functions.LootItemFunctionType;
 import net.minecraft.world.level.storage.loot.parameters.LootContextParams;
@@ -36,19 +37,8 @@ public class ApplyBudStats extends LootItemConditionalFunction {
 
     @Override
     protected ItemStack run(ItemStack stack, LootContext ctx) {
-        // LootContext API changed in 1.21.8 - try to access parameter
-        // In 1.21.8, LootContext may have different parameter access methods
-        BlockEntity be = null;
-        try {
-            // Try different possible method names
-            if (ctx instanceof net.minecraft.world.level.storage.loot.LootContext) {
-                var params = ((net.minecraft.world.level.storage.loot.LootContext) ctx).getLootParams();
-                be = params.getOptionalParameter(LootContextParams.BLOCK_ENTITY).orElse(null);
-            }
-        } catch (Exception e) {
-            // If parameter access fails, return stack unchanged
-            return stack;
-        }
+        // LootContext API changed in 1.21.8 - access via getParams() method
+        BlockEntity be = ctx.getParams().getOptionalParameter(LootContextParams.BLOCK_ENTITY).orElse(null);
         if (be == null) return stack;
         if (be instanceof BaseWeedCropBlockEntity crop) {
             int buds = Mth.clamp(crop.getBudCount(), 1, 3);
