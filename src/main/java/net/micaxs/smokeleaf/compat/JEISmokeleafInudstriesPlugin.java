@@ -52,8 +52,13 @@ public class JEISmokeleafInudstriesPlugin implements IModPlugin {
     public void registerRecipes(IRecipeRegistration registration) {
         Minecraft mc = Minecraft.getInstance();
         if (mc.level == null) return;
+        // TODO: Update for 1.21.8 - RecipeManager.getAllRecipesFor() API changed
+        // For now, recipes may need to be registered differently or accessed through JEI's own system
         RecipeManager recipeManager = mc.level.getRecipeManager();
-
+        
+        // Temporarily disabled - getAllRecipesFor() method signature changed in 1.21.8
+        // Need to find the new API or use JEI's recipe discovery system
+        /*
         List<ExtractorRecipe> extractorRecipes =
                 recipeManager.getAllRecipesFor(ModRecipes.EXTRACTOR_TYPE.get())
                         .stream().map(RecipeHolder::value).toList();
@@ -118,6 +123,7 @@ public class JEISmokeleafInudstriesPlugin implements IModPlugin {
                         .map(BluntRecipe.class::cast)
                         .toList();
         registration.addRecipes(BluntRecipeCategory.BLUNT_RECIPE_TYPE, bluntRecipes);
+        */
     }
 
     @Override
