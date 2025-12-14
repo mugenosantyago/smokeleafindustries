@@ -1,6 +1,7 @@
 // java
 package net.micaxs.smokeleaf.effect.beneficial;
 
+import net.minecraft.server.level.ServerLevel;
 import net.minecraft.world.effect.MobEffect;
 import net.minecraft.world.effect.MobEffectCategory;
 import net.minecraft.world.entity.LivingEntity;
@@ -28,7 +29,7 @@ public class StickyIckyEffect extends MobEffect {
     }
 
     @Override
-    public boolean applyEffectTick(LivingEntity entity, int amplifier) {
+    public boolean applyEffectTick(ServerLevel serverLevel, LivingEntity entity, int amplifier) {
         if (!(entity instanceof Player player)) return true;
 
         Level level = player.level();

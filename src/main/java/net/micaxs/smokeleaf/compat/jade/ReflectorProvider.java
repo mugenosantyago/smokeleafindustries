@@ -50,7 +50,7 @@ public enum ReflectorProvider implements IBlockComponentProvider, IServerDataPro
     public void appendTooltip(ITooltip tooltip, BlockAccessor accessor, IPluginConfig config) {
         CompoundTag data = accessor.getServerData();
 
-        boolean hasLamp = data.getBoolean("hasLamp");
+        boolean hasLamp = data.getBoolean("hasLamp").orElse(false);
         if (!hasLamp) {
             tooltip.add(Component.literal("Lamp: ").withStyle(ChatFormatting.GRAY)
                     .append(Component.literal("None").withStyle(ChatFormatting.DARK_GRAY)));
@@ -60,8 +60,8 @@ public enum ReflectorProvider implements IBlockComponentProvider, IServerDataPro
         // Lamp name
         Item item = null;
         if (data.contains("lampId")) {
-            ResourceLocation id = ResourceLocation.tryParse(data.getString("lampId"));
-            if (id != null) item = BuiltInRegistries.ITEM.get(id);
+            ResourceLocation id = ResourceLocation.tryParse(data.getString("lampId").orElse(""));
+            if (id != null) item = BuiltInRegistries.ITEM.get(id).map(h -> h.value()).orElse(null);
         }
         Component lampName = item != null
                 ? Component.translatable(item.getDescriptionId()).withStyle(ChatFormatting.WHITE)
@@ -70,7 +70,7 @@ public enum ReflectorProvider implements IBlockComponentProvider, IServerDataPro
         tooltip.add(Component.literal("Lamp: ").withStyle(ChatFormatting.GRAY).append(lampName));
 
         // Time left
-        int sec = data.getInt("remSec");
+        int sec = data.getInt("remSec").orElse(0);
         tooltip.add(Component.literal("Time Left: ").withStyle(ChatFormatting.GRAY)
                 .append(Component.literal(formatMMSS(sec)).withStyle(ChatFormatting.WHITE)));
     }

@@ -4,6 +4,7 @@ package net.micaxs.smokeleaf.effect.harmful;
 import net.micaxs.smokeleaf.network.ParanoiaHallucinationPayload;
 import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.resources.ResourceLocation;
+import net.minecraft.server.level.ServerLevel;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.util.RandomSource;
 import net.minecraft.world.effect.MobEffect;
@@ -37,7 +38,7 @@ public class ParanoiaEffect extends MobEffect {
     }
 
     @Override
-    public boolean applyEffectTick(LivingEntity living, int amplifier) {
+    public boolean applyEffectTick(ServerLevel level, LivingEntity living, int amplifier) {
         if (!living.level().isClientSide() && living instanceof ServerPlayer sp) {
             // Try roughly every 3s reduced by amplifier, with variability
             int base = Math.max(40, 100 - amplifier * 20); // ticks between tries
@@ -68,7 +69,7 @@ public class ParanoiaEffect extends MobEffect {
                 PacketDistributor.sendToPlayer(sp, payload);
             }
         }
-        return super.applyEffectTick(living, amplifier);
+        return super.applyEffectTick(level, living, amplifier);
     }
 
     @Override

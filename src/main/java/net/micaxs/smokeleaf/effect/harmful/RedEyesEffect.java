@@ -4,6 +4,7 @@ package net.micaxs.smokeleaf.effect.harmful;
 import net.micaxs.smokeleaf.network.ParanoiaHallucinationPayload;
 import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.resources.ResourceLocation;
+import net.minecraft.server.level.ServerLevel;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.util.RandomSource;
 import net.minecraft.world.effect.MobEffect;
@@ -21,8 +22,8 @@ public class RedEyesEffect extends MobEffect {
     }
 
     @Override
-    public boolean applyEffectTick(LivingEntity living, int amplifier) {
-        return super.applyEffectTick(living, amplifier);
+    public boolean applyEffectTick(ServerLevel level, LivingEntity living, int amplifier) {
+        return super.applyEffectTick(level, living, amplifier);
     }
 
     @Override

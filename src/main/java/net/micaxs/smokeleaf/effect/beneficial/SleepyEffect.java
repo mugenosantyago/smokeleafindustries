@@ -1,4 +1,5 @@
 package net.micaxs.smokeleaf.effect.beneficial;
+import net.minecraft.server.level.ServerLevel;
 
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.resources.ResourceLocation;
@@ -44,7 +45,7 @@ public class SleepyEffect extends MobEffect {
     }
 
     @Override
-    public boolean applyEffectTick(LivingEntity entity, int amplifier) {
+    public boolean applyEffectTick(ServerLevel level, LivingEntity entity, int amplifier) {
         if (entity instanceof Player player) {
             CompoundTag tag = player.getPersistentData();
 
@@ -63,8 +64,8 @@ public class SleepyEffect extends MobEffect {
                 Vec3 v = player.getDeltaMovement();
                 double forwardSpeed = v.x * fwdX + v.z * fwdZ;
 
-                double anchorX = tag.contains(KEY_AX) ? tag.getDouble(KEY_AX) : player.getX();
-                double anchorZ = tag.contains(KEY_AZ) ? tag.getDouble(KEY_AZ) : player.getZ();
+                double anchorX = tag.contains(KEY_AX) ? tag.getDouble(KEY_AX).orElse(player.getX()) : player.getX();
+                double anchorZ = tag.contains(KEY_AZ) ? tag.getDouble(KEY_AZ).orElse(player.getZ()) : player.getZ();
                 anchorX += fwdX * forwardSpeed * dt;
                 anchorZ += fwdZ * forwardSpeed * dt;
                 tag.putDouble(KEY_AX, anchorX);
@@ -79,11 +80,11 @@ public class SleepyEffect extends MobEffect {
                 double s = Math.sin(omega * player.tickCount + phase);
                 int sign = s >= 0.0 ? 1 : -1;
 
-                int lastSign = tag.contains(KEY_LS) ? tag.getInt(KEY_LS) : sign;
+                int lastSign = tag.contains(KEY_LS) ? tag.getInt(KEY_LS).orElse(sign) : sign;
                 double ampScale = 1.0 + AMP_PER_LEVEL * Math.max(0, amplifier);
 
                 double amp = tag.contains(KEY_AMP)
-                        ? tag.getDouble(KEY_AMP)
+                        ? tag.getDouble(KEY_AMP).orElse(pickAmplitude(player, sign >= 0, ampScale))
                         : pickAmplitude(player, sign >= 0, ampScale);
 
                 if (sign != lastSign) {

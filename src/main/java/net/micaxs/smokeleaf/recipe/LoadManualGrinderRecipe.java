@@ -77,18 +77,18 @@ public class LoadManualGrinderRecipe extends CustomRecipe {
         return result;
     }
 
-    @Override
+    // @Override - method may have been removed or made default in 1.21.8
     public boolean canCraftInDimensions(int w, int h) {
         return w * h >= 2;
     }
 
-    @Override
+    // @Override - method may have been removed or made default in 1.21.8
     public ItemStack getResultItem(HolderLookup.Provider provider) {
         return ItemStack.EMPTY;
     }
 
     @Override
-    public RecipeSerializer<?> getSerializer() {
+    public RecipeSerializer<? extends CustomRecipe> getSerializer() {
         return Serializer.INSTANCE;
     }
 

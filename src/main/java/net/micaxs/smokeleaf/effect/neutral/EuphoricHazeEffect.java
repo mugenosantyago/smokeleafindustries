@@ -1,4 +1,5 @@
 package net.micaxs.smokeleaf.effect.neutral;
+import net.minecraft.server.level.ServerLevel;
 
 import net.micaxs.smokeleaf.effect.ModEffects;
 import net.minecraft.world.effect.MobEffect;
@@ -13,7 +14,7 @@ public class EuphoricHazeEffect extends MobEffect {
     }
 
 //    @Override
-//    public boolean applyEffectTick(LivingEntity livingEntity, int amplifier) {
+//    public boolean applyEffectTick(ServerLevel level, LivingEntity livingEntity, int amplifier) {
 //        if (!livingEntity.level().isClientSide()) {
 //            MobEffectInstance self = livingEntity.getEffect(ModEffects.EUPHORIC_HAZE);
 //            if (self != null) {
@@ -22,7 +23,7 @@ public class EuphoricHazeEffect extends MobEffect {
 //                livingEntity.addEffect(new MobEffectInstance(MobEffects.WEAKNESS, duration, amplifier, true, false, false));
 //            }
 //        }
-//        return super.applyEffectTick(livingEntity, amplifier);
+//        return super.applyEffectTick(level, livingEntity, amplifier);
 //    }
 
     @Override

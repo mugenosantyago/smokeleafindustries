@@ -1,4 +1,5 @@
 package net.micaxs.smokeleaf.effect.neutral;
+import net.minecraft.server.level.ServerLevel;
 
 import net.minecraft.core.BlockPos;
 import net.minecraft.world.effect.MobEffect;
@@ -15,7 +16,7 @@ public class ZombifiedEffect extends MobEffect {
     }
 
     @Override
-    public boolean applyEffectTick(LivingEntity entity, int amplifier) {
+    public boolean applyEffectTick(ServerLevel serverLevel, LivingEntity entity, int amplifier) {
         Level level = entity.level();
         if (level.isClientSide) return false;
 

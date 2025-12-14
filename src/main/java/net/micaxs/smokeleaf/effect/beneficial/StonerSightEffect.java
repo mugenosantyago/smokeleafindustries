@@ -1,4 +1,5 @@
 package net.micaxs.smokeleaf.effect.beneficial;
+import net.minecraft.server.level.ServerLevel;
 
 import net.minecraft.world.effect.MobEffect;
 import net.minecraft.world.effect.MobEffectCategory;
@@ -16,7 +17,7 @@ public class StonerSightEffect extends MobEffect {
     }
 
     @Override
-    public boolean applyEffectTick(LivingEntity entity, int amplifier) {
+    public boolean applyEffectTick(ServerLevel level, LivingEntity entity, int amplifier) {
         if (!entity.level().isClientSide() && entity instanceof Player player) {
             String playerTag = "stonersight:" + player.getUUID();
 

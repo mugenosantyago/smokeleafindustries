@@ -146,7 +146,7 @@ public class BaseWeedItem extends Item {
         }
         ResourceLocation effectRL = ResourceLocation.tryParse(effectId);
         if (effectRL != null) {
-            MobEffect effect = BuiltInRegistries.MOB_EFFECT.get(effectRL);
+            MobEffect effect = BuiltInRegistries.MOB_EFFECT.get(effectRL).map(h -> h.value()).orElse(null);
             if (effect != null) return effect;
         }
         return null;
@@ -203,7 +203,7 @@ public class BaseWeedItem extends Item {
         for (ResourceLocation rl : ADDITIONAL_EFFECT_POOL) {
             if (rl == null) continue;
             if (baseId != null && rl.equals(baseId)) continue;
-            MobEffect eff = BuiltInRegistries.MOB_EFFECT.get(rl);
+            MobEffect eff = BuiltInRegistries.MOB_EFFECT.get(rl).map(h -> h.value()).orElse(null);
             if (eff != null) candidates.add(eff);
         }
         if (candidates.isEmpty()) return List.of();
