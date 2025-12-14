@@ -54,9 +54,12 @@ public class GrinderBlockEntity extends BlockEntity implements MenuProvider {
             if (slot != INPUT_SLOT) return false;
             if (stack.isEmpty() || level == null) return false;
 
-            return level.getRecipeManager()
-                    .getRecipeFor(ModRecipes.GRINDER_TYPE.get(), new GrinderRecipeInput(stack), level)
-                    .isPresent();
+            if (level instanceof net.minecraft.server.level.ServerLevel serverLevel) {
+                return serverLevel.getServer().getRecipeManager()
+                        .getRecipeFor(ModRecipes.GRINDER_TYPE.get(), new GrinderRecipeInput(stack), level)
+                        .isPresent();
+            }
+            return false;
         }
     };
 
@@ -210,8 +213,11 @@ public class GrinderBlockEntity extends BlockEntity implements MenuProvider {
     }
 
     private Optional<RecipeHolder<GrinderRecipe>> getCurrentRecipe() {
-        return this.level.getRecipeManager()
-                .getRecipeFor(ModRecipes.GRINDER_TYPE.get(), new GrinderRecipeInput(itemHandler.getStackInSlot(INPUT_SLOT)), level);
+        if (this.level instanceof net.minecraft.server.level.ServerLevel serverLevel) {
+            return serverLevel.getServer().getRecipeManager()
+                    .getRecipeFor(ModRecipes.GRINDER_TYPE.get(), new GrinderRecipeInput(itemHandler.getStackInSlot(INPUT_SLOT)), level);
+        }
+        return Optional.empty();
     }
 
     private void craftItem() {

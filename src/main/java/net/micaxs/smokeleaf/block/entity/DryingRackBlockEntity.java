@@ -68,8 +68,11 @@ public class DryingRackBlockEntity extends BlockEntity {
                 continue;
             }
 
-            Optional<RecipeHolder<DryingRecipe>> recipeHolderOpt = level.getRecipeManager()
-                    .getRecipeFor(ModRecipes.DRYING_TYPE.get(), new DryingRecipeInput(stack), level);
+            Optional<RecipeHolder<DryingRecipe>> recipeHolderOpt = Optional.empty();
+            if (level instanceof net.minecraft.server.level.ServerLevel serverLevel) {
+                recipeHolderOpt = serverLevel.getServer().getRecipeManager()
+                        .getRecipeFor(ModRecipes.DRYING_TYPE.get(), new DryingRecipeInput(stack), level);
+            }
 
             if (recipeHolderOpt.isEmpty()) {
                 be.progress[i] = 0;
@@ -140,8 +143,11 @@ public class DryingRackBlockEntity extends BlockEntity {
         ItemStack stack = items[slot];
         if (stack.isEmpty()) return 0;
 
-        Optional<RecipeHolder<DryingRecipe>> recipeHolderOpt =
-                level.getRecipeManager().getRecipeFor(ModRecipes.DRYING_TYPE.get(), new DryingRecipeInput(stack), level);
+        Optional<RecipeHolder<DryingRecipe>> recipeHolderOpt = Optional.empty();
+        if (level instanceof net.minecraft.server.level.ServerLevel serverLevel) {
+            recipeHolderOpt = serverLevel.getServer().getRecipeManager()
+                    .getRecipeFor(ModRecipes.DRYING_TYPE.get(), new DryingRecipeInput(stack), level);
+        }
         if (recipeHolderOpt.isEmpty()) return 0;
 
         DryingRecipe recipe = recipeHolderOpt.get().value();

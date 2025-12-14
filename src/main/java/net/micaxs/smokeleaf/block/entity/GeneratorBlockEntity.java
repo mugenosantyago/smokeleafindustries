@@ -176,9 +176,12 @@ public class GeneratorBlockEntity extends BlockEntity implements MenuProvider {
     private Optional<GeneratorRecipe> getRecipe(ItemStack stack) {
         if (level == null || stack.isEmpty()) return Optional.empty();
         GeneratorRecipeInput input = new GeneratorRecipeInput(stack);
-        return level.getRecipeManager()
-                .getRecipeFor(ModRecipes.GENERATOR_TYPE.get(), input, level)
-                .map(RecipeHolder::value);
+        if (level instanceof net.minecraft.server.level.ServerLevel serverLevel) {
+            return serverLevel.getServer().getRecipeManager()
+                    .getRecipeFor(ModRecipes.GENERATOR_TYPE.get(), input, level)
+                    .map(RecipeHolder::value);
+        }
+        return Optional.empty();
     }
 
     private void pushEnergyToNeighbours() {

@@ -63,9 +63,12 @@ public class LiquifierBlockEntity extends BlockEntity implements MenuProvider {
     private boolean isValidInput(ItemStack stack) {
         if (level == null || stack.isEmpty()) return false;
         LiquifierRecipeInput input = new LiquifierRecipeInput(stack);
-        return level.getRecipeManager()
-                .getRecipeFor(ModRecipes.LIQUIFIER_TYPE.get(), input, level)
-                .isPresent();
+        if (level instanceof net.minecraft.server.level.ServerLevel serverLevel) {
+            return serverLevel.getServer().getRecipeManager()
+                    .getRecipeFor(ModRecipes.LIQUIFIER_TYPE.get(), input, level)
+                    .isPresent();
+        }
+        return false;
     }
 
     public IItemHandler getItemHandler(@Nullable Direction direction) {
@@ -145,9 +148,12 @@ public class LiquifierBlockEntity extends BlockEntity implements MenuProvider {
         if (level == null) return Optional.empty();
         ItemStack stack = itemHandler.getStackInSlot(INPUT_SLOT);
         if (stack.isEmpty()) return Optional.empty();
-        return level.getRecipeManager()
+        if (level instanceof net.minecraft.server.level.ServerLevel serverLevel) {
+            return serverLevel.getServer().getRecipeManager()
                 .getRecipeFor(ModRecipes.LIQUIFIER_TYPE.get(), new LiquifierRecipeInput(stack), level)
                 .map(RecipeHolder::value);
+        }
+        return Optional.empty();
     }
 
     private boolean hasSpaceFor(LiquifierRecipe recipe) {

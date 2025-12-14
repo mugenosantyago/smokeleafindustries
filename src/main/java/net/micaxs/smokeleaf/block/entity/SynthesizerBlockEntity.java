@@ -155,8 +155,11 @@ public class SynthesizerBlockEntity extends BlockEntity implements MenuProvider 
                 itemHandler.getStackInSlot(REAGENT_SLOT_2),
                 itemHandler.getStackInSlot(REAGENT_SLOT_3)
         );
-        return level.getRecipeManager()
-                .getRecipeFor(ModRecipes.SYNTHESIZER_TYPE.get(), input, level);
+        if (level instanceof net.minecraft.server.level.ServerLevel serverLevel) {
+            return serverLevel.getServer().getRecipeManager()
+                    .getRecipeFor(ModRecipes.SYNTHESIZER_TYPE.get(), input, level);
+        }
+        return Optional.empty();
     }
 
     private boolean hasRecipe() {

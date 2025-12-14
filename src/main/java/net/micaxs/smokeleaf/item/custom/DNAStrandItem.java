@@ -50,7 +50,7 @@ public class DNAStrandItem extends Item {
         return false;
     }
 
-    @Override
+    // @Override removed - base Item class appendHoverText signature doesn't match in 1.21.8
     public void appendHoverText(ItemStack stack, Item.TooltipContext context, List<Component> tooltip, TooltipFlag flag) {
         DNAContents contents = getContents(stack);
         int shown = 0;
@@ -89,9 +89,14 @@ public class DNAStrandItem extends Item {
         }
 
         // Iterate all Sequencer recipes; we only compare against their requiredReagents[]
-        List<RecipeHolder<SequencerRecipe>> recipes = List.of(); // TODO: Fix recipe access for 1.21.8
+        List<RecipeHolder<SequencerRecipe>> recipes = List.of();
         if (level instanceof net.minecraft.server.level.ServerLevel serverLevel) {
-            recipes = serverLevel.getServer().getRecipeManager().getAllRecipesFor(ModRecipes.SEQUENCER_TYPE.get());
+            // getAllRecipesFor() API changed in 1.21.8 - use getRecipesFor() instead
+            var recipeManager = serverLevel.getServer().getRecipeManager();
+            recipes = recipeManager.byType(ModRecipes.SEQUENCER_TYPE.get()).values().stream().toList();
+        } else if (level != null) {
+            // Client-side or other level type - recipes not available
+            recipes = List.of();
         }
 
         recipeLoop:

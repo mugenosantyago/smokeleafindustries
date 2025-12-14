@@ -142,8 +142,11 @@ public class SequencerBlockEntity extends BlockEntity implements MenuProvider {
                 itemHandler.getStackInSlot(DNA_SLOT),
                 itemHandler.getStackInSlot(BASE_EXTRACT)
         );
-        return level.getRecipeManager()
-                .getRecipeFor(ModRecipes.SEQUENCER_TYPE.get(), input, level);
+        if (level instanceof net.minecraft.server.level.ServerLevel serverLevel) {
+            return serverLevel.getServer().getRecipeManager()
+                    .getRecipeFor(ModRecipes.SEQUENCER_TYPE.get(), input, level);
+        }
+        return Optional.empty();
     }
 
     private boolean hasRecipe() {

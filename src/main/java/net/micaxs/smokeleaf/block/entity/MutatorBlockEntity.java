@@ -283,8 +283,9 @@ public class MutatorBlockEntity extends BlockEntity implements MenuProvider {
 
         if (seedStack.isEmpty() || extractStack.isEmpty()) return Optional.empty();
 
-        return this.level.getRecipeManager()
-                .getAllRecipesFor(ModRecipes.MUTATOR_TYPE.get())
+        if (this.level instanceof net.minecraft.server.level.ServerLevel serverLevel) {
+            return serverLevel.getServer().getRecipeManager()
+                    .getAllRecipesFor(ModRecipes.MUTATOR_TYPE.get())
                 .stream()
                 .filter(holder -> {
                     MutatorRecipe rec = holder.value();
@@ -300,6 +301,8 @@ public class MutatorBlockEntity extends BlockEntity implements MenuProvider {
                     return seedOk && extractOk && fluidOk;
                 })
                 .findFirst();
+        }
+        return Optional.empty();
     }
 
     private boolean canInsertItemIntoOutputSlot(ItemStack output) {

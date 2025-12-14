@@ -100,9 +100,7 @@ public class FluidTankRenderer {
     }
 
     private static void drawTiledSprite(GuiGraphics guiGraphics, final int x, final int y, final int tiledWidth, final int tiledHeight, int color, long scaledAmount, TextureAtlasSprite sprite) {
-        // Use the same approach as other screens - GuiGraphics pose() returns the correct stack type
-        guiGraphics.pose().pushPose();
-        guiGraphics.pose().translate(x, y, 0);
+        // Get matrix from pose stack without manipulating it
         Matrix4f matrix = guiGraphics.pose().last().pose();
         setGLColorFromInt(color);
 
@@ -111,23 +109,24 @@ public class FluidTankRenderer {
         final long yTileCount = scaledAmount / TEXTURE_SIZE;
         final long yRemainder = scaledAmount - (yTileCount * TEXTURE_SIZE);
 
-        final int yStart = tiledHeight;
+        final int yStart = y + tiledHeight;
 
         for (int xTile = 0; xTile <= xTileCount; xTile++) {
             for (int yTile = 0; yTile <= yTileCount; yTile++) {
-                int width = (xTile == xTileCount) ? xRemainder : TEXTURE_SIZE;
-                long height = (yTile == yTileCount) ? yRemainder : TEXTURE_SIZE;
-                int x = (xTile * TEXTURE_SIZE);
-                int y = yStart - ((yTile + 1) * TEXTURE_SIZE);
-                if (width > 0 && height > 0) {
-                    long maskTop = TEXTURE_SIZE - height;
-                    int maskRight = TEXTURE_SIZE - width;
+                int currentWidth = (xTile == xTileCount) ? xRemainder : TEXTURE_SIZE;
+                long currentHeight = (yTile == yTileCount) ? yRemainder : TEXTURE_SIZE;
+                int drawX = x + (xTile * TEXTURE_SIZE);
+                int drawY = yStart - ((int)((yTile + 1) * TEXTURE_SIZE));
 
-                    drawTextureWithMasking(matrix, x, y, sprite, maskTop, maskRight, 100);
+                if (currentWidth > 0 && currentHeight > 0) {
+                    long maskTop = TEXTURE_SIZE - currentHeight;
+                    int maskRight = TEXTURE_SIZE - currentWidth;
+
+                    drawTextureWithMasking(matrix, drawX, drawY, sprite, maskTop, maskRight, 100);
                 }
             }
         }
-        guiGraphics.pose().popPose();
+        RenderSystem.setShaderColor(1.0f, 1.0f, 1.0f, 1.0f); // Reset color
     }
 
     private static void setGLColorFromInt(int color) {

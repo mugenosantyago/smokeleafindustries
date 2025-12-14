@@ -61,9 +61,12 @@ public class ExtractorBlockEntity extends BlockEntity implements MenuProvider {
                 return false;
             }
 
-            return level.getRecipeManager()
-                    .getRecipeFor(ModRecipes.EXTRACTOR_TYPE.get(), new ExtractorRecipeInput(stack), level)
-                    .isPresent();
+            if (level instanceof net.minecraft.server.level.ServerLevel serverLevel) {
+                return serverLevel.getServer().getRecipeManager()
+                        .getRecipeFor(ModRecipes.EXTRACTOR_TYPE.get(), new ExtractorRecipeInput(stack), level)
+                        .isPresent();
+            }
+            return false;
         }
     };
 
@@ -247,7 +250,11 @@ public class ExtractorBlockEntity extends BlockEntity implements MenuProvider {
     }
 
     private Optional<RecipeHolder<ExtractorRecipe>> getCurrentRecipe() {
-        return this.level.getRecipeManager().getRecipeFor(ModRecipes.EXTRACTOR_TYPE.get(), new ExtractorRecipeInput(itemHandler.getStackInSlot(INPUT_SLOT)), level);
+        if (this.level instanceof net.minecraft.server.level.ServerLevel serverLevel) {
+            return serverLevel.getServer().getRecipeManager()
+                    .getRecipeFor(ModRecipes.EXTRACTOR_TYPE.get(), new ExtractorRecipeInput(itemHandler.getStackInSlot(INPUT_SLOT)), level);
+        }
+        return Optional.empty();
     }
 
     private void craftItem() {
