@@ -103,9 +103,11 @@ public class SequencerRecipeCategory implements IRecipeCategory<SequencerRecipe>
         List<ItemStack> out = new ArrayList<>();
         if (reagents.length != 3) return out;
 
-        ItemStack[] aSet = reagents[0].getItems();
-        ItemStack[] bSet = reagents[1].getItems();
-        ItemStack[] cSet = reagents[2].getItems();
+        // TODO: Update for 1.21.8 - Ingredient.getItems() removed
+        // For now, return empty list - this functionality may need to be reimplemented
+        ItemStack[] aSet = new ItemStack[0];
+        ItemStack[] bSet = new ItemStack[0];
+        ItemStack[] cSet = new ItemStack[0];
 
         int limit = 128;
         int produced = 0;

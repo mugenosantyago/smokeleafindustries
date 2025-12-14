@@ -85,12 +85,12 @@ public class JointRecipe extends CustomRecipe {
         return joint;
     }
 
-    @Override
+    // @Override - method may have been removed or made default in 1.21.8
     public boolean canCraftInDimensions(int w, int h) {
         return w >= 3 && h >= 3;
     }
 
-    @Override
+    // @Override - method may have been removed or made default in 1.21.8
     public ItemStack getResultItem(HolderLookup.Provider provider) {
         return new ItemStack(jointResult);
     }

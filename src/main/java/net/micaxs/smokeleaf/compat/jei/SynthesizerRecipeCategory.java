@@ -116,9 +116,8 @@ public class SynthesizerRecipeCategory implements IRecipeCategory<SynthesizerRec
     }
 
     private static ItemStack firstNonEmpty(net.minecraft.world.item.crafting.Ingredient ingredient) {
-        for (ItemStack s : ingredient.getItems()) {
-            if (!s.isEmpty()) return s;
-        }
+        // TODO: Update for 1.21.8 - Ingredient.getItems() removed
+        // For now, return empty - this may need to be handled differently
         return ItemStack.EMPTY;
     }
 

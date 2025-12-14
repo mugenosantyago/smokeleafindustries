@@ -59,12 +59,12 @@ public enum WeedCropProvider implements IBlockComponentProvider, IServerDataProv
         CompoundTag data = accessor.getServerData();
         if (!hasAll(data, "n", "p", "k", "tn", "tp", "tk")) return;
 
-        int n = data.getInt("n");
-        int p = data.getInt("p");
-        int k = data.getInt("k");
-        int tn = data.getInt("tn");
-        int tp = data.getInt("tp");
-        int tk = data.getInt("tk");
+        int n = data.getInt("n").orElse(0);
+        int p = data.getInt("p").orElse(0);
+        int k = data.getInt("k").orElse(0);
+        int tn = data.getInt("tn").orElse(0);
+        int tp = data.getInt("tp").orElse(0);
+        int tk = data.getInt("tk").orElse(0);
 
         // Don't add the NPK if the plant doesn't have a target (e.g. non-weed crops)
         if (tn == 0 && tp == 0 && tk == 0) return;

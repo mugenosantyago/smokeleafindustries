@@ -83,17 +83,18 @@ public enum DryingRackProvider implements IBlockComponentProvider, IServerDataPr
             String key = "S" + i;
             if (!accessor.getServerData().contains(key)) continue;
 
-            CompoundTag s = accessor.getServerData().getCompound(key);
-            ResourceLocation id = ResourceLocation.tryParse(s.getString("id"));
+            CompoundTag s = accessor.getServerData().getCompound(key).orElse(null);
+            if (s == null) continue;
+            ResourceLocation id = ResourceLocation.tryParse(s.getString("id").orElse(""));
             if (id == null) continue;
 
-            Item item = BuiltInRegistries.ITEM.get(id);
+            Item item = BuiltInRegistries.ITEM.get(id).orElseThrow().value();
             IElement icon = elements.item(new ItemStack(item), 0.5f).size(new Vec2(10, 10)).translate(new Vec2(-2, -1));
 
-            boolean isBud = s.getBoolean("bud");
-            boolean isDryBud = s.getBoolean("dry");
-            boolean active = s.getBoolean("active");
-            int seconds = s.getInt("sec");
+            boolean isBud = s.getBoolean("bud").orElse(false);
+            boolean isDryBud = s.getBoolean("dry").orElse(false);
+            boolean active = s.getBoolean("active").orElse(false);
+            int seconds = s.getInt("sec").orElse(0);
 
             Component name = Component.translatable(item.getDescriptionId()).withStyle(ChatFormatting.WHITE);
             Component line;

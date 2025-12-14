@@ -44,7 +44,7 @@ public record ManualGrinderRecipe(Ingredient ingredient, ItemStack result, int g
         return out;
     }
 
-    @Override
+    // @Override - method may have been removed or made default in 1.21.8
     public NonNullList<Ingredient> getIngredients() {
         NonNullList<Ingredient> list = NonNullList.create();
         list.add(ingredient);

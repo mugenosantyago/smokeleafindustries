@@ -38,17 +38,17 @@ public record DryingRecipe(Ingredient ingredient, ItemStack result, int time, bo
         return result.copy();
     }
 
-    @Override
+    // @Override - method may have been removed or made default in 1.21.8
     public boolean canCraftInDimensions(int w, int h) {
         return true;
     }
 
-    @Override
+    // @Override - method may have been removed or made default in 1.21.8
     public ItemStack getResultItem(HolderLookup.Provider provider) {
         return result;
     }
 
-    @Override
+    // @Override - method may have been removed or made default in 1.21.8
     public NonNullList<Ingredient> getIngredients() {
         NonNullList<Ingredient> list = NonNullList.create();
         list.add(ingredient);

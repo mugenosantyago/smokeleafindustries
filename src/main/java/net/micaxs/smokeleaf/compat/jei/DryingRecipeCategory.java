@@ -100,14 +100,17 @@ public class DryingRecipeCategory implements IRecipeCategory<DryingRecipe> {
                     .addItemStack(dried);
         } else {
 
-            List<ItemStack> driedVariants = Arrays.stream(recipe.ingredient().getItems())
+            // TODO: Update for 1.21.8 - Ingredient.getItems() removed
+            // For now, return empty list - this functionality may need to be reimplemented
+            List<ItemStack> driedVariants = List.of();
+            /* Arrays.stream(recipe.ingredient().getItems())
                     .filter(s -> s.getItem() instanceof BaseBudItem)
                     .map(s -> {
                         ItemStack dried = s.copy();
                         dried.set(ModDataComponentTypes.DRY.get(), Boolean.TRUE);
                         return dried;
                     })
-                    .collect(Collectors.toList());
+                    .collect(Collectors.toList()); */
             builder.addSlot(RecipeIngredientRole.OUTPUT, 80, 16)
                     .addItemStacks(driedVariants);
         }

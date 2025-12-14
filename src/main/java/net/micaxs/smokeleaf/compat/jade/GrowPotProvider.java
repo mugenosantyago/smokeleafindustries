@@ -67,8 +67,8 @@ public enum GrowPotProvider implements IBlockComponentProvider, IServerDataProvi
 
         // Soil line
         if (data.contains("soil")) {
-            ResourceLocation soilId = ResourceLocation.tryParse(data.getString("soil"));
-            Block soilBlock = soilId != null ? BuiltInRegistries.BLOCK.get(soilId) : null;
+            ResourceLocation soilId = ResourceLocation.tryParse(data.getString("soil").orElse(""));
+            Block soilBlock = soilId != null ? BuiltInRegistries.BLOCK.get(soilId).map(h -> h.value()).orElse(null) : null;
             Component soilName = soilBlock != null
                     ? Component.translatable(soilBlock.getDescriptionId())
                     : Component.literal("Unknown");
@@ -79,8 +79,8 @@ public enum GrowPotProvider implements IBlockComponentProvider, IServerDataProvi
 
         // Crop line
         if (data.contains("crop")) {
-            ResourceLocation cropId = ResourceLocation.tryParse(data.getString("crop"));
-            Block cropBlock = cropId != null ? BuiltInRegistries.BLOCK.get(cropId) : null;
+            ResourceLocation cropId = ResourceLocation.tryParse(data.getString("crop").orElse(""));
+            Block cropBlock = cropId != null ? BuiltInRegistries.BLOCK.get(cropId).map(h -> h.value()).orElse(null) : null;
             Component cropName = cropBlock != null
                     ? Component.translatable(cropBlock.getDescriptionId())
                     : Component.literal("Unknown");
@@ -91,8 +91,8 @@ public enum GrowPotProvider implements IBlockComponentProvider, IServerDataProvi
 
         // Growth line (like Jade crops)
         if (data.contains("age") && data.contains("maxAge")) {
-            int age = data.getInt("age");
-            int maxAge = data.getInt("maxAge");
+            int age = data.getInt("age").orElse(0);
+            int maxAge = data.getInt("maxAge").orElse(0);
             if (maxAge > 0) {
                 if (age >= maxAge) {
                     tooltip.add(
@@ -116,8 +116,8 @@ public enum GrowPotProvider implements IBlockComponentProvider, IServerDataProvi
 
         // Separate N, P, K lines with Analyzer color logic
         if (hasAll(data, "n", "p", "k", "tn", "tp", "tk")) {
-            int n = data.getInt("n"), p = data.getInt("p"), k = data.getInt("k");
-            int tn = data.getInt("tn"), tp = data.getInt("tp"), tk = data.getInt("tk");
+            int n = data.getInt("n").orElse(0), p = data.getInt("p").orElse(0), k = data.getInt("k").orElse(0);
+            int tn = data.getInt("tn").orElse(0), tp = data.getInt("tp").orElse(0), tk = data.getInt("tk").orElse(0);
 
             if (tn == 0 && tp == 0 && tk == 0) return;
 
