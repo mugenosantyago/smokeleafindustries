@@ -214,11 +214,11 @@ public class GeneratorBlockEntity extends BlockEntity implements MenuProvider {
     protected void loadAdditional(CompoundTag tag, HolderLookup.Provider provider) {
         super.loadAdditional(tag, provider);
         itemHandler.deserializeNBT(provider, tag.getCompound("generator.inventory"));
-        ENERGY_STORAGE.setEnergy(tag.getInt("generator.energy"));
-        burnTime = tag.getInt("generator.burnTime");
-        maxBurnTime = tag.getInt("generator.maxBurnTime");
-        remainingEnergy = tag.getInt("generator.remainingEnergy");
-        generationPerTick = tag.getInt("generator.genPerTick");
+        ENERGY_STORAGE.setEnergy(tag.getInt("generator.energy").orElse(0));
+        burnTime = tag.getInt("generator.burnTime").orElse(0);
+        maxBurnTime = tag.getInt("generator.maxBurnTime").orElse(0);
+        remainingEnergy = tag.getInt("generator.remainingEnergy").orElse(0);
+        generationPerTick = tag.getInt("generator.genPerTick").orElse(0);
     }
 
     @Override

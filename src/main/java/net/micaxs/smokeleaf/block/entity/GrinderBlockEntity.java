@@ -281,9 +281,9 @@ public class GrinderBlockEntity extends BlockEntity implements MenuProvider {
     protected void loadAdditional(CompoundTag tag, HolderLookup.Provider registries) {
         super.loadAdditional(tag, registries);
         itemHandler.deserializeNBT(registries, tag.getCompound("grinder.inventory"));
-        ENERGY_STORAGE.setEnergy(tag.getInt("grinder.energy"));
-        progress = tag.getInt("grinder.progress");
-        maxProgress = tag.getInt("grinder.maxProgress");
+        ENERGY_STORAGE.setEnergy(tag.getInt("grinder.energy").orElse(0));
+        progress = tag.getInt("grinder.progress").orElse(0);
+        maxProgress = tag.getInt("grinder.maxProgress").orElse(0);
     }
 
     // Server / Client Syncing

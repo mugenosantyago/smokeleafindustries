@@ -270,9 +270,9 @@ public class DryerBlockEntity extends BlockEntity implements MenuProvider {
     protected void loadAdditional(CompoundTag tag, HolderLookup.Provider registries) {
         super.loadAdditional(tag, registries);
         itemHandler.deserializeNBT(registries, tag.getCompound("dryer.inventory"));
-        ENERGY_STORAGE.setEnergy(tag.getInt("dryer.energy"));
-        progress = tag.getInt("dryer.progress");
-        maxProgress = tag.getInt("dryer.maxProgress");
+        ENERGY_STORAGE.setEnergy(tag.getInt("dryer.energy").orElse(0));
+        progress = tag.getInt("dryer.progress").orElse(0);
+        maxProgress = tag.getInt("dryer.maxProgress").orElse(38);
     }
 
     // Server / Client Syncing

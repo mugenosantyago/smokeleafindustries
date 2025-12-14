@@ -243,9 +243,9 @@ public class SynthesizerBlockEntity extends BlockEntity implements MenuProvider 
     protected void loadAdditional(CompoundTag tag, HolderLookup.Provider registries) {
         super.loadAdditional(tag, registries);
         itemHandler.deserializeNBT(registries, tag.getCompound("synthesizer.inventory"));
-        ENERGY_STORAGE.setEnergy(tag.getInt("synthesizer.energy"));
-        progress = tag.getInt("synthesizer.progress");
-        maxProgress = tag.getInt("synthesizer.maxProgress");
+        ENERGY_STORAGE.setEnergy(tag.getInt("synthesizer.energy").orElse(0));
+        progress = tag.getInt("synthesizer.progress").orElse(0);
+        maxProgress = tag.getInt("synthesizer.maxProgress").orElse(0);
     }
 
     @Override

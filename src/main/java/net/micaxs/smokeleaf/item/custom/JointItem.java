@@ -84,7 +84,7 @@ public class JointItem extends Item {
                 stack.shrink(1);
             }
         }
-        return InteractionResult.CONSUME;
+        return super.finishUsingItem(stack, level, entity);
     }
 
     private void applyStoredEffects(ItemStack stack, Player player) {
@@ -184,10 +184,9 @@ public class JointItem extends Item {
 
             Component nameComp;
             if (rl != null) {
-                MobEffect eff = BuiltInRegistries.MOB_EFFECT.get(rl);
-                nameComp = (eff != null)
-                        ? Component.translatable(eff.getDescriptionId())
-                        : Component.literal(rl.getPath());
+                var effOpt = BuiltInRegistries.MOB_EFFECT.get(rl);
+                nameComp = effOpt.map(eff -> Component.translatable(eff.value().getDescriptionId()))
+                        .orElse(Component.literal(rl.getPath()));
             } else {
                 nameComp = Component.literal("unknown");
             }

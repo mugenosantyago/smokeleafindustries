@@ -234,9 +234,9 @@ public class LiquifierBlockEntity extends BlockEntity implements MenuProvider {
     protected void loadAdditional(CompoundTag tag, HolderLookup.Provider regs) {
         super.loadAdditional(tag, regs);
         itemHandler.deserializeNBT(regs, tag.getCompound("liquifier.inventory"));
-        ENERGY_STORAGE.setEnergy(tag.getInt("liquifier.energy"));
-        progress = tag.getInt("liquifier.progress");
-        maxProgress = tag.getInt("liquifier.maxProgress");
+        ENERGY_STORAGE.setEnergy(tag.getInt("liquifier.energy").orElse(0));
+        progress = tag.getInt("liquifier.progress").orElse(0);
+        maxProgress = tag.getInt("liquifier.maxProgress").orElse(0);
         FLUID_TANK.readFromNBT(regs, tag);
     }
 

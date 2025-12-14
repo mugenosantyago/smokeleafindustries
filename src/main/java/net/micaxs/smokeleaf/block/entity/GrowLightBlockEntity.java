@@ -124,7 +124,7 @@ public class GrowLightBlockEntity extends BlockEntity {
     @Override
     protected void loadAdditional(CompoundTag tag, HolderLookup.Provider provider) {
         super.loadAdditional(tag, provider);
-        tickCounter = tag.getInt("TickCounter");
+        tickCounter = tag.getInt("TickCounter").orElse(0);
     }
 
 

@@ -371,9 +371,9 @@ public class MutatorBlockEntity extends BlockEntity implements MenuProvider {
     protected void loadAdditional(CompoundTag tag, HolderLookup.Provider registries) {
         super.loadAdditional(tag, registries);
         itemHandler.deserializeNBT(registries, tag.getCompound("mutator.inventory"));
-        ENERGY_STORAGE.setEnergy(tag.getInt("mutator.energy"));
-        progress = tag.getInt("mutator.progress");
-        maxProgress = tag.getInt("mutator.maxProgress");
+        ENERGY_STORAGE.setEnergy(tag.getInt("mutator.energy").orElse(0));
+        progress = tag.getInt("mutator.progress").orElse(0);
+        maxProgress = tag.getInt("mutator.maxProgress").orElse(0);
         FLUID_TANK.readFromNBT(registries, tag);
     }
 
