@@ -61,6 +61,16 @@ public record LiquifierRecipe(Ingredient ingredient, FluidStack output) implemen
         return ModRecipes.LIQUIFIER_TYPE.get();
     }
 
+    @Override
+    public net.minecraft.world.item.crafting.RecipeBookCategory recipeBookCategory() {
+        return net.minecraft.world.item.crafting.RecipeBookCategory.MISC;
+    }
+
+    @Override
+    public net.minecraft.world.item.crafting.Recipe.PlacementInfo placementInfo() {
+        return net.minecraft.world.item.crafting.Recipe.PlacementInfo.NONE;
+    }
+
     public static class Serializer implements RecipeSerializer<LiquifierRecipe> {
 
         // Nested codec for the "output" object

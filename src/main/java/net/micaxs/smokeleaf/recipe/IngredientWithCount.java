@@ -15,7 +15,7 @@ public record IngredientWithCount(Ingredient ingredient, int count) {
     public static final Codec<IngredientWithCount> CODEC = new Codec<>() {
         @Override
         public <T> DataResult<Pair<IngredientWithCount, T>> decode(DynamicOps<T> ops, T input) {
-            DataResult<Ingredient> ingr = Ingredient.CODEC_NONEMPTY.parse(ops, input);
+            DataResult<Ingredient> ingr = Ingredient.CODEC.parse(ops, input);
             final int count = readCount(ops, input);
             return ingr.map(i -> Pair.of(new IngredientWithCount(i, Math.max(1, count)), input));
         }
@@ -38,7 +38,7 @@ public record IngredientWithCount(Ingredient ingredient, int count) {
 
         @Override
         public <T> DataResult<T> encode(IngredientWithCount value, DynamicOps<T> ops, T prefix) {
-            var base = Ingredient.CODEC_NONEMPTY.encodeStart(ops, value.ingredient());
+                var base = Ingredient.CODEC.encodeStart(ops, value.ingredient());
             if (base.result().isPresent()) {
                 T enc = base.result().get();
                 var asMap = ops.getMap(enc);

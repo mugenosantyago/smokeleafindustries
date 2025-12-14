@@ -16,7 +16,7 @@ import net.micaxs.smokeleaf.item.custom.DNAStrandItem;
 import net.micaxs.smokeleaf.screen.ModMenuTypes;
 import net.micaxs.smokeleaf.screen.custom.*;
 import net.minecraft.client.Minecraft;
-import net.minecraft.client.color.item.ItemColors;
+// import net.minecraft.client.color.item.ItemColors; // Removed in 1.21.8
 import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.client.player.LocalPlayer;
 import net.minecraft.client.renderer.ItemBlockRenderTypes;
@@ -208,47 +208,47 @@ public class SmokeleafIndustriesClient {
         }
     }
 
-    @SubscribeEvent
-    public static void onItemColor(RegisterColorHandlersEvent.Item event) {
-        ItemColor itemColor = (stack, tintIndex) -> {
-            if (stack.getItem() instanceof BaseBudItem) {
-                Boolean isDry = stack.get(ModDataComponentTypes.DRY);
-                if (Boolean.TRUE.equals(isDry)) {
-                    return 0xFFD6CEC3;
-                }
-            }
-            return 0xFFFFFFFF; // no tint
-        };
-
-        // Use the non-deprecated event.register(...)
-        event.register(
-                itemColor,
-                ModItems.WHITE_WIDOW_BUD.get(),
-                ModItems.BUBBLE_KUSH_BUD.get(),
-                ModItems.LEMON_HAZE_BUD.get(),
-                ModItems.SOUR_DIESEL_BUD.get(),
-                ModItems.BLUE_ICE_BUD.get(),
-                ModItems.BUBBLEGUM_BUD.get(),
-                ModItems.PURPLE_HAZE_BUD.get(),
-                ModItems.OG_KUSH_BUD.get(),
-                ModItems.JACK_HERER_BUD.get(),
-                ModItems.GARY_PEYTON_BUD.get(),
-                ModItems.AMNESIA_HAZE_BUD.get(),
-                ModItems.AK47_BUD.get(),
-                ModItems.GHOST_TRAIN_BUD.get(),
-                ModItems.GRAPE_APE_BUD.get(),
-                ModItems.COTTON_CANDY_BUD.get(),
-                ModItems.BANANA_KUSH_BUD.get(),
-                ModItems.CARBON_FIBER_BUD.get(),
-                ModItems.BIRTHDAY_CAKE_BUD.get(),
-                ModItems.BLUE_COOKIES_BUD.get(),
-                ModItems.AFGHANI_BUD.get(),
-                ModItems.MOONBOW_BUD.get(),
-                ModItems.LAVA_CAKE_BUD.get(),
-                ModItems.JELLY_RANCHER_BUD.get(),
-                ModItems.STRAWBERRY_SHORTCAKE_BUD.get(),
-                ModItems.PINK_KUSH_BUD.get()
-        );
-    }
+    // @SubscribeEvent - Item color handler API changed in 1.21.8, need to find new API
+    // public static void onItemColor(RegisterColorHandlersEvent.Item event) {
+    //     ItemColor itemColor = (stack, tintIndex) -> {
+    //         if (stack.getItem() instanceof BaseBudItem) {
+    //             Boolean isDry = stack.get(ModDataComponentTypes.DRY);
+    //             if (Boolean.TRUE.equals(isDry)) {
+    //                 return 0xFFD6CEC3;
+    //             }
+    //         }
+    //         return 0xFFFFFFFF; // no tint
+    //     };
+    //
+    //     // Use the non-deprecated event.register(...)
+    //     event.register(
+    //             itemColor,
+    //             ModItems.WHITE_WIDOW_BUD.get(),
+    //             ModItems.BUBBLE_KUSH_BUD.get(),
+    //             ModItems.LEMON_HAZE_BUD.get(),
+    //             ModItems.SOUR_DIESEL_BUD.get(),
+    //             ModItems.BLUE_ICE_BUD.get(),
+    //             ModItems.BUBBLEGUM_BUD.get(),
+    //             ModItems.PURPLE_HAZE_BUD.get(),
+    //             ModItems.OG_KUSH_BUD.get(),
+    //             ModItems.JACK_HERER_BUD.get(),
+    //             ModItems.GARY_PEYTON_BUD.get(),
+    //             ModItems.AMNESIA_HAZE_BUD.get(),
+    //             ModItems.AK47_BUD.get(),
+    //             ModItems.GHOST_TRAIN_BUD.get(),
+    //             ModItems.GRAPE_APE_BUD.get(),
+    //             ModItems.COTTON_CANDY_BUD.get(),
+    //             ModItems.BANANA_KUSH_BUD.get(),
+    //             ModItems.CARBON_FIBER_BUD.get(),
+    //             ModItems.BIRTHDAY_CAKE_BUD.get(),
+    //             ModItems.BLUE_COOKIES_BUD.get(),
+    //             ModItems.AFGHANI_BUD.get(),
+    //             ModItems.MOONBOW_BUD.get(),
+    //             ModItems.LAVA_CAKE_BUD.get(),
+    //             ModItems.JELLY_RANCHER_BUD.get(),
+    //             ModItems.STRAWBERRY_SHORTCAKE_BUD.get(),
+    //             ModItems.PINK_KUSH_BUD.get()
+    //     );
+    // }
 
 }

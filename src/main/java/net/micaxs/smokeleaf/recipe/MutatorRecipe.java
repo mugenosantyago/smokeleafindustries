@@ -84,6 +84,16 @@ public record MutatorRecipe(NonNullList<IngredientWithCount> inputItems, FluidSt
         return ModRecipes.MUTATOR_TYPE.get();
     }
 
+    @Override
+    public net.minecraft.world.item.crafting.RecipeBookCategory recipeBookCategory() {
+        return net.minecraft.world.item.crafting.RecipeBookCategory.MISC;
+    }
+
+    @Override
+    public net.minecraft.world.item.crafting.Recipe.PlacementInfo placementInfo() {
+        return net.minecraft.world.item.crafting.Recipe.PlacementInfo.NONE;
+    }
+
     // JSON: {"FluidName":"<id>", "Amount": N}
     private static final MapCodec<FluidStack> FLUID_STACK_JSON = new MapCodec<>() {
         @Override
