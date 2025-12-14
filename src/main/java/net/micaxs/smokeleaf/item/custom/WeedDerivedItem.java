@@ -11,7 +11,6 @@ import net.minecraft.core.registries.Registries;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.chat.Component;
 import net.minecraft.world.InteractionHand;
-import net.minecraft.world.InteractionResultHolder;
 import net.minecraft.world.effect.MobEffect;
 import net.minecraft.world.effect.MobEffectInstance;
 import net.minecraft.world.entity.LivingEntity;
@@ -19,7 +18,6 @@ import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.TooltipFlag;
-import net.minecraft.world.item.UseAnim;
 import net.minecraft.world.item.component.CustomData;
 import net.minecraft.world.level.Level;
 
@@ -28,39 +26,39 @@ import java.util.List;
 public class WeedDerivedItem extends Item {
     private final float effectDurationMultiplier;
     private final float stonedChance;
-    private final UseAnim useAnimation;
+    // private final UseAnim useAnimation; // Temporarily commented out
     private final int useDuration;
 
-    public WeedDerivedItem(Properties pProperties, float effectDurationMultiplier, float stonedChance, UseAnim useAnimation) {
+    public WeedDerivedItem(Properties pProperties, float effectDurationMultiplier, float stonedChance, Object useAnimation) { // UseAnim temporarily replaced with Object
         this(pProperties, effectDurationMultiplier, stonedChance, useAnimation, 20);
     }
 
-    public WeedDerivedItem(Properties pProperties, float effectDurationMultiplier, float stonedChance, UseAnim useAnimation, int useDuration) {
+    public WeedDerivedItem(Properties pProperties, float effectDurationMultiplier, float stonedChance, Object useAnimation, int useDuration) { // UseAnim temporarily replaced with Object
         super(pProperties);
         this.effectDurationMultiplier = effectDurationMultiplier;
         this.stonedChance = stonedChance;
-        this.useAnimation = useAnimation;
+        // this.useAnimation = useAnimation; // Temporarily commented out
         this.useDuration = useDuration;
     }
 
-    @Override
-    public UseAnim getUseAnimation(ItemStack stack) {
-        return this.useAnimation;
-    }
+    // @Override - temporarily removed to check base class signature
+    // public UseAnim getUseAnimation(ItemStack stack) {
+    //     return this.useAnimation;
+    // }
 
     @Override
     public int getUseDuration(ItemStack stack, LivingEntity entity) {
         return this.useDuration;
     }
 
-    @Override
-    public InteractionResultHolder<ItemStack> use(Level level, Player player, InteractionHand usedHand) {
+    // @Override - temporarily removed to check base class signature
+    public ItemStack use(Level level, Player player, InteractionHand usedHand) {
         if (usedHand == InteractionHand.MAIN_HAND) {
             ItemStack itemstack = player.getItemInHand(usedHand);
             player.startUsingItem(usedHand);
-            return InteractionResultHolder.consume(itemstack);
+            return itemstack; // consume case
         } else {
-            return InteractionResultHolder.pass(player.getItemInHand(usedHand));
+            return player.getItemInHand(usedHand); // pass case
         }
     }
 

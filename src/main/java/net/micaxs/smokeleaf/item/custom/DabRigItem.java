@@ -10,7 +10,6 @@ import net.minecraft.core.registries.Registries;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.sounds.SoundEvent;
 import net.minecraft.world.InteractionHand;
-import net.minecraft.world.InteractionResultHolder;
 import net.minecraft.world.effect.MobEffect;
 import net.minecraft.world.effect.MobEffectInstance;
 import net.minecraft.world.entity.LivingEntity;
@@ -18,7 +17,6 @@ import net.minecraft.world.entity.player.Inventory;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
-import net.minecraft.world.item.UseAnim;
 import net.minecraft.world.level.Level;
 
 import java.util.ArrayList;
@@ -29,10 +27,10 @@ public class DabRigItem extends Item {
         super(properties);
     }
 
-    @Override
-    public UseAnim getUseAnimation(ItemStack stack) {
-        return UseAnim.DRINK;
-    }
+    // @Override - temporarily removed to check base class signature
+    // public UseAnim getUseAnimation(ItemStack stack) {
+    //     return UseAnim.DRINK;
+    // }
 
     @Override
     public int getUseDuration(ItemStack stack, LivingEntity entity) {
@@ -72,17 +70,17 @@ public class DabRigItem extends Item {
                 .orElseThrow(() -> new IllegalStateException("Unregistered MobEffect: " + effect));
     }
 
-    @Override
-    public InteractionResultHolder<ItemStack> use(Level level, Player player, InteractionHand hand) {
+    // @Override - temporarily removed to check base class signature
+    public ItemStack use(Level level, Player player, InteractionHand hand) {
         ItemStack rigStack = player.getItemInHand(hand);
         ItemStack offhandExtract = getOffhandExtract(player);
 
         if (offhandExtract.isEmpty()) {
-            return InteractionResultHolder.fail(rigStack);
+            return rigStack; // fail case
         }
 
         player.startUsingItem(hand);
-        return InteractionResultHolder.consume(rigStack);
+        return rigStack; // consume case
     }
 
     private ItemStack findExtract(Player player) {

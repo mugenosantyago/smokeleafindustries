@@ -8,14 +8,12 @@ import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.core.registries.Registries;
 import net.minecraft.sounds.SoundEvent;
 import net.minecraft.world.InteractionHand;
-import net.minecraft.world.InteractionResultHolder;
 import net.minecraft.world.effect.MobEffect;
 import net.minecraft.world.effect.MobEffectInstance;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
-import net.minecraft.world.item.UseAnim;
 import net.minecraft.world.level.Level;
 import org.jetbrains.annotations.NotNull;
 
@@ -28,9 +26,10 @@ public class BongItem extends Item {
     }
 
     @Override
-    public @NotNull UseAnim getUseAnimation(ItemStack stack) {
-        return UseAnim.DRINK;
-    }
+    // @Override - temporarily removed to check base class signature
+    // public @NotNull UseAnim getUseAnimation(ItemStack stack) {
+    //     return UseAnim.DRINK;
+    // }
 
     @Override
     public int getUseDuration(ItemStack stack, LivingEntity entity) {
@@ -78,17 +77,17 @@ public class BongItem extends Item {
     }
 
 
-    @Override
-    public InteractionResultHolder<ItemStack> use(Level level, Player player, InteractionHand usedHand) {
+    // @Override - temporarily removed to check base class signature
+    public ItemStack use(Level level, Player player, InteractionHand usedHand) {
         ItemStack itemstack = player.getItemInHand(usedHand);
 
         // Check if the offhand item is valid
         if (!isValidOffhandItem(player.getItemInHand(InteractionHand.OFF_HAND))) {
-            return InteractionResultHolder.fail(itemstack);
+            return itemstack; // fail case
         }
 
         player.startUsingItem(usedHand);
-        return InteractionResultHolder.consume(itemstack);
+        return itemstack; // consume case
     }
 
 
