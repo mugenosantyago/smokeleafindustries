@@ -40,7 +40,7 @@ public class PlantAnalyzerItem extends Item {
             openAnalyzerScreen(pos);
         }
 
-        return InteractionResult.sidedSuccess(level.isClientSide());
+        return level.isClientSide() ? InteractionResult.SUCCESS : InteractionResult.CONSUME;
     }
 
     public static void openAnalyzerScreen(BlockPos pos) {

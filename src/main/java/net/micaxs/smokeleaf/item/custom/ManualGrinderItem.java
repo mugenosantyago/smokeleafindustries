@@ -111,9 +111,12 @@ public class ManualGrinderItem extends Item {
     private Optional<ManualGrinderRecipe> getRecipe(Level level, ItemStack ingredient) {
         if (level == null || ingredient.isEmpty()) return Optional.empty();
         ManualGrinderInput input = new ManualGrinderInput(ingredient.copyWithCount(1));
-        return level.getRecipeManager()
-                .getRecipeFor(ModRecipes.MANUAL_GRINDER_TYPE.get(), input, level)
-                .map(holder -> holder.value());
+        if (level instanceof net.minecraft.server.level.ServerLevel serverLevel) {
+            return serverLevel.getRecipeManager()
+                    .getRecipeFor(ModRecipes.MANUAL_GRINDER_TYPE.get(), input, level)
+                    .map(holder -> holder.value());
+        }
+        return Optional.empty();
     }
 
     private boolean isValidIngredient(Level level, ItemStack ingredient) {

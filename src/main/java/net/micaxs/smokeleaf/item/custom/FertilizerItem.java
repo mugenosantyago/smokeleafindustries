@@ -58,7 +58,7 @@ public class FertilizerItem extends Item {
                         true
                 );
             }
-            return InteractionResult.sidedSuccess(level.isClientSide());
+            return level.isClientSide() ? InteractionResult.SUCCESS : InteractionResult.CONSUME;
         }
 
         if (!level.isClientSide) {
@@ -77,7 +77,7 @@ public class FertilizerItem extends Item {
             }
         }
 
-        return InteractionResult.sidedSuccess(level.isClientSide);
+        return level.isClientSide ? InteractionResult.SUCCESS : InteractionResult.CONSUME;
     }
 
     private static BaseWeedCropBlockEntity getCropBE(Level level, BlockPos pos) {

@@ -120,7 +120,7 @@ public class WeedEffectHelper {
         if (activeIngredient != null) {
             ResourceLocation id = ResourceLocation.tryParse(activeIngredient);
             if (id != null) {
-                Item item = BuiltInRegistries.ITEM.get(id);
+                Item item = BuiltInRegistries.ITEM.get(id).map(h -> h.value()).orElse(null);
                 if (item instanceof BaseWeedItem weed) {
                     return weed;
                 }

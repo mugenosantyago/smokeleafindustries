@@ -22,13 +22,13 @@ public class ModFluidTypes {
 
 
     public static final Supplier<FluidType> HASH_OIL_FLUID_TYPE = registerFluidType("hash_oil_fluid", new BaseFluidType(WATER_STILL_RL, WATER_FLOWING_RL, WATER_OVERLAY_RL,
-            0xA1F2932E, new Vector3f(242f / 255f, 147f / 255f, 46f / 255f), FluidType.Properties.create().canExtinguish(true).lightLevel(3).density(15).viscosity(5).sound(SoundAction.get("drink"), SoundEvents.HONEY_DRINK)));
+            0xA1F2932E, new Vector3f(242f / 255f, 147f / 255f, 46f / 255f), FluidType.Properties.create().canExtinguish(true).lightLevel(3).density(15).viscosity(5).sound(SoundAction.get("drink"), SoundEvents.HONEY_DRINK.value())));
 
     public static final Supplier<FluidType> HASH_OIL_SLUDGE_FLUID_TYPE = registerFluidType("hash_oil_sludge_fluid", new BaseFluidType(WATER_STILL_RL, WATER_FLOWING_RL, WATER_OVERLAY_RL,
-            0xFF3b3b3b, new Vector3f(59f / 255f, 59f / 255f, 59f / 255f), FluidType.Properties.create().canExtinguish(true).lightLevel(3).density(15).viscosity(5).sound(SoundAction.get("drink"), SoundEvents.HONEY_DRINK)));
+            0xFF3b3b3b, new Vector3f(59f / 255f, 59f / 255f, 59f / 255f), FluidType.Properties.create().canExtinguish(true).lightLevel(3).density(15).viscosity(5).sound(SoundAction.get("drink"), SoundEvents.HONEY_DRINK.value())));
 
     public static final Supplier<FluidType> HEMP_OIL_FLUID_TYPE = registerFluidType("hemp_oil_fluid", new BaseFluidType(WATER_STILL_RL, WATER_FLOWING_RL, WATER_OVERLAY_RL,
-            0xFF58EB34, new Vector3f(59f / 255f, 59f / 255f, 59f / 255f), FluidType.Properties.create().canExtinguish(true).lightLevel(3).density(15).viscosity(5).sound(SoundAction.get("drink"), SoundEvents.HONEY_DRINK)));
+            0xFF58EB34, new Vector3f(59f / 255f, 59f / 255f, 59f / 255f), FluidType.Properties.create().canExtinguish(true).lightLevel(3).density(15).viscosity(5).sound(SoundAction.get("drink"), SoundEvents.HONEY_DRINK.value())));
 
 
     private static Supplier<FluidType> registerFluidType(String name, FluidType fluidType) {

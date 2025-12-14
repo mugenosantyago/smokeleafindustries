@@ -92,7 +92,7 @@ public class WeedDerivedItem extends Item {
             BaseWeedItem activeWeedIngredient = WeedEffectHelper.getActiveWeedIngredient(mainHandItem);
 
             if (tag.contains("duration") && activeWeedIngredient != null) {
-                int duration = tag.getInt("duration");
+                int duration = tag.getInt("duration").orElse(0);
 
                 MobEffect rawEffect = activeWeedIngredient.getEffect();
                 Holder<MobEffect> effectHolder = mobEffectToHolder(rawEffect, level);
@@ -165,7 +165,7 @@ public class WeedDerivedItem extends Item {
                 return;
             }
             tooltipComponents.add(WeedEffectHelper.getEffectTooltip(activeIngredient.getEffect(),
-                    tag.getInt("duration"), !activeIngredient.isVariableDuration()));
+                    tag.getInt("duration").orElse(0), !activeIngredient.isVariableDuration()));
         }
     }
 
