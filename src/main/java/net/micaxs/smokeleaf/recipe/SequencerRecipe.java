@@ -116,7 +116,7 @@ public record SequencerRecipe(Ingredient dnaIngredient,
 
     @Override
     public net.minecraft.world.item.crafting.RecipeBookCategory recipeBookCategory() {
-        return net.minecraft.world.item.crafting.RecipeBookCategory.UNKNOWN;
+        return net.minecraft.world.item.crafting.RecipeBookCategories.CRAFTING_MISC;
     }
 
 

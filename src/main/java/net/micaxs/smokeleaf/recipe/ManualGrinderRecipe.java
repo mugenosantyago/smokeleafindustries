@@ -78,7 +78,7 @@ public record ManualGrinderRecipe(Ingredient ingredient, ItemStack result, int g
 
     @Override
     public net.minecraft.world.item.crafting.RecipeBookCategory recipeBookCategory() {
-        return net.minecraft.world.item.crafting.RecipeBookCategory.UNKNOWN;
+        return net.minecraft.world.item.crafting.RecipeBookCategories.CRAFTING_MISC;
     }
 
 

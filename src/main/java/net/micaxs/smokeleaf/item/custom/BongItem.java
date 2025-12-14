@@ -25,7 +25,6 @@ public class BongItem extends Item {
         super(properties);
     }
 
-    @Override
     // @Override - temporarily removed to check base class signature
     // public @NotNull UseAnim getUseAnimation(ItemStack stack) {
     //     return UseAnim.DRINK;
