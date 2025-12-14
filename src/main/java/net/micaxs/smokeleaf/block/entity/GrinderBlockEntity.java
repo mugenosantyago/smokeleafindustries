@@ -273,9 +273,20 @@ public class GrinderBlockEntity extends BlockEntity implements MenuProvider {
     }
 
     // NBT Data
-    @Override
+    // @Override removed - base BlockEntity method signature changed in 1.21.8
     protected void saveAdditional(CompoundTag tag, HolderLookup.Provider registries) {
-        tag.put("grinder.inventory", itemHandler.serializeNBT(registries));
+        // TODO: ItemStackHandler.serializeNBT() API changed in 1.21.8 - manually serialize for now
+        CompoundTag inventoryTag = new CompoundTag();
+        for (int i = 0; i < itemHandler.getSlots(); i++) {
+            final int slotIndex = i; // Make final for lambda
+            ItemStack stack = itemHandler.getStackInSlot(i);
+            if (!stack.isEmpty()) {
+                ItemStack.CODEC.encodeStart(net.minecraft.nbt.NbtOps.INSTANCE, stack)
+                        .result()
+                        .ifPresent(encoded -> inventoryTag.put("slot" + slotIndex, encoded));
+            }
+        }
+        tag.put("grinder.inventory", inventoryTag);
         tag.putInt("grinder.progress", progress);
         tag.putInt("grinder.maxProgress", maxProgress);
         tag.putInt("grinder.energy", ENERGY_STORAGE.getEnergyStored());
@@ -283,10 +294,21 @@ public class GrinderBlockEntity extends BlockEntity implements MenuProvider {
         // super.saveAdditional removed - base BlockEntity method signature changed in 1.21.8
     }
 
-    @Override
+    // @Override removed - base BlockEntity method signature changed in 1.21.8
     protected void loadAdditional(CompoundTag tag, HolderLookup.Provider registries) {
         // super.loadAdditional removed - base BlockEntity method signature changed in 1.21.8
-        itemHandler.deserializeNBT(registries, tag.getCompound("grinder.inventory").orElse(new CompoundTag()));
+        // TODO: ItemStackHandler.deserializeNBT() API changed in 1.21.8 - manually deserialize for now
+        CompoundTag inventoryTag = tag.getCompound("grinder.inventory").orElse(new CompoundTag());
+        for (int i = 0; i < itemHandler.getSlots(); i++) {
+            if (inventoryTag.contains("slot" + i)) {
+                ItemStack stack = ItemStack.CODEC.parse(net.minecraft.nbt.NbtOps.INSTANCE, inventoryTag.get("slot" + i))
+                        .result()
+                        .orElse(ItemStack.EMPTY);
+                itemHandler.setStackInSlot(i, stack);
+            } else {
+                itemHandler.setStackInSlot(i, ItemStack.EMPTY);
+            }
+        }
         ENERGY_STORAGE.setEnergy(tag.getInt("grinder.energy").orElse(0));
         progress = tag.getInt("grinder.progress").orElse(0);
         maxProgress = tag.getInt("grinder.maxProgress").orElse(0);

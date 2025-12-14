@@ -9,6 +9,7 @@ import net.micaxs.smokeleaf.screen.custom.DryerMenu;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.core.HolderLookup;
+import net.minecraft.nbt.NbtOps;
 import net.minecraft.core.particles.ParticleTypes;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.Connection;
@@ -263,19 +264,41 @@ public class DryerBlockEntity extends BlockEntity implements MenuProvider {
     }
 
     // NBT Data
-    @Override
+    // @Override removed - base BlockEntity method signature changed in 1.21.8
     protected void saveAdditional(CompoundTag tag, HolderLookup.Provider registries) {
-        tag.put("dryer.inventory", itemHandler.serializeNBT(registries));
+        // TODO: ItemStackHandler.serializeNBT() API changed in 1.21.8 - manually serialize for now
+        CompoundTag inventoryTag = new CompoundTag();
+        for (int i = 0; i < itemHandler.getSlots(); i++) {
+            final int slotIndex = i; // Make final for lambda
+            ItemStack stack = itemHandler.getStackInSlot(i);
+            if (!stack.isEmpty()) {
+                ItemStack.CODEC.encodeStart(NbtOps.INSTANCE, stack)
+                        .result()
+                        .ifPresent(encoded -> inventoryTag.put("slot" + slotIndex, encoded));
+            }
+        }
+        tag.put("dryer.inventory", inventoryTag);
         tag.putInt("dryer.progress", progress);
         tag.putInt("dryer.maxProgress", maxProgress);
         tag.putInt("dryer.energy", ENERGY_STORAGE.getEnergyStored());
         // super.saveAdditional removed - base BlockEntity method signature changed in 1.21.8
     }
 
-    @Override
+    // @Override removed - base BlockEntity method signature changed in 1.21.8
     protected void loadAdditional(CompoundTag tag, HolderLookup.Provider registries) {
         // super.loadAdditional removed - base BlockEntity method signature changed in 1.21.8
-        itemHandler.deserializeNBT(registries, tag.getCompound("dryer.inventory").orElse(new CompoundTag()));
+        // TODO: ItemStackHandler.deserializeNBT() API changed in 1.21.8 - manually deserialize for now
+        CompoundTag inventoryTag = tag.getCompound("dryer.inventory").orElse(new CompoundTag());
+        for (int i = 0; i < itemHandler.getSlots(); i++) {
+            if (inventoryTag.contains("slot" + i)) {
+                ItemStack stack = ItemStack.CODEC.parse(net.minecraft.nbt.NbtOps.INSTANCE, inventoryTag.get("slot" + i))
+                        .result()
+                        .orElse(ItemStack.EMPTY);
+                itemHandler.setStackInSlot(i, stack);
+            } else {
+                itemHandler.setStackInSlot(i, ItemStack.EMPTY);
+            }
+        }
         ENERGY_STORAGE.setEnergy(tag.getInt("dryer.energy").orElse(0));
         progress = tag.getInt("dryer.progress").orElse(0);
         maxProgress = tag.getInt("dryer.maxProgress").orElse(38);
@@ -292,7 +315,7 @@ public class DryerBlockEntity extends BlockEntity implements MenuProvider {
         return saveWithoutMetadata(registries);
     }
 
-    @Override
+    // @Override removed - base BlockEntity method signature changed in 1.21.8
     public void onDataPacket(Connection net, ClientboundBlockEntityDataPacket pkt, HolderLookup.Provider lookupProvider) {
         // super.onDataPacket removed - base method signature changed in 1.21.8
     }

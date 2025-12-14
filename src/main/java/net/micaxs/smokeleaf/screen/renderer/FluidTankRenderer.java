@@ -100,12 +100,13 @@ public class FluidTankRenderer {
     }
 
     private static void drawTiledSprite(GuiGraphics guiGraphics, final int x, final int y, final int tiledWidth, final int tiledHeight, int color, long scaledAmount, TextureAtlasSprite sprite) {
-        // Use GuiGraphics methods directly - manual matrix access changed in 1.21.8
-        // Extract color components for tinting
-        float red = (color >> 16 & 0xFF) / 255.0F;
-        float green = (color >> 8 & 0xFF) / 255.0F;
-        float blue = (color & 0xFF) / 255.0F;
-        float alpha = ((color >> 24) & 0xFF) / 255F;
+        // TODO: Color tinting - RenderSystem.setShaderColor() may have been removed in 1.21.8
+        // For now, render without color tinting - need to find correct API for color application
+        // Extract color components (not used currently)
+        // float red = (color >> 16 & 0xFF) / 255.0F;
+        // float green = (color >> 8 & 0xFF) / 255.0F;
+        // float blue = (color & 0xFF) / 255.0F;
+        // float alpha = ((color >> 24) & 0xFF) / 255F;
 
         final int xTileCount = tiledWidth / TEXTURE_SIZE;
         final int xRemainder = tiledWidth - (xTileCount * TEXTURE_SIZE);
@@ -113,6 +114,7 @@ public class FluidTankRenderer {
         final long yRemainder = scaledAmount - (yTileCount * TEXTURE_SIZE);
 
         final int yStart = y + tiledHeight;
+        ResourceLocation atlas = sprite.atlasLocation();
 
         for (int xTile = 0; xTile <= xTileCount; xTile++) {
             for (int yTile = 0; yTile <= yTileCount; yTile++) {
@@ -125,23 +127,20 @@ public class FluidTankRenderer {
                     int maskTop = (int)(TEXTURE_SIZE - currentHeight);
                     int maskRight = TEXTURE_SIZE - currentWidth;
                     
-                    // Use GuiGraphics.blit with color tinting - API changed in 1.21.8
                     // Calculate UV coordinates with masking
-                    float u0 = sprite.getU0();
-                    float u1 = sprite.getU1() - (maskRight / 16F * (sprite.getU1() - sprite.getU0()));
-                    float v0 = sprite.getV0() + (maskTop / 16F * (sprite.getV1() - sprite.getV0()));
-                    float v1 = sprite.getV1();
+                    int spriteWidth = sprite.contents().width();
+                    int spriteHeight = sprite.contents().height();
+                    int u0 = (int)(sprite.getU0() * spriteWidth);
+                    int u1 = (int)((sprite.getU1() - (maskRight / 16F * (sprite.getU1() - sprite.getU0()))) * spriteWidth);
+                    int v0 = (int)((sprite.getV0() + (maskTop / 16F * (sprite.getV1() - sprite.getV0()))) * spriteHeight);
+                    int v1 = (int)(sprite.getV1() * spriteHeight);
                     
-                    // Render using GuiGraphics with color tint
-                    guiGraphics.setColor(red, green, blue, alpha);
-                    guiGraphics.blit(sprite.atlasLocation(), drawX, drawY + maskTop, 0, 
-                            (int)(u0 * sprite.contents().width()), (int)(v0 * sprite.contents().height()),
-                            currentWidth, (int)currentHeight, 
-                            sprite.contents().width(), sprite.contents().height());
-                    guiGraphics.setColor(1.0f, 1.0f, 1.0f, 1.0f); // Reset color
+                    // Use GuiGraphics.blit with ResourceLocation - API signature: blit(ResourceLocation, int x, int y, int uOffset, int vOffset, int uWidth, int vHeight, int textureWidth, int textureHeight)
+                    guiGraphics.blit(atlas, drawX, drawY + maskTop, u0, v0, currentWidth, (int)currentHeight, spriteWidth, spriteHeight);
                 }
             }
         }
+        // Color reset not needed if we're not setting color
     }
 
     public List<Component> getTooltip(FluidStack fluidStack, TooltipFlag tooltipFlag) {

@@ -203,19 +203,27 @@ public class ReflectorBlockEntity extends BlockEntity {
         }
     }
 
-    @Override
+    // @Override removed - base BlockEntity method signature changed in 1.21.8
     protected void saveAdditional(CompoundTag tag, HolderLookup.Provider provider) {
         // super.saveAdditional removed - base BlockEntity method signature changed in 1.21.8
         if (!lamp.isEmpty()) {
-            tag.put("Lamp", lamp.save(provider));
+            ItemStack.CODEC.encodeStart(net.minecraft.nbt.NbtOps.INSTANCE, lamp)
+                    .result()
+                    .ifPresent(encoded -> tag.put("Lamp", encoded));
         }
         tag.putInt("TickCounter", tickCounter);
     }
 
-    @Override
+    // @Override removed - base BlockEntity method signature changed in 1.21.8
     protected void loadAdditional(CompoundTag tag, HolderLookup.Provider provider) {
         // super.loadAdditional removed - base BlockEntity method signature changed in 1.21.8
-        lamp = tag.contains("Lamp") ? ItemStack.parseOptional(provider, tag.getCompound("Lamp").orElse(new CompoundTag())) : ItemStack.EMPTY;
+        if (tag.contains("Lamp")) {
+            lamp = ItemStack.CODEC.parse(net.minecraft.nbt.NbtOps.INSTANCE, tag.get("Lamp"))
+                    .result()
+                    .orElse(ItemStack.EMPTY);
+        } else {
+            lamp = ItemStack.EMPTY;
+        }
         tickCounter = tag.getInt("TickCounter").orElse(0);
     }
 

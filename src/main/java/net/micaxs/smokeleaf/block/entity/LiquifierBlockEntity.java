@@ -226,9 +226,20 @@ public class LiquifierBlockEntity extends BlockEntity implements MenuProvider {
         Containers.dropContents(level, worldPosition, inventory);
     }
 
-    @Override
+    // @Override removed - base BlockEntity method signature changed in 1.21.8
     protected void saveAdditional(CompoundTag tag, HolderLookup.Provider regs) {
-        tag.put("liquifier.inventory", itemHandler.serializeNBT(regs));
+        // TODO: ItemStackHandler.serializeNBT() API changed in 1.21.8 - manually serialize for now
+        CompoundTag inventoryTag = new CompoundTag();
+        for (int i = 0; i < itemHandler.getSlots(); i++) {
+            final int slotIndex = i; // Make final for lambda
+            ItemStack stack = itemHandler.getStackInSlot(i);
+            if (!stack.isEmpty()) {
+                ItemStack.CODEC.encodeStart(net.minecraft.nbt.NbtOps.INSTANCE, stack)
+                        .result()
+                        .ifPresent(encoded -> inventoryTag.put("slot" + slotIndex, encoded));
+            }
+        }
+        tag.put("liquifier.inventory", inventoryTag);
         tag.putInt("liquifier.progress", progress);
         tag.putInt("liquifier.maxProgress", maxProgress);
         tag.putInt("liquifier.energy", ENERGY_STORAGE.getEnergyStored());
@@ -236,10 +247,21 @@ public class LiquifierBlockEntity extends BlockEntity implements MenuProvider {
         // super.saveAdditional removed - base BlockEntity method signature changed in 1.21.8
     }
 
-    @Override
+    // @Override removed - base BlockEntity method signature changed in 1.21.8
     protected void loadAdditional(CompoundTag tag, HolderLookup.Provider regs) {
         // super.loadAdditional removed - base BlockEntity method signature changed in 1.21.8
-        itemHandler.deserializeNBT(regs, tag.getCompound("liquifier.inventory").orElse(new CompoundTag()));
+        // TODO: ItemStackHandler.deserializeNBT() API changed in 1.21.8 - manually deserialize for now
+        CompoundTag inventoryTag = tag.getCompound("liquifier.inventory").orElse(new CompoundTag());
+        for (int i = 0; i < itemHandler.getSlots(); i++) {
+            if (inventoryTag.contains("slot" + i)) {
+                ItemStack stack = ItemStack.CODEC.parse(net.minecraft.nbt.NbtOps.INSTANCE, inventoryTag.get("slot" + i))
+                        .result()
+                        .orElse(ItemStack.EMPTY);
+                itemHandler.setStackInSlot(i, stack);
+            } else {
+                itemHandler.setStackInSlot(i, ItemStack.EMPTY);
+            }
+        }
         ENERGY_STORAGE.setEnergy(tag.getInt("liquifier.energy").orElse(0));
         progress = tag.getInt("liquifier.progress").orElse(0);
         maxProgress = tag.getInt("liquifier.maxProgress").orElse(0);

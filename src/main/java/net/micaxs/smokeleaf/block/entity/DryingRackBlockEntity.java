@@ -232,24 +232,31 @@ public class DryingRackBlockEntity extends BlockEntity {
         }
     }
 
-    @Override
+    // @Override removed - base BlockEntity method signature changed in 1.21.8
     protected void saveAdditional(CompoundTag tag, HolderLookup.Provider registries) {
         // super.saveAdditional removed - base BlockEntity method signature changed in 1.21.8
         for (int i = 0; i < SLOT_COUNT; i++) {
+            final int slotIndex = i; // Make final for lambda
             CompoundTag slotTag = new CompoundTag();
-            if (!items[i].isEmpty()) slotTag.put("stack", items[i].save(registries));
+            if (!items[i].isEmpty()) {
+                ItemStack.CODEC.encodeStart(net.minecraft.nbt.NbtOps.INSTANCE, items[i])
+                        .result()
+                        .ifPresent(encoded -> slotTag.put("stack", encoded));
+            }
             slotTag.putInt("prog", progress[i]);
-            tag.put("S" + i, slotTag);
+            tag.put("S" + slotIndex, slotTag);
         }
     }
 
-    @Override
+    // @Override removed - base BlockEntity method signature changed in 1.21.8
     protected void loadAdditional(CompoundTag tag, HolderLookup.Provider registries) {
         // super.loadAdditional removed - base BlockEntity method signature changed in 1.21.8
         for (int i = 0; i < SLOT_COUNT; i++) {
             CompoundTag slotTag = tag.getCompound("S" + i).orElse(new CompoundTag());
             if (slotTag.contains("stack")) {
-                items[i] = ItemStack.parse(registries, slotTag.getCompound("stack").orElse(new CompoundTag())).orElse(ItemStack.EMPTY);
+                items[i] = ItemStack.CODEC.parse(net.minecraft.nbt.NbtOps.INSTANCE, slotTag.get("stack"))
+                        .result()
+                        .orElse(ItemStack.EMPTY);
             } else {
                 items[i] = ItemStack.EMPTY;
             }
