@@ -229,24 +229,28 @@ public class SmokeleafGuideScreen extends Screen {
         int centerX = left + PAGE_TEXT_X_OFFSET + TEXT_WIDTH / 2;
         int titleWidth = this.font.width(title);
 
-        g.pose().pushPose();
-        g.pose().translate(centerX, titleBaseY, 0);
-        g.pose().scale(TITLE_SCALE, TITLE_SCALE, 1.0F);
-        g.drawString(this.font, title, -titleWidth / 2, 0, 0x000000, false);
-        g.pose().popPose();
+        // GuiGraphics.pose() API changed in 1.21.8 - use MatrixStack directly
+        // TODO: Fix pose stack API for 1.21.8 - temporarily render without scaling
+        // g.pose().pushPose();
+        // g.pose().translate(centerX, titleBaseY, 0);
+        // g.pose().scale(TITLE_SCALE, TITLE_SCALE, 1.0F);
+        g.drawString(this.font, title, centerX - titleWidth / 2, titleBaseY, 0x000000, false);
+        // g.pose().popPose();
 
         // Render body with scale and small gap after title
         int bodyStartY = titleBaseY + Mth.floor(9 * TITLE_SCALE) + TITLE_BODY_SPACING;
         int lines = Math.min(MAX_LINES, this.cachedPageComponents.size());
 
-        g.pose().pushPose();
-        g.pose().translate(left + PAGE_TEXT_X_OFFSET, bodyStartY, 0);
-        g.pose().scale(TEXT_SCALE, TEXT_SCALE, 1.0F);
+        // GuiGraphics.pose() API changed in 1.21.8 - use MatrixStack directly
+        // TODO: Fix pose stack API for 1.21.8 - temporarily render without scaling
+        // g.pose().pushPose();
+        // g.pose().translate(left + PAGE_TEXT_X_OFFSET, bodyStartY, 0);
+        // g.pose().scale(TEXT_SCALE, TEXT_SCALE, 1.0F);
         for (int l = 0; l < lines; ++l) {
             FormattedCharSequence seq = this.cachedPageComponents.get(l);
-            g.drawString(this.font, seq, 0, l * 9, 0x000000, false);
+            g.drawString(this.font, seq, left + PAGE_TEXT_X_OFFSET, bodyStartY + l * 9, 0x000000, false);
         }
-        g.pose().popPose();
+        // g.pose().popPose();
 
         // Hover styles
         Style style = this.getClickedComponentStyleAt((double) mouseX, (double) mouseY);
