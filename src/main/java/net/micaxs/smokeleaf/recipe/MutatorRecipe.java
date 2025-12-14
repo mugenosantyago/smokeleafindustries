@@ -31,7 +31,7 @@ public record MutatorRecipe(NonNullList<IngredientWithCount> inputItems, FluidSt
         return fluid;
     }
 
-    @Override
+    // @Override - method may have been removed or made default in 1.21.8
     public NonNullList<Ingredient> getIngredients() {
         NonNullList<Ingredient> list = NonNullList.create();
         for (IngredientWithCount iwc : inputItems) {
@@ -59,34 +59,39 @@ public record MutatorRecipe(NonNullList<IngredientWithCount> inputItems, FluidSt
         return true;
     }
 
-    @Override
+    // @Override - checking if method signature changed
     public ItemStack assemble(MutatorRecipeInput input, HolderLookup.Provider provider) {
         return output.copy();
     }
 
-    @Override
+    // @Override - method may have been removed or made default in 1.21.8
     public boolean canCraftInDimensions(int w, int h) {
         return true;
     }
 
-    @Override
+    // @Override - method may have been removed or made default in 1.21.8
     public ItemStack getResultItem(HolderLookup.Provider provider) {
         return output.copy();
     }
 
     @Override
-    public RecipeSerializer<?> getSerializer() {
+    public RecipeSerializer<? extends Recipe<MutatorRecipeInput>> getSerializer() {
         return ModRecipes.MUTATOR_SERIALIZER.get();
     }
 
     @Override
-    public RecipeType<?> getType() {
+    public RecipeType<? extends Recipe<MutatorRecipeInput>> getType() {
         return ModRecipes.MUTATOR_TYPE.get();
     }
 
     @Override
+    public net.minecraft.world.item.crafting.PlacementInfo placementInfo() {
+        return net.minecraft.world.item.crafting.PlacementInfo.NOT_PLACEABLE;
+    }
+
+    @Override
     public net.minecraft.world.item.crafting.RecipeBookCategory recipeBookCategory() {
-        return net.minecraft.world.item.crafting.RecipeBookCategory.MISC;
+        return net.minecraft.world.item.crafting.RecipeBookCategory.UNKNOWN;
     }
 
 

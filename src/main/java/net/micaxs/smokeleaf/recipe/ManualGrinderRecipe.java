@@ -25,7 +25,7 @@ public record ManualGrinderRecipe(Ingredient ingredient, ItemStack result, int g
         return ingredient.test(input.getItem(0));
     }
 
-    @Override
+    // @Override - checking if method signature changed
     public ItemStack assemble(ManualGrinderInput input, HolderLookup.Provider provider) {
         ItemStack out = result.copy();
         ItemStack in = input.getItem(0);
@@ -51,36 +51,41 @@ public record ManualGrinderRecipe(Ingredient ingredient, ItemStack result, int g
         return list;
     }
 
-    @Override
+    // @Override - method may have been removed or made default in 1.21.8
     public boolean canCraftInDimensions(int w, int h) {
         return true;
     }
 
-    @Override
+    // @Override - method may have been removed or made default in 1.21.8
     public ItemStack getResultItem(HolderLookup.Provider provider) {
         return result.copy();
     }
 
     @Override
-    public RecipeSerializer<?> getSerializer() {
+    public RecipeSerializer<? extends Recipe<ManualGrinderInput>> getSerializer() {
         return ModRecipes.MANUAL_GRINDER_SERIALIZER.get();
     }
 
     @Override
-    public RecipeType<?> getType() {
+    public RecipeType<? extends Recipe<ManualGrinderInput>> getType() {
         return ModRecipes.MANUAL_GRINDER_TYPE.get();
     }
 
     @Override
+    public net.minecraft.world.item.crafting.PlacementInfo placementInfo() {
+        return net.minecraft.world.item.crafting.PlacementInfo.NOT_PLACEABLE;
+    }
+
+    @Override
     public net.minecraft.world.item.crafting.RecipeBookCategory recipeBookCategory() {
-        return net.minecraft.world.item.crafting.RecipeBookCategory.MISC;
+        return net.minecraft.world.item.crafting.RecipeBookCategory.UNKNOWN;
     }
 
 
 
     public static class Serializer implements RecipeSerializer<ManualGrinderRecipe> {
         public static final MapCodec<ManualGrinderRecipe> CODEC = RecordCodecBuilder.mapCodec(inst -> inst.group(
-                Ingredient.CODEC_NONEMPTY.fieldOf("ingredient").forGetter(ManualGrinderRecipe::ingredient),
+                Ingredient.CODEC.fieldOf("ingredient").forGetter(ManualGrinderRecipe::ingredient),
                 ItemStack.CODEC.fieldOf("result").forGetter(ManualGrinderRecipe::result),
                 Codec.INT.optionalFieldOf("grind_time", 40).forGetter(ManualGrinderRecipe::grindTime)
         ).apply(inst, ManualGrinderRecipe::new));

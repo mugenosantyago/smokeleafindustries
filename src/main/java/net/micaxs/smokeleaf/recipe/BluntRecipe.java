@@ -103,7 +103,7 @@ public class BluntRecipe extends CustomRecipe {
     }
 
     @Override
-    public RecipeSerializer<?> getSerializer() {
+    public RecipeSerializer<? extends CustomRecipe> getSerializer() {
         return ModRecipes.BLUNT_SERIALIZER.get();
     }
 

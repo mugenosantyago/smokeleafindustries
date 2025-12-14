@@ -56,20 +56,30 @@ public record DryingRecipe(Ingredient ingredient, ItemStack result, int time, bo
     }
 
     @Override
-    public RecipeSerializer<?> getSerializer() {
+    public RecipeSerializer<? extends Recipe<DryingRecipeInput>> getSerializer() {
         return ModRecipes.DRYING_SERIALIZER.get();
     }
 
     @Override
-    public RecipeType<?> getType() {
+    public RecipeType<? extends Recipe<DryingRecipeInput>> getType() {
         return ModRecipes.DRYING_TYPE.get();
+    }
+
+    @Override
+    public net.minecraft.world.item.crafting.RecipeBookCategory recipeBookCategory() {
+        return net.minecraft.world.item.crafting.RecipeBookCategory.UNKNOWN;
+    }
+
+    @Override
+    public net.minecraft.world.item.crafting.PlacementInfo placementInfo() {
+        return net.minecraft.world.item.crafting.PlacementInfo.NOT_PLACEABLE;
     }
 
     public static class Serializer implements RecipeSerializer<DryingRecipe> {
 
         // JSON codec (result optional)
         public static final MapCodec<DryingRecipe> CODEC = RecordCodecBuilder.mapCodec(inst -> inst.group(
-                Ingredient.CODEC_NONEMPTY.fieldOf("ingredient").forGetter(DryingRecipe::ingredient),
+                Ingredient.CODEC.fieldOf("ingredient").forGetter(DryingRecipe::ingredient),
                 ItemStack.CODEC.optionalFieldOf("result", ItemStack.EMPTY)
                         .forGetter(r -> r.result().isEmpty() ? ItemStack.EMPTY : r.result()),
                 Codec.INT.optionalFieldOf("time", 200).forGetter(DryingRecipe::time),

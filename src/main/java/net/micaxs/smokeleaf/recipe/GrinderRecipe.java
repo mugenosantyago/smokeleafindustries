@@ -15,9 +15,12 @@ import net.minecraft.world.item.crafting.RecipeSerializer;
 import net.minecraft.world.item.crafting.RecipeType;
 import net.minecraft.world.level.Level;
 
+import java.util.Collections;
+import it.unimi.dsi.fastutil.ints.IntList;
+
 public record GrinderRecipe(Ingredient inputItem, ItemStack output) implements Recipe<GrinderRecipeInput> {
 
-    @Override
+    // @Override - method may have been removed or made default in 1.21.8
     public NonNullList<Ingredient> getIngredients() {
         NonNullList<Ingredient> list = NonNullList.create();
         list.add(inputItem);
@@ -30,7 +33,7 @@ public record GrinderRecipe(Ingredient inputItem, ItemStack output) implements R
         return inputItem.test(grinderRecipeInput.getItem(0));
     }
 
-    @Override
+    // @Override - checking if method signature changed
     public ItemStack assemble(GrinderRecipeInput grinderRecipeInput, HolderLookup.Provider provider) {
         ItemStack out = output.copy();
         ItemStack in = grinderRecipeInput.getItem(0);
@@ -52,36 +55,41 @@ public record GrinderRecipe(Ingredient inputItem, ItemStack output) implements R
         return out;
     }
 
-    @Override
+    // @Override - method may have been removed or made default in 1.21.8
     public boolean canCraftInDimensions(int i, int i1) {
         return true;
     }
 
-    @Override
+    // @Override - method may have been removed or made default in 1.21.8
     public ItemStack getResultItem(HolderLookup.Provider provider) {
         return output.copy();
     }
 
     @Override
-    public RecipeSerializer<?> getSerializer() {
+    public RecipeSerializer<? extends Recipe<GrinderRecipeInput>> getSerializer() {
         return ModRecipes.GRINDER_SERIALIZER.get();
     }
 
     @Override
-    public RecipeType<?> getType() {
+    public RecipeType<? extends Recipe<GrinderRecipeInput>> getType() {
         return ModRecipes.GRINDER_TYPE.get();
     }
 
     @Override
     public net.minecraft.world.item.crafting.RecipeBookCategory recipeBookCategory() {
-        return net.minecraft.world.item.crafting.RecipeBookCategory.MISC;
+        return net.minecraft.world.item.crafting.RecipeBookCategory.UNKNOWN;
+    }
+
+    @Override
+    public net.minecraft.world.item.crafting.PlacementInfo placementInfo() {
+        return net.minecraft.world.item.crafting.PlacementInfo.NOT_PLACEABLE;
     }
 
 
 
     public static class Serializer implements RecipeSerializer<GrinderRecipe> {
         public static final MapCodec<GrinderRecipe> CODEC = RecordCodecBuilder.mapCodec(inst -> inst.group(
-                Ingredient.CODEC_NONEMPTY.fieldOf("ingredient").forGetter(GrinderRecipe::inputItem),
+                Ingredient.CODEC.fieldOf("ingredient").forGetter(GrinderRecipe::inputItem),
                 ItemStack.CODEC.fieldOf("result").forGetter(GrinderRecipe::output)
         ).apply(inst, GrinderRecipe::new));
 

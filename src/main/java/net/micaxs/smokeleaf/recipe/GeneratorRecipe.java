@@ -28,22 +28,22 @@ public record GeneratorRecipe(Ingredient ingredient, int totalEnergy) implements
         return ingredient.test(input.getItem(0));
     }
 
-    @Override
+    // @Override - checking if method signature changed
     public ItemStack assemble(GeneratorRecipeInput input, HolderLookup.Provider provider) {
         return ItemStack.EMPTY;
     }
 
-    @Override
+    // @Override - method may have been removed or made default in 1.21.8
     public boolean canCraftInDimensions(int w, int h) {
         return true;
     }
 
-    @Override
+    // @Override - method may have been removed or made default in 1.21.8
     public ItemStack getResultItem(HolderLookup.Provider provider) {
         return ItemStack.EMPTY;
     }
 
-    @Override
+    // @Override - method may have been removed or made default in 1.21.8
     public NonNullList<Ingredient> getIngredients() {
         NonNullList<Ingredient> list = NonNullList.create();
         list.add(ingredient);
@@ -51,25 +51,30 @@ public record GeneratorRecipe(Ingredient ingredient, int totalEnergy) implements
     }
 
     @Override
-    public RecipeSerializer<?> getSerializer() {
+    public RecipeSerializer<? extends Recipe<GeneratorRecipeInput>> getSerializer() {
         return ModRecipes.GENERATOR_SERIALIZER.get();
     }
 
     @Override
-    public RecipeType<?> getType() {
+    public RecipeType<? extends Recipe<GeneratorRecipeInput>> getType() {
         return ModRecipes.GENERATOR_TYPE.get();
     }
 
     @Override
+    public net.minecraft.world.item.crafting.PlacementInfo placementInfo() {
+        return net.minecraft.world.item.crafting.PlacementInfo.NOT_PLACEABLE;
+    }
+
+    @Override
     public net.minecraft.world.item.crafting.RecipeBookCategory recipeBookCategory() {
-        return net.minecraft.world.item.crafting.RecipeBookCategory.MISC;
+        return net.minecraft.world.item.crafting.RecipeBookCategory.UNKNOWN;
     }
 
 
 
     public static class Serializer implements RecipeSerializer<GeneratorRecipe> {
         public static final MapCodec<GeneratorRecipe> CODEC = RecordCodecBuilder.mapCodec(inst -> inst.group(
-                Ingredient.CODEC_NONEMPTY.fieldOf("ingredient").forGetter(GeneratorRecipe::ingredient),
+                Ingredient.CODEC.fieldOf("ingredient").forGetter(GeneratorRecipe::ingredient),
                 com.mojang.serialization.Codec.INT.fieldOf("total_energy").forGetter(GeneratorRecipe::totalEnergy)
         ).apply(inst, GeneratorRecipe::new));
 

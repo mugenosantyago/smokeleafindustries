@@ -89,34 +89,39 @@ public record SequencerRecipe(Ingredient dnaIngredient,
         return result.copy();
     }
 
-    @Override
+    // @Override - method may have been removed or made default in 1.21.8
     public boolean canCraftInDimensions(int w, int h) {
         return true;
     }
 
-    @Override
+    // @Override - method may have been removed or made default in 1.21.8
     public ItemStack getResultItem(HolderLookup.Provider provider) {
         return result.copy();
     }
 
     @Override
-    public RecipeSerializer<?> getSerializer() {
+    public RecipeSerializer<? extends Recipe<SequencerRecipeInput>> getSerializer() {
         return ModRecipes.SEQUENCER_SERIALIZER.get();
     }
 
     @Override
-    public RecipeType<?> getType() {
+    public RecipeType<? extends Recipe<SequencerRecipeInput>> getType() {
         return ModRecipes.SEQUENCER_TYPE.get();
     }
 
     @Override
+    public net.minecraft.world.item.crafting.PlacementInfo placementInfo() {
+        return net.minecraft.world.item.crafting.PlacementInfo.NOT_PLACEABLE;
+    }
+
+    @Override
     public net.minecraft.world.item.crafting.RecipeBookCategory recipeBookCategory() {
-        return net.minecraft.world.item.crafting.RecipeBookCategory.MISC;
+        return net.minecraft.world.item.crafting.RecipeBookCategory.UNKNOWN;
     }
 
 
 
-    @Override
+    // @Override - method may have been removed or made default in 1.21.8
     public NonNullList<Ingredient> getIngredients() {
         NonNullList<Ingredient> list = NonNullList.create();
         list.add(dnaIngredient);
@@ -135,8 +140,8 @@ public record SequencerRecipe(Ingredient dnaIngredient,
 
         private static final MapCodec<SequencerRecipe> CODEC = RecordCodecBuilder.mapCodec(instance ->
                 instance.group(
-                        Ingredient.CODEC_NONEMPTY.fieldOf("dna").forGetter(SequencerRecipe::dnaIngredient),
-                        Ingredient.CODEC_NONEMPTY.fieldOf("base_extract").forGetter(SequencerRecipe::baseExtractIngredient),
+                        Ingredient.CODEC.fieldOf("dna").forGetter(SequencerRecipe::dnaIngredient),
+                        Ingredient.CODEC.fieldOf("base_extract").forGetter(SequencerRecipe::baseExtractIngredient),
                         Ingredient.CODEC.listOf().fieldOf("required_reagents")
                                 .flatXmap(list -> list.size() == REAGENT_SLOTS
                                                 ? DataResult.success(list)

@@ -47,33 +47,38 @@ public record SynthesizerRecipe(Ingredient dnaIngredient,
         return filled;
     }
 
-    @Override
+    // @Override - method may have been removed or made default in 1.21.8
     public boolean canCraftInDimensions(int w, int h) {
         return true;
     }
 
-    @Override
+    // @Override - method may have been removed or made default in 1.21.8
     public ItemStack getResultItem(HolderLookup.Provider provider) {
         return result.copy();
     }
 
     @Override
-    public RecipeSerializer<?> getSerializer() {
+    public RecipeSerializer<? extends Recipe<SynthesizerRecipeInput>> getSerializer() {
         return ModRecipes.SYNTHESIZER_SERIALIZER.get();
     }
 
     @Override
-    public RecipeType<?> getType() {
+    public RecipeType<? extends Recipe<SynthesizerRecipeInput>> getType() {
         return ModRecipes.SYNTHESIZER_TYPE.get();
     }
 
     @Override
+    public net.minecraft.world.item.crafting.PlacementInfo placementInfo() {
+        return net.minecraft.world.item.crafting.PlacementInfo.NOT_PLACEABLE;
+    }
+
+    @Override
     public net.minecraft.world.item.crafting.RecipeBookCategory recipeBookCategory() {
-        return net.minecraft.world.item.crafting.RecipeBookCategory.MISC;
+        return net.minecraft.world.item.crafting.RecipeBookCategory.UNKNOWN;
     }
 
 
-    @Override
+    // @Override - method may have been removed or made default in 1.21.8
     public NonNullList<Ingredient> getIngredients() {
         NonNullList<Ingredient> list = NonNullList.create();
         list.add(dnaIngredient);
@@ -84,7 +89,7 @@ public record SynthesizerRecipe(Ingredient dnaIngredient,
 
         private static final MapCodec<SynthesizerRecipe> CODEC = RecordCodecBuilder.mapCodec(instance ->
                 instance.group(
-                        Ingredient.CODEC_NONEMPTY.fieldOf("ingredient").forGetter(SynthesizerRecipe::dnaIngredient),
+                        Ingredient.CODEC.fieldOf("ingredient").forGetter(SynthesizerRecipe::dnaIngredient),
                         ItemStack.CODEC.fieldOf("result").forGetter(SynthesizerRecipe::result)
                 ).apply(instance, SynthesizerRecipe::new)
         );

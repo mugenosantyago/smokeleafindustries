@@ -96,7 +96,7 @@ public class JointRecipe extends CustomRecipe {
     }
 
     @Override
-    public RecipeSerializer<?> getSerializer() {
+    public RecipeSerializer<? extends CustomRecipe> getSerializer() {
         return ModRecipes.JOINT_SERIALIZER.get();
     }
 

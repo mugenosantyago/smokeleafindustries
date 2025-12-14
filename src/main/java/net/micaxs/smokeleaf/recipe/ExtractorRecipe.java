@@ -13,9 +13,13 @@ import net.minecraft.world.item.crafting.RecipeSerializer;
 import net.minecraft.world.item.crafting.RecipeType;
 import net.minecraft.world.level.Level;
 
+import java.util.Collections;
+import java.util.List;
+import it.unimi.dsi.fastutil.ints.IntList;
+
 public record ExtractorRecipe(Ingredient inputItem, ItemStack output) implements Recipe<ExtractorRecipeInput> {
 
-    @Override
+    // @Override - method may have been removed or made default in 1.21.8
     public NonNullList<Ingredient> getIngredients() {
         NonNullList<Ingredient> list = NonNullList.create();
         list.add(inputItem);
@@ -36,42 +40,42 @@ public record ExtractorRecipe(Ingredient inputItem, ItemStack output) implements
         return output.copy();
     }
 
-    @Override
+    // @Override - method may have been removed or made default in 1.21.8
     public boolean canCraftInDimensions(int i, int i1) {
         return true;
     }
 
-    @Override
+    // @Override - method may have been removed or made default in 1.21.8
     public ItemStack getResultItem(HolderLookup.Provider provider) {
         return output;
     }
 
     @Override
-    public RecipeSerializer<?> getSerializer() {
+    public RecipeSerializer<? extends Recipe<ExtractorRecipeInput>> getSerializer() {
         return ModRecipes.EXTRACTOR_SERIALIZER.get();
     }
 
     @Override
-    public RecipeType<?> getType() {
+    public RecipeType<? extends Recipe<ExtractorRecipeInput>> getType() {
         return ModRecipes.EXTRACTOR_TYPE.get();
     }
 
     @Override
     public net.minecraft.world.item.crafting.RecipeBookCategory recipeBookCategory() {
-        return net.minecraft.world.item.crafting.RecipeBookCategory.MISC;
+        return net.minecraft.world.item.crafting.RecipeBookCategory.UNKNOWN;
     }
 
-    // @Override - placementInfo() method signature needs to be checked
-    // public net.minecraft.world.item.crafting.RecipePlacementInfo placementInfo() {
-    //     return net.minecraft.world.item.crafting.RecipePlacementInfo.NONE;
-    // }
+    @Override
+    public net.minecraft.world.item.crafting.PlacementInfo placementInfo() {
+        return net.minecraft.world.item.crafting.PlacementInfo.NOT_PLACEABLE;
+    }
 
 
 
     public static class Serializer implements RecipeSerializer<ExtractorRecipe> {
         // Codec
         public static final MapCodec<ExtractorRecipe> CODEC = RecordCodecBuilder.mapCodec(inst -> inst.group(
-                Ingredient.CODEC_NONEMPTY.fieldOf("ingredient").forGetter(ExtractorRecipe::inputItem),
+                Ingredient.CODEC.fieldOf("ingredient").forGetter(ExtractorRecipe::inputItem),
                 ItemStack.CODEC.fieldOf("result").forGetter(ExtractorRecipe::output)
         ).apply(inst, ExtractorRecipe::new));
 
