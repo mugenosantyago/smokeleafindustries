@@ -53,10 +53,13 @@ public class DryerBlockEntity extends BlockEntity implements MenuProvider {
             if (slot != INPUT_SLOT) return false;
             if (stack.isEmpty() || level == null) return false;
 
-            return level.getRecipeManager()
-                    .getRecipeFor(ModRecipes.DRYING_TYPE.get(), new DryingRecipeInput(stack), level)
-                    .filter(r -> acceptsForMachine(r.value()))
-                    .isPresent();
+            if (level instanceof net.minecraft.server.level.ServerLevel serverLevel) {
+                return serverLevel.getServer().getRecipeManager()
+                        .getRecipeFor(ModRecipes.DRYING_TYPE.get(), new DryingRecipeInput(stack), level)
+                        .filter(r -> acceptsForMachine(r.value()))
+                        .isPresent();
+            }
+            return false;
         }
     };
 

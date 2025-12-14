@@ -89,8 +89,10 @@ public class DNAStrandItem extends Item {
         }
 
         // Iterate all Sequencer recipes; we only compare against their requiredReagents[]
-        List<RecipeHolder<SequencerRecipe>> recipes =
-                level.getRecipeManager().getAllRecipesFor(ModRecipes.SEQUENCER_TYPE.get());
+        List<RecipeHolder<SequencerRecipe>> recipes = List.of(); // TODO: Fix recipe access for 1.21.8
+        if (level instanceof net.minecraft.server.level.ServerLevel serverLevel) {
+            recipes = serverLevel.getServer().getRecipeManager().getAllRecipesFor(ModRecipes.SEQUENCER_TYPE.get());
+        }
 
         recipeLoop:
         for (RecipeHolder<SequencerRecipe> holder : recipes) {

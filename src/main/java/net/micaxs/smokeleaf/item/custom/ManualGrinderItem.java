@@ -114,7 +114,7 @@ public class ManualGrinderItem extends Item {
         if (level == null || ingredient.isEmpty()) return Optional.empty();
         ManualGrinderInput input = new ManualGrinderInput(ingredient.copyWithCount(1));
         if (level instanceof net.minecraft.server.level.ServerLevel serverLevel) {
-            return level.getRecipeManager()
+            return serverLevel.getServer().getRecipeManager()
                     .getRecipeFor(ModRecipes.MANUAL_GRINDER_TYPE.get(), input, level)
                     .map(holder -> holder.value());
         }
