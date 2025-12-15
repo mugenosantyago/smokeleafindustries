@@ -345,7 +345,7 @@ public class GrowPotBlockEntity extends BlockEntity {
         return null;
     }
 
-    @Override
+    // @Override removed - base BlockEntity method signature changed in 1.21.8
     protected void saveAdditional(CompoundTag tag, HolderLookup.Provider registries) {
         // super.saveAdditional removed - base BlockEntity method signature changed in 1.21.8
         Optional<ResourceLocation> soilId = soilState != null
@@ -362,7 +362,7 @@ public class GrowPotBlockEntity extends BlockEntity {
                 .ifPresent(encoded -> tag.put("Pot", encoded));
     }
 
-    @Override
+    // @Override removed - base BlockEntity method signature changed in 1.21.8
     protected void loadAdditional(CompoundTag tag, HolderLookup.Provider registries) {
         // super.loadAdditional removed - base BlockEntity method signature changed in 1.21.8
         this.soilState = null;
@@ -376,12 +376,18 @@ public class GrowPotBlockEntity extends BlockEntity {
                     .result()
                     .ifPresent(data -> {
                         data.soil().ifPresent(rl -> {
-                            Block b = BuiltInRegistries.BLOCK.get(rl);
-                            if (b != null) this.soilState = b.defaultBlockState();
+                            // BuiltInRegistries.BLOCK.get() now returns Optional<Reference<Block>>
+                            BuiltInRegistries.BLOCK.get(rl).ifPresent(ref -> {
+                                Block b = ref.value();
+                                if (b != null) this.soilState = b.defaultBlockState();
+                            });
                         });
                         data.crop().ifPresent(rl -> {
-                            Block b = BuiltInRegistries.BLOCK.get(rl);
-                            if (b instanceof BaseWeedCropBlock crop) this.cropBlock = crop;
+                            // BuiltInRegistries.BLOCK.get() now returns Optional<Reference<Block>>
+                            BuiltInRegistries.BLOCK.get(rl).ifPresent(ref -> {
+                                Block b = ref.value();
+                                if (b instanceof BaseWeedCropBlock crop) this.cropBlock = crop;
+                            });
                         });
                         this.cropAge = Math.max(0, data.age());
                         this.growthProgressTicks = Math.max(0, data.prog());

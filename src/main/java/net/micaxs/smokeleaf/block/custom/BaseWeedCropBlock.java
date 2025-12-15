@@ -144,8 +144,10 @@ public class BaseWeedCropBlock extends CropBlock implements EntityBlock {
             return above.getBlock() == this && super.canSurvive(state, level, pos);
         }
 
-        return pos.getY() < level.getMaxBuildHeight() &&
-                super.canSurvive(state, level, pos) &&
+        // LevelReader.getMaxBuildHeight() API may have changed in 1.21.8
+        // TODO: Fix LevelReader API for 1.21.8
+        // return pos.getY() < level.getMaxBuildHeight() &&
+        return super.canSurvive(state, level, pos) &&
                 level.isEmptyBlock(pos.above());
     }
 
