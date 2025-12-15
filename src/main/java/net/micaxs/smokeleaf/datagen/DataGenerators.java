@@ -24,7 +24,9 @@ public class DataGenerators {
         PackOutput packOutput = generator.getPackOutput();
         CompletableFuture<HolderLookup.Provider> lookupProvider = event.getLookupProvider();
 
-        generator.addProvider(event.includeServer(), new LootTableProvider(packOutput, Collections.emptySet(), List.of(new LootTableProvider.SubProviderEntry(ModBlockLootTableProvider::new, LootContextParamSets.BLOCK)), lookupProvider));
+        // LootTableProvider API changed in 1.21.8 - temporarily disabled
+        // TODO: Fix LootTableProvider for 1.21.8
+        // generator.addProvider(event.includeServer(), new LootTableProvider(packOutput, Collections.emptySet(), List.of(new LootTableProvider.SubProviderEntry(ModBlockLootTableProvider::new, LootContextParamSets.BLOCK)), lookupProvider));
 
         // ModRecipeProvider temporarily disabled - RecipeProvider API changed significantly in 1.21.8
         // TODO: Fix ModRecipeProvider for 1.21.8 - all helper methods (slab, pressurePlate, wall, shapeless, shaped) have new signatures
@@ -41,12 +43,13 @@ public class DataGenerators {
         // generator.addProvider(event.includeClient(), new ModItemModelProvider(packOutput, null));
         // generator.addProvider(event.includeClient(), new ModBlockStateProvider(packOutput, null));
 
-        generator.addProvider(event.includeServer(), new ModDataMapProvder(packOutput, lookupProvider));
-        generator.addProvider(event.includeServer(), new ModGlobalLootModifierProvider(packOutput, lookupProvider));
+        // Data generation providers temporarily disabled - API changed in 1.21.8
+        // TODO: Fix these providers for 1.21.8
+        // generator.addProvider(event.includeServer(), new ModDataMapProvder(packOutput, lookupProvider));
+        // generator.addProvider(event.includeServer(), new ModGlobalLootModifierProvider(packOutput, lookupProvider));
         // AdvancementProvider removed in NeoForge 1.21.8 - need to use vanilla approach
         // generator.addProvider(event.includeClient(), new ModAdvancementProvider(packOutput, lookupProvider, null));
-
-        generator.addProvider(event.includeServer(), new ModWorldgenProvider(packOutput, lookupProvider));
+        // generator.addProvider(event.includeServer(), new ModWorldgenProvider(packOutput, lookupProvider));
 
     }
 
