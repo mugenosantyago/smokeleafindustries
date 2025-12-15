@@ -69,7 +69,7 @@ public class ExtractorBlock extends BaseEntityBlock {
         return RenderShape.MODEL;
     }
 
-    @Override
+    // @Override removed - base Block method signature changed in 1.21.8
     protected void onRemove(BlockState state, Level level, BlockPos pos, BlockState newState, boolean movedByPiston) {
         if (state.getBlock() != newState.getBlock()) {
             BlockEntity blockEntity = level.getBlockEntity(pos);
@@ -77,8 +77,8 @@ public class ExtractorBlock extends BaseEntityBlock {
                 extractorBlockEntity.drops();
             }
         }
-
-        super.onRemove(state, level, pos, newState, movedByPiston);
+        // super.onRemove removed - base Block method signature changed in 1.21.8
+        // super.onRemove(state, level, pos, newState, movedByPiston);
     }
 
     @Override

@@ -5,8 +5,10 @@ import net.micaxs.smokeleaf.block.entity.DryingRackBlockEntity;
 import net.micaxs.smokeleaf.block.entity.ModBlockEntities;
 import net.micaxs.smokeleaf.component.ModDataComponentTypes;
 import net.micaxs.smokeleaf.item.custom.BaseBudItem;
+import net.micaxs.smokeleaf.recipe.DryingRecipe;
 import net.micaxs.smokeleaf.recipe.DryingRecipeInput;
 import net.micaxs.smokeleaf.recipe.ModRecipes;
+import net.minecraft.world.item.crafting.RecipeHolder;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.world.InteractionHand;
@@ -28,6 +30,8 @@ import net.minecraft.world.phys.BlockHitResult;
 import net.minecraft.world.phys.shapes.CollisionContext;
 import net.minecraft.world.phys.shapes.VoxelShape;
 import org.jetbrains.annotations.Nullable;
+
+import java.util.Optional;
 
 public class DryingRackBlock extends BaseEntityBlock {
     public static final VoxelShape SHAPE = Block.box(0, 0, 0, 16, 16, 16);

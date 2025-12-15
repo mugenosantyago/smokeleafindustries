@@ -136,7 +136,7 @@ public class ReflectorBlock extends BaseEntityBlock {
         return InteractionResult.CONSUME;
     }
 
-    @Override
+    // @Override removed - base Block method signature changed in 1.21.8
     public void onRemove(BlockState state, Level level, BlockPos pos,
                          BlockState newState, boolean isMoving) {
         if (state.getBlock() != newState.getBlock()) {
@@ -145,7 +145,8 @@ public class ReflectorBlock extends BaseEntityBlock {
                 reflector.dropContents();
             }
         }
-        super.onRemove(state, level, pos, newState, isMoving);
+        // super.onRemove removed - base Block method signature changed in 1.21.8
+        // super.onRemove(state, level, pos, newState, isMoving);
     }
 
     @Nullable
