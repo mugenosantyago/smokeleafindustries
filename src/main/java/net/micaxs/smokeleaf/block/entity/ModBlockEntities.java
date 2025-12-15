@@ -7,27 +7,19 @@ import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.neoforged.bus.api.IEventBus;
-import net.neoforged.bus.api.SubscribeEvent;
-import net.neoforged.fml.common.EventBusSubscriber;
 import net.neoforged.neoforge.registries.DeferredHolder;
 import net.neoforged.neoforge.registries.DeferredRegister;
-import net.neoforged.neoforge.registries.RegisterEvent;
 
 import java.util.Set;
 import java.util.function.Supplier;
 
-@EventBusSubscriber(modid = SmokeleafIndustries.MODID, bus = EventBusSubscriber.Bus.MOD)
 public class ModBlockEntities {
 
     public static final DeferredRegister<BlockEntityType<?>> BLOCK_ENTITIES = DeferredRegister.create(BuiltInRegistries.BLOCK_ENTITY_TYPE, SmokeleafIndustries.MODID);
 
-    // BlockEntityTypes - using lazy initialization to ensure blocks are registered first
+    // BlockEntityTypes - blocks are accessed via .get() which should work when the lambda is evaluated during registration
     public static final Supplier<BlockEntityType<BaseWeedCropBlockEntity>> BASE_WEED_CROP_BE = BLOCK_ENTITIES.register("base_weed_crop_be",
-            () -> {
-                // Blocks should be registered by now, but use lazy evaluation
-                Block block = ModBlocks.HEMP_CROP.get();
-                return new BlockEntityType<BaseWeedCropBlockEntity>(BaseWeedCropBlockEntity::new, Set.of(block), false);
-            });
+            () -> new BlockEntityType<BaseWeedCropBlockEntity>(BaseWeedCropBlockEntity::new, Set.of(ModBlocks.HEMP_CROP.get()), false));
 
     public static final Supplier<BlockEntityType<GeneratorBlockEntity>> GENERATOR_BE = BLOCK_ENTITIES.register("generator_be",
             () -> new BlockEntityType<GeneratorBlockEntity>(GeneratorBlockEntity::new, Set.of(ModBlocks.GENERATOR.get()), false));
@@ -65,14 +57,6 @@ public class ModBlockEntities {
     public static final DeferredHolder<BlockEntityType<?>, BlockEntityType<GrowPotBlockEntity>> GROW_POT = BLOCK_ENTITIES.register("grow_pot_be",
             () -> new BlockEntityType<GrowPotBlockEntity>(GrowPotBlockEntity::new, Set.of(ModBlocks.GROW_POT.get()), false));
 
-    @SubscribeEvent
-    public static void onRegister(RegisterEvent event) {
-        // Ensure blocks are registered before BlockEntityTypes
-        // This event fires for each registry, so we check for BLOCK registry
-        if (event.getRegistryKey() == BuiltInRegistries.BLOCK.key()) {
-            // Blocks are being registered - BlockEntityTypes will be registered after
-        }
-    }
 
     public static void register(IEventBus eventBus) {
         BLOCK_ENTITIES.register(eventBus);
