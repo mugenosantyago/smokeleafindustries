@@ -54,15 +54,27 @@ public class SynthesizerScreen extends AbstractContainerScreen<SynthesizerMenu> 
         // RenderSystem.setShaderColor(1.0f, 1.0f, 1.0f, 1.0f);
         // RenderSystem.setShaderTexture(0, GUI_TEXTURE);
         
-        // Get screen dimensions - use Minecraft window if width/height aren't set yet
-        int screenWidth = this.width > 0 ? this.width : (this.minecraft != null ? this.minecraft.getWindow().getGuiScaledWidth() : 320);
-        int screenHeight = this.height > 0 ? this.height : (this.minecraft != null ? this.minecraft.getWindow().getGuiScaledHeight() : 240);
+        // Get screen dimensions - ensure we always have valid dimensions
+        int screenWidth = this.width;
+        int screenHeight = this.height;
+        
+        // Fallback to Minecraft window dimensions if screen dimensions aren't set
+        if (screenWidth <= 0 || screenHeight <= 0) {
+            if (this.minecraft != null && this.minecraft.getWindow() != null) {
+                screenWidth = this.minecraft.getWindow().getGuiScaledWidth();
+                screenHeight = this.minecraft.getWindow().getGuiScaledHeight();
+            } else {
+                // Last resort fallback
+                screenWidth = 320;
+                screenHeight = 240;
+            }
+        }
         
         // Calculate centered position
         int x = (screenWidth - this.imageWidth) / 2;
         int y = (screenHeight - this.imageHeight) / 2;
         
-        // Render the background texture
+        // Render the background texture - always render, even if coordinates seem wrong
         guiGraphics.blit(GUI_TEXTURE, x, y, 0, 0, this.imageWidth, this.imageHeight, 256, 256);
 
         renderInfoIcon(guiGraphics, x, y);
