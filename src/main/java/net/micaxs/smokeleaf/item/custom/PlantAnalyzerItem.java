@@ -2,9 +2,7 @@ package net.micaxs.smokeleaf.item.custom;
 
 import net.micaxs.smokeleaf.block.custom.BaseWeedCropBlock;
 import net.micaxs.smokeleaf.block.custom.GrowPotBlock;
-import net.micaxs.smokeleaf.screen.custom.MagnifyingGlassScreen;
 import net.minecraft.ChatFormatting;
-import net.minecraft.client.Minecraft;
 import net.minecraft.core.BlockPos;
 import net.minecraft.network.chat.Component;
 import net.minecraft.world.InteractionResult;
@@ -44,7 +42,18 @@ public class PlantAnalyzerItem extends Item {
     }
 
     public static void openAnalyzerScreen(BlockPos pos) {
-        Minecraft.getInstance().setScreen(new MagnifyingGlassScreen(pos));
+        // Use reflection to avoid NoClassDefFoundError on server side
+        try {
+            Class<?> minecraftClass = Class.forName("net.minecraft.client.Minecraft");
+            Object minecraftInstance = minecraftClass.getMethod("getInstance").invoke(null);
+            Class<?> screenClass = Class.forName("net.micaxs.smokeleaf.screen.custom.MagnifyingGlassScreen");
+            Object screenInstance = screenClass.getConstructor(BlockPos.class).newInstance(pos);
+            Class<?> screenBaseClass = Class.forName("net.minecraft.client.gui.screens.Screen");
+            minecraftClass.getMethod("setScreen", screenBaseClass).invoke(minecraftInstance, screenInstance);
+        } catch (Exception e) {
+            // Log or handle the exception if client-side classes are not available
+            System.err.println("Could not open MagnifyingGlassScreen: " + e.getMessage());
+        }
     }
 
 
