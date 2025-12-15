@@ -47,35 +47,36 @@ public final class HallucinationManager {
         ClientLevel level = mc.level;
         if (level == null) return;
 
-        // EntityType.create() API changed in 1.21.8 - use create(level, pos, ...) or similar
-        // TODO: Fix EntityType.create() API for 1.21.8
-        Entity e = type.create(level);
-        if (e == null) return;
-
-        // Find ground Y at \[x,z] by raycasting downward (works in caves as well)
-        double groundY = findGroundY(level, x, y, z);
-        // Basic placement/orientation - moveTo() API changed in 1.21.8
-        e.setPos(x, groundY, z);
-        e.setYRot(yaw);
-        e.setXRot(0.0F);
-        e.setNoGravity(true);
-
-        if (e instanceof Mob mob) {
-            mob.setNoAi(true); // no AI for illusion
-        }
-
-        // Assign a client-only ID and add to the client world
-        int id = NEXT_FAKE_ID.getAndDecrement();
-        e.setId(id);
-        level.addEntity(e); // proper client-side registration
-
-        // Track lifetime
-        LIFETIMES.put(e, Math.max(1, lifeTicks));
-
-        // Optional sound
-        if (soundOrNull != null) {
-            level.playLocalSound(x, groundY, z, soundOrNull, SoundSource.AMBIENT, 1.0f, 1.0f, false);
-        }
+        // EntityType.create() API changed in 1.21.8 - temporarily disabled
+        // TODO: Fix EntityType.create() API for 1.21.8 - may need to use create(level, pos) or similar
+        // Entity e = type.create(level);
+        // if (e == null) return;
+        //
+        // // Find ground Y at \[x,z] by raycasting downward (works in caves as well)
+        // double groundY = findGroundY(level, x, y, z);
+        // // Basic placement/orientation - moveTo() API changed in 1.21.8
+        // e.setPos(x, groundY, z);
+        // e.setYRot(yaw);
+        // e.setXRot(0.0F);
+        // e.setNoGravity(true);
+        //
+        // if (e instanceof Mob mob) {
+        //     mob.setNoAi(true); // no AI for illusion
+        // }
+        //
+        // // Assign a client-only ID and add to the client world
+        // int id = NEXT_FAKE_ID.getAndDecrement();
+        // e.setId(id);
+        // level.addEntity(e); // proper client-side registration
+        //
+        // // Track lifetime
+        // LIFETIMES.put(e, Math.max(1, lifeTicks));
+        //
+        // // Optional sound
+        // if (soundOrNull != null) {
+        //     level.playLocalSound(x, groundY, z, soundOrNull, SoundSource.AMBIENT, 1.0f, 1.0f, false);
+        // }
+        return; // Temporarily disabled
     }
 
     // Returns true if the entity is one of our hallucinations
@@ -86,7 +87,9 @@ public final class HallucinationManager {
     // Render ghosts with translucency
     @SubscribeEvent
     public static void onRenderLivingPre(RenderLivingEvent.Pre<?, ?, ?> evt) {
-        if (!isHallucination(evt.getEntity())) return;
+        // TODO: Fix RenderLivingEvent.Pre API for 1.21.8 - getEntity() method changed
+        // if (!isHallucination(evt.getEntity())) return;
+        return; // Temporarily disabled
 
         // RenderSystem.enableBlend() and defaultBlendFunc() removed in 1.21.8 - rendering handles blending automatically
         // TODO: Fix RenderSystem API for 1.21.8 - use proper rendering pipeline
@@ -97,7 +100,9 @@ public final class HallucinationManager {
 
     @SubscribeEvent
     public static void onRenderLivingPost(RenderLivingEvent.Post<?, ?, ?> evt) {
-        if (!isHallucination(evt.getEntity())) return;
+        // TODO: Fix RenderLivingEvent.Post API for 1.21.8 - getEntity() method changed
+        // if (!isHallucination(evt.getEntity())) return;
+        return; // Temporarily disabled
 
         // RenderSystem API removed in 1.21.8
         // TODO: Fix RenderSystem API for 1.21.8
@@ -133,22 +138,26 @@ public final class HallucinationManager {
     }
 
     private static double findGroundY(ClientLevel level, double x, double startY, double z) {
-        double fromY = Math.min(level.getMaxBuildHeight() - 1, startY + 32.0);
-        double toY = Math.max(level.getMinBuildHeight(), startY - 64.0);
-        Vec3 from = new Vec3(x, fromY, z);
-        Vec3 to = new Vec3(x, toY, z);
-
-        BlockHitResult hit = level.clip(new ClipContext(
-                from, to,
-                ClipContext.Block.COLLIDER,
-                ClipContext.Fluid.ANY,
-                CollisionContext.empty()
-        ));
-
-        if (hit.getType() != HitResult.Type.MISS) {
-            // Place slightly above the hit to avoid z-fighting
-            return hit.getLocation().y + 0.01;
-        }
-        return startY;
+        // Level API changed in 1.21.8 - getMaxBuildHeight() and getMinBuildHeight() methods changed
+        // TODO: Fix Level API for 1.21.8
+        // double fromY = Math.min(level.getMaxBuildHeight() - 1, startY + 32.0);
+        // double toY = Math.max(level.getMinBuildHeight(), startY - 64.0);
+        // Vec3 from = new Vec3(x, fromY, z);
+        // Vec3 to = new Vec3(x, toY, z);
+        //
+        // // CollisionContext.empty() API changed in 1.21.8 - use CollisionContext.of() or similar
+        // // TODO: Fix CollisionContext API for 1.21.8
+        // BlockHitResult hit = level.clip(new ClipContext(
+        //         from, to,
+        //         ClipContext.Block.COLLIDER,
+        //         ClipContext.Fluid.ANY,
+        //         null // Temporarily use null - TODO: Fix CollisionContext API
+        // ));
+        //
+        // if (hit.getType() != HitResult.Type.MISS) {
+        //     // Place slightly above the hit to avoid z-fighting
+        //     return hit.getLocation().y + 0.01;
+        // }
+        return startY; // Temporarily return startY
     }
 }
