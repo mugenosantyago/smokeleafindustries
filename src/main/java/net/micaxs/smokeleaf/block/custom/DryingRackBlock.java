@@ -83,9 +83,19 @@ public class DryingRackBlock extends BaseEntityBlock {
                                               BlockHitResult hitResult) {
 
         BlockEntity be = level.getBlockEntity(pos);
-        if (!(be instanceof DryingRackBlockEntity rack)) {
-            return InteractionResult.PASS;
+        // Ensure block entity exists - create it if it doesn't
+        if (be == null || !(be instanceof DryingRackBlockEntity)) {
+            if (!level.isClientSide) {
+                be = newBlockEntity(pos, state);
+                if (be != null) {
+                    level.setBlockEntity(be);
+                }
+            }
+            if (!(be instanceof DryingRackBlockEntity rack)) {
+                return InteractionResult.PASS;
+            }
         }
+        DryingRackBlockEntity rack = (DryingRackBlockEntity) be;
 
         // If empty hand, try to extract item
         if (stack.isEmpty()) {
@@ -172,7 +182,17 @@ public class DryingRackBlock extends BaseEntityBlock {
     protected InteractionResult useWithoutItem(BlockState state, Level level, BlockPos pos, Player player, BlockHitResult hit) {
         if (level.isClientSide) return InteractionResult.SUCCESS;
         BlockEntity be = level.getBlockEntity(pos);
-        if (!(be instanceof DryingRackBlockEntity rack)) return InteractionResult.PASS;
+        // Ensure block entity exists
+        if (be == null || !(be instanceof DryingRackBlockEntity)) {
+            if (!level.isClientSide) {
+                be = newBlockEntity(pos, state);
+                if (be != null) {
+                    level.setBlockEntity(be);
+                }
+            }
+            if (!(be instanceof DryingRackBlockEntity rack)) return InteractionResult.PASS;
+        }
+        DryingRackBlockEntity rack = (DryingRackBlockEntity) be;
 
         int layer = rack.computeLayerFromHit(hit);
         if (layer >= 0) {

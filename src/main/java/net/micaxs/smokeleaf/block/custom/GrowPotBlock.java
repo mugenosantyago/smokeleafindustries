@@ -81,7 +81,17 @@ public class GrowPotBlock extends BaseEntityBlock {
     protected InteractionResult useItemOn(ItemStack stack, BlockState state, Level level, BlockPos pos,
                                               Player player, InteractionHand hand, BlockHitResult hitResult) {
         BlockEntity be = level.getBlockEntity(pos);
-        if (!(be instanceof GrowPotBlockEntity pot)) return InteractionResult.PASS;
+        // Ensure block entity exists - create it if it doesn't
+        if (be == null || !(be instanceof GrowPotBlockEntity)) {
+            if (!level.isClientSide) {
+                be = newBlockEntity(pos, state);
+                if (be != null) {
+                    level.setBlockEntity(be);
+                }
+            }
+            if (!(be instanceof GrowPotBlockEntity pot)) return InteractionResult.PASS;
+        }
+        GrowPotBlockEntity pot = (GrowPotBlockEntity) be;
 
         boolean holdingBoneMeal = !stack.isEmpty() && stack.is(Items.BONE_MEAL);
         boolean holdingMagnifyingGlass = !stack.isEmpty() && stack.getItem() instanceof PlantAnalyzerItem;
