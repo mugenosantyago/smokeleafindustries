@@ -15,20 +15,21 @@ public final class BrainMeltInputHandler {
 
         MobEffectInstance inst = player.getEffect(ModEffects.BRAIN_MELT);
         if (inst != null) {
+            // TODO: Fix MovementInputUpdateEvent API for 1.21.8 - input field access changed
             // You can use inst.getAmplifier() if you want to scale the effect with potency
-
-            // Use event input; the event should provide access to input
-            var input = event.getMovementInput();
-
-            // Invert movement axes
-            input.forwardImpulse = -input.forwardImpulse;
-            input.leftImpulse = -input.leftImpulse;
-
-            // Swap jump and crouch
-            boolean jump = input.jumping;
-            boolean crouch = input.shiftKeyDown;
-            input.jumping = crouch;
-            input.shiftKeyDown = jump;
+            //
+            // MovementInputUpdateEvent API - use getInput()
+            // var input = event.getInput();
+            //
+            // // Invert movement axes
+            // input.forwardImpulse = -input.forwardImpulse;
+            // input.leftImpulse = -input.leftImpulse;
+            //
+            // // Swap jump and crouch
+            // boolean jump = input.jumping;
+            // boolean crouch = input.shiftKeyDown;
+            // input.jumping = crouch;
+            // input.shiftKeyDown = jump;
         }
 
     }

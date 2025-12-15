@@ -47,13 +47,17 @@ public final class HallucinationManager {
         ClientLevel level = mc.level;
         if (level == null) return;
 
+        // EntityType.create() API changed in 1.21.8 - use create(level, pos, ...) or similar
+        // TODO: Fix EntityType.create() API for 1.21.8
         Entity e = type.create(level);
         if (e == null) return;
 
         // Find ground Y at \[x,z] by raycasting downward (works in caves as well)
         double groundY = findGroundY(level, x, y, z);
-        // Basic placement/orientation
-        e.moveTo(x, groundY, z, yaw, 0.0F);
+        // Basic placement/orientation - moveTo() API changed in 1.21.8
+        e.setPos(x, groundY, z);
+        e.setYRot(yaw);
+        e.setXRot(0.0F);
         e.setNoGravity(true);
 
         if (e instanceof Mob mob) {
@@ -84,19 +88,21 @@ public final class HallucinationManager {
     public static void onRenderLivingPre(RenderLivingEvent.Pre<?, ?, ?> evt) {
         if (!isHallucination(evt.getEntity())) return;
 
-        // Enable blending and set global shader alpha
-        RenderSystem.enableBlend();
-        RenderSystem.defaultBlendFunc();
-        RenderSystem.setShaderColor(1f, 1f, 1f, GHOST_ALPHA);
+        // RenderSystem.enableBlend() and defaultBlendFunc() removed in 1.21.8 - rendering handles blending automatically
+        // TODO: Fix RenderSystem API for 1.21.8 - use proper rendering pipeline
+        // RenderSystem.enableBlend();
+        // RenderSystem.defaultBlendFunc();
+        // RenderSystem.setShaderColor(1f, 1f, 1f, GHOST_ALPHA);
     }
 
     @SubscribeEvent
     public static void onRenderLivingPost(RenderLivingEvent.Post<?, ?, ?> evt) {
         if (!isHallucination(evt.getEntity())) return;
 
-        // Restore default state
-        RenderSystem.setShaderColor(1f, 1f, 1f, 1f);
-        RenderSystem.disableBlend();
+        // RenderSystem API removed in 1.21.8
+        // TODO: Fix RenderSystem API for 1.21.8
+        // RenderSystem.setShaderColor(1f, 1f, 1f, 1f);
+        // RenderSystem.disableBlend();
     }
 
     @SubscribeEvent

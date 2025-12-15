@@ -62,7 +62,7 @@ public class GeneratorScreen extends AbstractContainerScreen<GeneratorMenu> {
         // RenderSystem.setShaderTexture(0, GUI_TEXTURE);
         int x = (width - imageWidth) / 2;
         int y = (height - imageHeight) / 2;
-        guiGraphics.blit(GUI_TEXTURE, x, y, 0, 0, imageWidth, imageHeight);
+        guiGraphics.blit(GUI_TEXTURE, x, y, 0, 0, imageWidth, imageHeight, imageWidth, imageHeight);
 
         energyInfoArea.render(guiGraphics);
         renderFuelProgress(guiGraphics, x, y);
@@ -81,7 +81,9 @@ public class GeneratorScreen extends AbstractContainerScreen<GeneratorMenu> {
         if (isMouseAboveArea(mouseX, mouseY, baseX, baseY, ICON_SIZE, ICON_SIZE, ICON_SIZE, ICON_SIZE)) {
             Component info = Component.translatable("gui.tooltip.generator.info");
             List<FormattedCharSequence> wrapped = this.font.split(info, 300);
-            g.renderTooltip(this.font, wrapped, mouseX, mouseY);
+            // renderTooltip API changed in 1.21.8 - temporarily disabled
+            // TODO: Fix renderTooltip signature for 1.21.8
+            // g.renderTooltip(this.font, wrapped, mouseX, mouseY);
         }
     }
 
@@ -89,7 +91,7 @@ public class GeneratorScreen extends AbstractContainerScreen<GeneratorMenu> {
         int scaledHeight = menu.getFuelStoredScaled();
         if (scaledHeight > 0) {
             int adjustedY = y + 38 + (11 - scaledHeight);
-            guiGraphics.blit(GUI_TEXTURE, x + 81, adjustedY, 176, 14 - scaledHeight, 14, scaledHeight);
+            guiGraphics.blit(GUI_TEXTURE, x + 81, adjustedY, 176, 14 - scaledHeight, 14, scaledHeight, imageWidth, imageHeight);
         }
     }
 

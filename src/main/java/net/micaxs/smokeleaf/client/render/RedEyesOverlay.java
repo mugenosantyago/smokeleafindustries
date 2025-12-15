@@ -32,15 +32,13 @@ public final class RedEyesOverlay {
         int colorARGB = a | 0x00a83232;
 
         GuiGraphics g = event.getGuiGraphics();
-        RenderSystem.enableBlend();
-        RenderSystem.defaultBlendFunc();
+        // RenderSystem.enableBlend() and defaultBlendFunc() removed in 1.21.8 - GuiGraphics handles blending automatically
 
         // Push high Z to ensure on top of everything (screens, tooltips, chat, etc.)
-        g.pose().pushPose();
-        g.pose().translate(0, 0, 1000); // large Z to guarantee top layer
+        // TODO: Fix GuiGraphics.pose() API for 1.21.8 - pose stack API changed
+        // g.pose().pushPose();
+        // g.pose().translate(0, 0, 1000); // large Z to guarantee top layer
         g.fill(0, 0, w, h, colorARGB);
-        g.pose().popPose();
-
-        RenderSystem.disableBlend();
+        // g.pose().popPose();
     }
 }

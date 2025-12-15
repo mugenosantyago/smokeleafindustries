@@ -48,7 +48,7 @@ public class SequencerScreen extends AbstractContainerScreen<SequencerMenu> {
         // RenderSystem.setShaderTexture(0, GUI_TEXTURE);
         int x = (width - imageWidth) / 2;
         int y = (height - imageHeight) / 2;
-        guiGraphics.blit(GUI_TEXTURE, x, y, 0, 0, imageWidth, imageHeight);
+        guiGraphics.blit(GUI_TEXTURE, x, y, 0, 0, imageWidth, imageHeight, imageWidth, imageHeight);
 
         renderInfoIcon(guiGraphics, x, y);
 
@@ -68,14 +68,16 @@ public class SequencerScreen extends AbstractContainerScreen<SequencerMenu> {
         if (isMouseAboveArea(mouseX, mouseY, baseX, baseY, ICON_SIZE, ICON_SIZE, ICON_SIZE, ICON_SIZE)) {
             Component info = Component.translatable("gui.tooltip.sequencer.info");
             List<FormattedCharSequence> wrapped = this.font.split(info, 300);
-            g.renderTooltip(this.font, wrapped, mouseX, mouseY);
+            // renderTooltip API changed in 1.21.8 - temporarily disabled
+            // TODO: Fix renderTooltip signature for 1.21.8
+            // g.renderTooltip(this.font, wrapped, mouseX, mouseY);
         }
     }
 
 
     private void renderProgressArrow(GuiGraphics guiGraphics, int x, int y) {
         if(menu.isCrafting()) {
-            guiGraphics.blit(GUI_TEXTURE, x + 62, y + 33, 0, 166, menu.getScaledProgress(), 16);
+            guiGraphics.blit(GUI_TEXTURE, x + 62, y + 33, 0, 166, menu.getScaledProgress(), 16, imageWidth, imageHeight);
         }
     }
 
@@ -86,7 +88,9 @@ public class SequencerScreen extends AbstractContainerScreen<SequencerMenu> {
 
     private void renderEnergyInfoArea(GuiGraphics guiGraphics, int mouseX, int mouseY, int x, int y) {
         if (isMouseAboveArea(mouseX, mouseY, x, y, 156, 11, 8, 64)) {
-            guiGraphics.renderTooltip(this.font, energyInfoArea.getTooltips(), Optional.empty(), mouseX - x, mouseY - y);
+            // renderTooltip API changed in 1.21.8 - temporarily disabled
+            // TODO: Fix renderTooltip signature for 1.21.8
+            // guiGraphics.renderTooltip(this.font, energyInfoArea.getTooltips(), Optional.empty(), mouseX - x, mouseY - y);
         }
     }
 

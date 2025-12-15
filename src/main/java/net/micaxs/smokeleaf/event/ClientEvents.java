@@ -81,10 +81,11 @@ public class ClientEvents {
         LocalPlayer viewer = Minecraft.getInstance().player;
         if (viewer == null || !viewer.hasEffect(ModEffects.FRIEND_OR_FOE)) return;
 
-        Entity e = event.getEntity();
-        String[] pool = new String[]{"Zombie", "Villager", "Creeper", "Cow", "Sheep", "Enderman", "Pig", "Spider"};
-        int idx = Math.floorMod(e.getUUID().hashCode(), pool.length);
-        event.setContent(net.minecraft.network.chat.Component.literal(pool[idx]));
+        // TODO: Fix RenderNameTagEvent API for 1.21.8 - getEntity() and setContent() methods changed
+        // Entity e = event.getEntity();
+        // String[] pool = new String[]{"Zombie", "Villager", "Creeper", "Cow", "Sheep", "Enderman", "Pig", "Spider"};
+        // int idx = Math.floorMod(e.getUUID().hashCode(), pool.length);
+        // event.setContent(net.minecraft.network.chat.Component.literal(pool[idx]));
     }
 
 
@@ -133,52 +134,55 @@ public class ClientEvents {
 
     @SubscribeEvent
     public static void onRenderLivingPre(RenderLivingEvent.Pre event) {
-        LivingEntity le = event.getEntity();
-        if (!(le instanceof Player player)) return;
-        if (!player.hasEffect(ModEffects.ZOMBIFIED)) return;
+        // TODO: Fix RenderLivingEvent.Pre API for 1.21.8 - getEntity() method changed
+        // LivingEntity le = event.getEntity();
+        // if (!(le instanceof Player player)) return;
+        // if (!player.hasEffect(ModEffects.ZOMBIFIED)) return;
+        //
+        // event.setCanceled(true);
+        // Temporarily disabled - TODO: Fix RenderLivingEvent.Pre API for 1.21.8
+        return;
 
-        event.setCanceled(true);
-
-        float pt = event.getPartialTick();
-        PoseStack pose = event.getPoseStack();
-        MultiBufferSource buf = event.getMultiBufferSource();
-        int light = event.getPackedLight();
-
-        Zombie fake = CACHE.computeIfAbsent(player.getUUID(), id -> new Zombie(player.level()));
-        fake.xo = player.xo;
-        fake.yo = player.yo;
-        fake.zo = player.zo;
-        fake.setPos(player.getX(), player.getY(), player.getZ());
-
-        float bodyYaw = Mth.lerp(pt, player.yBodyRotO, player.yBodyRot);
-        float headYaw = Mth.lerp(pt, player.yHeadRotO, player.yHeadRot);
-        float entityYaw = bodyYaw;
-
-        fake.yBodyRotO = bodyYaw;
-        fake.yBodyRot = bodyYaw;
-        fake.yHeadRotO = headYaw;
-        fake.yHeadRot = headYaw;
-        fake.yRotO = entityYaw;
-        fake.setYRot(entityYaw);
-
-        float pitch = Mth.lerp(pt, player.xRotO, player.getXRot());
-        fake.xRotO = pitch;
-        fake.setXRot(pitch);
-
-        fake.setAggressive(false);
-        fake.setNoAi(true);
-
-        for (EquipmentSlot slot : EquipmentSlot.values()) {
-            var stack = player.getItemBySlot(slot);
-            fake.setItemSlot(slot, stack);
-        }
-
-        Minecraft mc = Minecraft.getInstance();
-        EntityRenderDispatcher disp = mc.getEntityRenderDispatcher();
-        @SuppressWarnings("unchecked")
-        LivingEntityRenderer<Zombie, ?> renderer =
-                (LivingEntityRenderer<Zombie, ?>) disp.getRenderer(fake);
-
-        renderer.render(fake, entityYaw, pt, pose, buf, light);
+        // float pt = event.getPartialTick();
+        // PoseStack pose = event.getPoseStack();
+        // MultiBufferSource buf = event.getMultiBufferSource();
+        // int light = event.getPackedLight();
+        //
+        // Zombie fake = CACHE.computeIfAbsent(player.getUUID(), id -> new Zombie(player.level()));
+        // fake.xo = player.xo;
+        // fake.yo = player.yo;
+        // fake.zo = player.zo;
+        // fake.setPos(player.getX(), player.getY(), player.getZ());
+        //
+        // float bodyYaw = Mth.lerp(pt, player.yBodyRotO, player.yBodyRot);
+        // float headYaw = Mth.lerp(pt, player.yHeadRotO, player.yHeadRot);
+        // float entityYaw = bodyYaw;
+        //
+        // fake.yBodyRotO = bodyYaw;
+        // fake.yBodyRot = bodyYaw;
+        // fake.yHeadRotO = headYaw;
+        // fake.yHeadRot = headYaw;
+        // fake.yRotO = entityYaw;
+        // fake.setYRot(entityYaw);
+        //
+        // float pitch = Mth.lerp(pt, player.xRotO, player.getXRot());
+        // fake.xRotO = pitch;
+        // fake.setXRot(pitch);
+        //
+        // fake.setAggressive(false);
+        // fake.setNoAi(true);
+        //
+        // for (EquipmentSlot slot : EquipmentSlot.values()) {
+        //     var stack = player.getItemBySlot(slot);
+        //     fake.setItemSlot(slot, stack);
+        // }
+        //
+        // // TODO: Fix LivingEntityRenderer type arguments for 1.21.8 - requires 3 type parameters
+        // // Minecraft mc = Minecraft.getInstance();
+        // // EntityRenderDispatcher disp = mc.getEntityRenderDispatcher();
+        // // @SuppressWarnings("unchecked")
+        // // LivingEntityRenderer<Zombie, ?, ?> renderer =
+        // //         (LivingEntityRenderer<Zombie, ?, ?>) disp.getRenderer(fake);
+        // // renderer.render(fake, entityYaw, pt, pose, buf, light);
     }
 }
