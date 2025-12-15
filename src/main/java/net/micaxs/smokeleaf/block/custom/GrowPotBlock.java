@@ -115,24 +115,22 @@ public class GrowPotBlock extends BaseEntityBlock {
         }
 
         // Server side: actual validation
-        // Check if it's a valid soil block (try tag first, then fallback to direct block check)
-        boolean isValidSoilBlock = false;
+        // Check if it's a valid soil block - use direct block comparison first (more reliable)
+        boolean canInsertSoil = false;
         if (!pot.hasSoil() && stack.getItem() instanceof BlockItem bi) {
             Block block = bi.getBlock();
-            // Try tag check first
-            try {
-                isValidSoilBlock = block.builtInRegistryHolder().is(ModTags.POT_SOILS);
-            } catch (Exception e) {
-                // Tag check failed, fallback to direct block comparison
-            }
-            // Fallback: check if it's one of the known soil blocks
-            if (!isValidSoilBlock) {
-                isValidSoilBlock = block == Blocks.DIRT 
-                        || block == Blocks.FARMLAND 
-                        || block == Blocks.PODZOL;
+            // Direct block comparison (most reliable)
+            if (block == Blocks.DIRT || block == Blocks.FARMLAND || block == Blocks.PODZOL) {
+                canInsertSoil = true;
+            } else {
+                // Fallback: try tag check
+                try {
+                    canInsertSoil = block.builtInRegistryHolder().is(ModTags.POT_SOILS);
+                } catch (Exception e) {
+                    // Tag check failed, canInsertSoil remains false
+                }
             }
         }
-        boolean canInsertSoil = !pot.hasSoil() && isValidSoilBlock;
 
         boolean canPlantCrop = pot.hasSoil()
                 && !pot.hasCrop()

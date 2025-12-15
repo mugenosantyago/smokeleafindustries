@@ -76,18 +76,29 @@ public class DryingRackBlock extends BaseEntityBlock {
 
 
 
-    // Right click -> Insert Item
+    // Right click -> Insert Item or Extract Item (if empty hand)
     @Override
     protected InteractionResult useItemOn(ItemStack stack, BlockState state, Level level,
                                               BlockPos pos, Player player, InteractionHand hand,
                                               BlockHitResult hitResult) {
 
-        if (stack.isEmpty()) {
+        BlockEntity be = level.getBlockEntity(pos);
+        if (!(be instanceof DryingRackBlockEntity rack)) {
             return InteractionResult.PASS;
         }
 
-        BlockEntity be = level.getBlockEntity(pos);
-        if (!(be instanceof DryingRackBlockEntity rack)) {
+        // If empty hand, try to extract item
+        if (stack.isEmpty()) {
+            if (level.isClientSide) return InteractionResult.SUCCESS;
+            
+            int layer = rack.computeLayerFromHit(hitResult);
+            if (layer >= 0) {
+                ItemStack out = rack.removeLastInRow(layer);
+                if (!out.isEmpty()) {
+                    if (!player.addItem(out)) player.drop(out, false);
+                    return InteractionResult.CONSUME;
+                }
+            }
             return InteractionResult.PASS;
         }
 
@@ -107,17 +118,8 @@ public class DryingRackBlock extends BaseEntityBlock {
             return InteractionResult.SUCCESS;
         }
 
-        // Server side: Find a drying recipe for the held stack
-        // Level.getRecipeManager() removed in 1.21.8 - need to use ServerLevel.getServer().getRecipeManager()
-        Optional<RecipeHolder<DryingRecipe>> recipeOpt = Optional.empty();
-        if (level instanceof net.minecraft.server.level.ServerLevel serverLevel) {
-            recipeOpt = serverLevel.getServer().getRecipeManager()
-                    .getRecipeFor(ModRecipes.DRYING_TYPE.get(), new DryingRecipeInput(stack), level);
-        }
-
-        // Fallback: if it's a fresh bud item, allow it even if recipe lookup failed
-        // (This handles cases where recipe system might not be fully initialized or tag lookup fails)
-        if (recipeOpt.isEmpty() && stack.getItem() instanceof BaseBudItem) {
+        // Server side: Check if it's a fresh bud first (simplest check)
+        if (stack.getItem() instanceof BaseBudItem) {
             Boolean dry = stack.get(ModDataComponentTypes.DRY);
             if (dry == null || !dry) {
                 // Fresh bud - allow insertion, it will dry in-place
@@ -132,8 +134,15 @@ public class DryingRackBlock extends BaseEntityBlock {
             return InteractionResult.PASS;
         }
 
+        // For other items, try to find a drying recipe
+        Optional<RecipeHolder<DryingRecipe>> recipeOpt = Optional.empty();
+        if (level instanceof net.minecraft.server.level.ServerLevel serverLevel) {
+            recipeOpt = serverLevel.getServer().getRecipeManager()
+                    .getRecipeFor(ModRecipes.DRYING_TYPE.get(), new DryingRecipeInput(stack), level);
+        }
+
         if (recipeOpt.isEmpty()) {
-            // No recipe and not a bud -> not insertable
+            // No recipe -> not insertable
             return InteractionResult.PASS;
         }
 
