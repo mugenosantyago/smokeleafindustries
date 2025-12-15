@@ -29,9 +29,13 @@ public class LiquifierScreen extends AbstractContainerScreen<LiquifierMenu> {
     private static final ResourceLocation INFO_ICON = ResourceLocation.fromNamespaceAndPath(SmokeleafIndustries.MODID, "textures/gui/icons/info.png");
     private static final int ICON_SIZE = 8;
     private static final float TOOLTIP_SCALE = 0.5f;
+    private static final int IMAGE_WIDTH = 176;
+    private static final int IMAGE_HEIGHT = 166;
 
     public LiquifierScreen(LiquifierMenu menu, Inventory playerInventory, Component title) {
         super(menu, playerInventory, title);
+        this.imageWidth = IMAGE_WIDTH;
+        this.imageHeight = IMAGE_HEIGHT;
     }
 
     @Override
