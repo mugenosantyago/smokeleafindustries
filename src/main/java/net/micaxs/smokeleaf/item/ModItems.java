@@ -37,7 +37,7 @@ public class ModItems {
 
     // Seeds
     public static final DeferredItem<Item>  HEMP_SEEDS = ITEMS.register("hemp_seeds",
-            () -> new BlockItem(ModBlocks.HEMP_CROP.get(), new Item.Properties()));
+            () -> new BlockItem(ModBlocks.HEMP_CROP.get(), itemProps("hemp_seeds")));
     public static final DeferredItem<Item>  WHITE_WIDOW_SEEDS = ITEMS.register("white_widow_seeds",
             () -> new BlockItem(ModBlocks.WHITE_WIDOW_CROP.get(), new Item.Properties()));
     public static final DeferredItem<Item>  BUBBLE_KUSH_SEEDS = ITEMS.register("bubble_kush_seeds",

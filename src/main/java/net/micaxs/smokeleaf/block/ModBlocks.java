@@ -115,12 +115,12 @@ public class ModBlocks {
 
     // Tobacco Crop
     public static final DeferredBlock<Block> TOBACCO_CROP = BLOCKS.register("tobacco_crop", () ->
-            new TobaccoCropBlock(BlockBehaviour.Properties.ofFullCopy(Blocks.WHEAT).noOcclusion().noCollission(), ModItems.TOBACCO_SEEDS));
+            new TobaccoCropBlock(blockProps("tobacco_crop").noOcclusion().noCollission(), ModItems.TOBACCO_SEEDS::get));
 
 
     // Weed Crops
     public static final DeferredBlock<Block> HEMP_CROP = BLOCKS.register("hemp_crop", () ->
-            new BaseWeedCropBlock(BlockBehaviour.Properties.ofFullCopy(Blocks.WHEAT).noOcclusion().noCollission(), ModItems.HEMP_SEEDS));
+            new BaseWeedCropBlock(blockProps("hemp_crop").noOcclusion().noCollission(), ModItems.HEMP_SEEDS::get));
 
 
     private static BlockBehaviour.Properties props() {
