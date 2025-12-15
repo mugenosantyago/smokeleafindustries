@@ -140,8 +140,23 @@ public class DryerScreen extends AbstractContainerScreen<DryerMenu> {
     @Override
     public void render(GuiGraphics guiGraphics, int mouseX, int mouseY, float partialTick) {
         super.render(guiGraphics, mouseX, mouseY, partialTick);
-        int x = (width - imageWidth) / 2;
-        int y = (height - imageHeight) / 2;
+
+        // Explicitly render the background texture after super.render() to ensure it's visible
+        int screenWidth = this.width;
+        int screenHeight = this.height;
+        if (screenWidth <= 0 || screenHeight <= 0) {
+            if (this.minecraft != null && this.minecraft.getWindow() != null) {
+                screenWidth = this.minecraft.getWindow().getGuiScaledWidth();
+                screenHeight = this.minecraft.getWindow().getGuiScaledHeight();
+            } else {
+                screenWidth = 320;
+                screenHeight = 240;
+            }
+        }
+        int x = (screenWidth - this.imageWidth) / 2;
+        int y = (screenHeight - this.imageHeight) / 2;
+        guiGraphics.blit(GUI_TEXTURE, x, y, 0, 0, this.imageWidth, this.imageHeight, 256, 256);
+
         renderInfoIconTooltip(guiGraphics, mouseX, mouseY, x, y);
         renderTooltip(guiGraphics, mouseX, mouseY);
     }
