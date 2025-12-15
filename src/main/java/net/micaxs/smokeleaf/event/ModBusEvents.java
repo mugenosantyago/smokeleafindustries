@@ -13,38 +13,38 @@ public class ModBusEvents {
     @SubscribeEvent
     public static void registerCapabilities(RegisterCapabilitiesEvent event) {
         // Generator BlockEntity Capabilities
-        event.registerBlockEntity(Capabilities.EnergyStorage.BLOCK, ModBlockEntities.GENERATOR_BE.get().get(), GeneratorBlockEntity::getEnergyStorage);
-        event.registerBlockEntity(Capabilities.ItemHandler.BLOCK, ModBlockEntities.GENERATOR_BE.get().get(), GeneratorBlockEntity::getItemHandler);
+        event.registerBlockEntity(Capabilities.EnergyStorage.BLOCK, ModBlockEntities.GENERATOR_BE.get(), GeneratorBlockEntity::getEnergyStorage);
+        event.registerBlockEntity(Capabilities.ItemHandler.BLOCK, ModBlockEntities.GENERATOR_BE.get(), GeneratorBlockEntity::getItemHandler);
 
         // Grinder BlockEntity Capabilities
-        event.registerBlockEntity(Capabilities.EnergyStorage.BLOCK, ModBlockEntities.GRINDER_BE.get().get(), GrinderBlockEntity::getEnergyStorage);
-        event.registerBlockEntity(Capabilities.ItemHandler.BLOCK, ModBlockEntities.GRINDER_BE.get().get(), GrinderBlockEntity::getItemHandler);
+        event.registerBlockEntity(Capabilities.EnergyStorage.BLOCK, ModBlockEntities.GRINDER_BE.get(), GrinderBlockEntity::getEnergyStorage);
+        event.registerBlockEntity(Capabilities.ItemHandler.BLOCK, ModBlockEntities.GRINDER_BE.get(), GrinderBlockEntity::getItemHandler);
 
         // Extractor BlockEntity Capabilities
-        event.registerBlockEntity(Capabilities.EnergyStorage.BLOCK, ModBlockEntities.EXTRACTOR_BE.get().get(), ExtractorBlockEntity::getEnergyStorage);
-        event.registerBlockEntity(Capabilities.ItemHandler.BLOCK, ModBlockEntities.EXTRACTOR_BE.get().get(), ExtractorBlockEntity::getItemHandler);
+        event.registerBlockEntity(Capabilities.EnergyStorage.BLOCK, ModBlockEntities.EXTRACTOR_BE.get(), ExtractorBlockEntity::getEnergyStorage);
+        event.registerBlockEntity(Capabilities.ItemHandler.BLOCK, ModBlockEntities.EXTRACTOR_BE.get(), ExtractorBlockEntity::getItemHandler);
 
         // Liquifier BlockEntity Capabilities
-        event.registerBlockEntity(Capabilities.EnergyStorage.BLOCK, ModBlockEntities.LIQUIFIER_BE.get().get(), LiquifierBlockEntity::getEnergyStorage);
-        event.registerBlockEntity(Capabilities.FluidHandler.BLOCK, ModBlockEntities.LIQUIFIER_BE.get().get(), LiquifierBlockEntity::getTank);
-        event.registerBlockEntity(Capabilities.ItemHandler.BLOCK, ModBlockEntities.LIQUIFIER_BE.get().get(), LiquifierBlockEntity::getItemHandler);
+        event.registerBlockEntity(Capabilities.EnergyStorage.BLOCK, ModBlockEntities.LIQUIFIER_BE.get(), LiquifierBlockEntity::getEnergyStorage);
+        event.registerBlockEntity(Capabilities.FluidHandler.BLOCK, ModBlockEntities.LIQUIFIER_BE.get(), LiquifierBlockEntity::getTank);
+        event.registerBlockEntity(Capabilities.ItemHandler.BLOCK, ModBlockEntities.LIQUIFIER_BE.get(), LiquifierBlockEntity::getItemHandler);
 
         // Mutator BlockEntity Capabilities
-        event.registerBlockEntity(Capabilities.EnergyStorage.BLOCK, ModBlockEntities.MUTATOR_BE.get().get(), MutatorBlockEntity::getEnergyStorage);
-        event.registerBlockEntity(Capabilities.FluidHandler.BLOCK, ModBlockEntities.MUTATOR_BE.get().get(), MutatorBlockEntity::getTank);
-        event.registerBlockEntity(Capabilities.ItemHandler.BLOCK, ModBlockEntities.MUTATOR_BE.get().get(), MutatorBlockEntity::getItemHandler);
+        event.registerBlockEntity(Capabilities.EnergyStorage.BLOCK, ModBlockEntities.MUTATOR_BE.get(), MutatorBlockEntity::getEnergyStorage);
+        event.registerBlockEntity(Capabilities.FluidHandler.BLOCK, ModBlockEntities.MUTATOR_BE.get(), MutatorBlockEntity::getTank);
+        event.registerBlockEntity(Capabilities.ItemHandler.BLOCK, ModBlockEntities.MUTATOR_BE.get(), MutatorBlockEntity::getItemHandler);
 
         // Synthesizer BlockEntity Capabilities
-        event.registerBlockEntity(Capabilities.EnergyStorage.BLOCK, ModBlockEntities.SYNTHESIZER_BE.get().get(), SynthesizerBlockEntity::getEnergyStorage);
-        event.registerBlockEntity(Capabilities.ItemHandler.BLOCK, ModBlockEntities.SYNTHESIZER_BE.get().get(), SynthesizerBlockEntity::getItemHandler);
+        event.registerBlockEntity(Capabilities.EnergyStorage.BLOCK, ModBlockEntities.SYNTHESIZER_BE.get(), SynthesizerBlockEntity::getEnergyStorage);
+        event.registerBlockEntity(Capabilities.ItemHandler.BLOCK, ModBlockEntities.SYNTHESIZER_BE.get(), SynthesizerBlockEntity::getItemHandler);
 
         // Sequencer BlockEntity Capabilities
-        event.registerBlockEntity(Capabilities.EnergyStorage.BLOCK, ModBlockEntities.SEQUENCER_BE.get().get(), SequencerBlockEntity::getEnergyStorage);
-        event.registerBlockEntity(Capabilities.ItemHandler.BLOCK, ModBlockEntities.SEQUENCER_BE.get().get(), SequencerBlockEntity::getItemHandler);
+        event.registerBlockEntity(Capabilities.EnergyStorage.BLOCK, ModBlockEntities.SEQUENCER_BE.get(), SequencerBlockEntity::getEnergyStorage);
+        event.registerBlockEntity(Capabilities.ItemHandler.BLOCK, ModBlockEntities.SEQUENCER_BE.get(), SequencerBlockEntity::getItemHandler);
 
         // Dryer BlockEntity Capabilities
-        event.registerBlockEntity(Capabilities.EnergyStorage.BLOCK, ModBlockEntities.DRYER_BE.get().get(), DryerBlockEntity::getEnergyStorage);
-        event.registerBlockEntity(Capabilities.ItemHandler.BLOCK, ModBlockEntities.DRYER_BE.get().get(), DryerBlockEntity::getItemHandler);
+        event.registerBlockEntity(Capabilities.EnergyStorage.BLOCK, ModBlockEntities.DRYER_BE.get(), DryerBlockEntity::getEnergyStorage);
+        event.registerBlockEntity(Capabilities.ItemHandler.BLOCK, ModBlockEntities.DRYER_BE.get(), DryerBlockEntity::getItemHandler);
 
     }
 

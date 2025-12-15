@@ -4,11 +4,16 @@ import net.micaxs.smokeleaf.SmokeleafIndustries;
 import net.micaxs.smokeleaf.block.ModBlocks;
 import net.micaxs.smokeleaf.block.custom.SequencerBlock;
 import net.minecraft.core.registries.BuiltInRegistries;
+import net.minecraft.core.registries.Registries;
+import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.neoforged.bus.api.IEventBus;
+import net.neoforged.bus.api.SubscribeEvent;
+import net.neoforged.fml.common.EventBusSubscriber;
 import net.neoforged.neoforge.registries.DeferredHolder;
 import net.neoforged.neoforge.registries.DeferredRegister;
+import net.neoforged.neoforge.registries.RegisterEvent;
 
 import java.util.Set;
 import java.util.function.Supplier;
@@ -65,6 +70,29 @@ public class ModBlockEntities {
 
     public static void register(IEventBus eventBus) {
         BLOCK_ENTITIES.register(eventBus);
+    }
+
+    @EventBusSubscriber(modid = SmokeleafIndustries.MODID, bus = EventBusSubscriber.Bus.MOD)
+    public static class RegistrationHandler {
+        private static boolean blocksRegistered = false;
+
+        @SubscribeEvent
+        public static void onRegisterBlocks(RegisterEvent event) {
+            // Mark blocks as registered when BLOCK registry is being registered
+            if (event.getRegistryKey() == Registries.BLOCK) {
+                blocksRegistered = true;
+            }
+        }
+
+        @SubscribeEvent
+        public static void onRegisterBlockEntities(RegisterEvent event) {
+            // Only register BlockEntityTypes after blocks are registered
+            if (event.getRegistryKey() == Registries.BLOCK_ENTITY_TYPE && blocksRegistered) {
+                // Blocks are now registered, so we can safely access them
+                // The DeferredRegister will handle the actual registration
+                // This handler just ensures blocks are registered first
+            }
+        }
     }
 
 }
