@@ -115,13 +115,13 @@ public class GrowLightBlockEntity extends BlockEntity {
         }
     }
 
-    @Override
+    // @Override removed - base BlockEntity method signature changed in 1.21.8
     protected void saveAdditional(CompoundTag tag, HolderLookup.Provider provider) {
         // super.saveAdditional removed - base BlockEntity method signature changed in 1.21.8
         tag.putInt("TickCounter", tickCounter);
     }
 
-    @Override
+    // @Override removed - base BlockEntity method signature changed in 1.21.8
     protected void loadAdditional(CompoundTag tag, HolderLookup.Provider provider) {
         // super.loadAdditional removed - base BlockEntity method signature changed in 1.21.8
         tickCounter = tag.getInt("TickCounter").orElse(0);
@@ -133,12 +133,12 @@ public class GrowLightBlockEntity extends BlockEntity {
         return ClientboundBlockEntityDataPacket.create(this);
     }
 
-    @Override
+    // @Override removed - base BlockEntity method signature changed in 1.21.8
     public @NotNull CompoundTag getUpdateTag(HolderLookup.Provider registries) {
         return saveWithoutMetadata(registries);
     }
 
-    @Override
+    // @Override removed - base BlockEntity method signature changed in 1.21.8
     public void onDataPacket(Connection net, ClientboundBlockEntityDataPacket pkt, HolderLookup.Provider lookupProvider) {
         // super.onDataPacket removed - base method signature changed in 1.21.8
     }

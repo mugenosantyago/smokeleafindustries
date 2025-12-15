@@ -89,8 +89,12 @@ public class DryingRackBlock extends BaseEntityBlock {
         }
 
         // Find a drying recipe for the held stack
-        var recipeOpt = level.getRecipeManager()
-                .getRecipeFor(ModRecipes.DRYING_TYPE.get(), new DryingRecipeInput(stack), level);
+        // Level.getRecipeManager() removed in 1.21.8 - need to use ServerLevel.getServer().getRecipeManager()
+        Optional<RecipeHolder<DryingRecipe>> recipeOpt = Optional.empty();
+        if (level instanceof net.minecraft.server.level.ServerLevel serverLevel) {
+            recipeOpt = serverLevel.getServer().getRecipeManager()
+                    .getRecipeFor(ModRecipes.DRYING_TYPE.get(), new DryingRecipeInput(stack), level);
+        }
 
         if (recipeOpt.isEmpty()) {
             // No recipe -> not insertable
