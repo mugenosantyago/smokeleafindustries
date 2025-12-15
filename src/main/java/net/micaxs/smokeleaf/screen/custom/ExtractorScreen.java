@@ -55,8 +55,8 @@ public class ExtractorScreen extends AbstractContainerScreen<ExtractorMenu> {
         // RenderSystem.setShaderColor(1.0f, 1.0f, 1.0f, 1.0f);
         // RenderSystem.setShaderTexture(0, GUI_TEXTURE);
         
-        // Safety checks: ensure width, height, and menu are valid
-        if (this.width <= 0 || this.height <= 0 || this.menu == null) {
+        // Safety check: ensure menu is valid
+        if (this.menu == null) {
             return;
         }
         

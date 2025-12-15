@@ -73,10 +73,12 @@ public class GeneratorScreen extends AbstractContainerScreen<GeneratorMenu> {
         // RenderSystem.setShaderTexture(0, GUI_TEXTURE);
         
         // Safety checks: ensure width, height, and menu are valid
-        if (this.width <= 0 || this.height <= 0 || this.menu == null) {
+        // Note: width and height are set by super.init(), so they should be valid after init
+        if (this.menu == null) {
             return;
         }
         
+        // Use the screen dimensions - these should be set by AbstractContainerScreen
         int x = (this.width - this.imageWidth) / 2;
         int y = (this.height - this.imageHeight) / 2;
         
@@ -141,6 +143,8 @@ public class GeneratorScreen extends AbstractContainerScreen<GeneratorMenu> {
 
     @Override
     public void render(GuiGraphics guiGraphics, int mouseX, int mouseY, float partialTick) {
+        // Render background first (this calls renderBg internally)
+        this.renderBackground(guiGraphics, mouseX, mouseY, partialTick);
         super.render(guiGraphics, mouseX, mouseY, partialTick);
 
         int x = (width - imageWidth) / 2;
