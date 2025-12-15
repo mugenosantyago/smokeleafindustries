@@ -102,7 +102,10 @@ public class DryingRackBlockEntity extends BlockEntity {
                 be.progress[i]++;
                 int needed = Math.max(1, budItem.dryingTime);
                 if (be.progress[i] >= needed) {
-                    BaseBudItem.changeDryStatus(stack, true);
+                    // Create a new stack with dry status set to ensure proper persistence
+                    ItemStack driedStack = stack.copy();
+                    BaseBudItem.changeDryStatus(driedStack, true);
+                    be.items[i] = driedStack; // Store the modified stack back
                     be.progress[i] = 0;
                     changed = true;
                 }
