@@ -20,6 +20,7 @@ import net.minecraft.world.level.BlockGetter;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.BaseEntityBlock;
 import net.minecraft.world.level.block.Block;
+import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.RenderShape;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.entity.BlockEntityTicker;
@@ -114,9 +115,24 @@ public class GrowPotBlock extends BaseEntityBlock {
         }
 
         // Server side: actual validation
-        boolean canInsertSoil = !pot.hasSoil()
-                && stack.getItem() instanceof BlockItem bi
-                && bi.getBlock().builtInRegistryHolder().is(ModTags.POT_SOILS);
+        // Check if it's a valid soil block (try tag first, then fallback to direct block check)
+        boolean isValidSoilBlock = false;
+        if (!pot.hasSoil() && stack.getItem() instanceof BlockItem bi) {
+            Block block = bi.getBlock();
+            // Try tag check first
+            try {
+                isValidSoilBlock = block.builtInRegistryHolder().is(ModTags.POT_SOILS);
+            } catch (Exception e) {
+                // Tag check failed, fallback to direct block comparison
+            }
+            // Fallback: check if it's one of the known soil blocks
+            if (!isValidSoilBlock) {
+                isValidSoilBlock = block == Blocks.DIRT 
+                        || block == Blocks.FARMLAND 
+                        || block == Blocks.PODZOL;
+            }
+        }
+        boolean canInsertSoil = !pot.hasSoil() && isValidSoilBlock;
 
         boolean canPlantCrop = pot.hasSoil()
                 && !pot.hasCrop()
