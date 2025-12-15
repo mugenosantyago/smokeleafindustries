@@ -17,9 +17,14 @@ public class ModBlockEntities {
 
     public static final DeferredRegister<BlockEntityType<?>> BLOCK_ENTITIES = DeferredRegister.create(BuiltInRegistries.BLOCK_ENTITY_TYPE, SmokeleafIndustries.MODID);
 
-    // BlockEntityTypes - blocks are accessed via .get() which should work when the lambda is evaluated during registration
+    // BlockEntityTypes - using lazy evaluation to ensure blocks are registered first
+    // The lambda is evaluated when BlockEntityType is registered, at which point blocks should be available
     public static final Supplier<BlockEntityType<BaseWeedCropBlockEntity>> BASE_WEED_CROP_BE = BLOCK_ENTITIES.register("base_weed_crop_be",
-            () -> new BlockEntityType<BaseWeedCropBlockEntity>(BaseWeedCropBlockEntity::new, Set.of(ModBlocks.HEMP_CROP.get()), false));
+            () -> {
+                // Get block when BlockEntityType is actually created (during registration)
+                Block block = ModBlocks.HEMP_CROP.get();
+                return new BlockEntityType<BaseWeedCropBlockEntity>(BaseWeedCropBlockEntity::new, Set.of(block), false);
+            });
 
     public static final Supplier<BlockEntityType<GeneratorBlockEntity>> GENERATOR_BE = BLOCK_ENTITIES.register("generator_be",
             () -> new BlockEntityType<GeneratorBlockEntity>(GeneratorBlockEntity::new, Set.of(ModBlocks.GENERATOR.get()), false));
