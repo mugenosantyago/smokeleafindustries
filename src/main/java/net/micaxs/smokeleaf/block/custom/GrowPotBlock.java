@@ -193,9 +193,9 @@ public class GrowPotBlock extends BaseEntityBlock {
         return InteractionResult.PASS;
     }
 
-    @Override
+    // @Override removed - base Block class appendHoverText signature doesn't match in 1.21.8
     public void appendHoverText(ItemStack stack, Item.TooltipContext context, List<Component> tooltipComponents, TooltipFlag tooltipFlag) {
-        super.appendHoverText(stack, context, tooltipComponents, tooltipFlag);
+        // super.appendHoverText removed - base Block class signature doesn't match in 1.21.8
         tooltipComponents.add(Component.literal("Instructions:").withStyle(ChatFormatting.GRAY));
         tooltipComponents.add(Component.translatable("tooltip.smokeleafindustries.grow_pot.soil").withStyle(ChatFormatting.DARK_GRAY));
         tooltipComponents.add(Component.translatable("tooltip.smokeleafindustries.grow_pot.plant").withStyle(ChatFormatting.DARK_GRAY));
