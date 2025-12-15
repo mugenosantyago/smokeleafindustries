@@ -16,9 +16,12 @@ public class ModBlockEntities {
     public static final DeferredRegister<BlockEntityType<?>> BLOCK_ENTITIES = DeferredRegister.create(BuiltInRegistries.BLOCK_ENTITY_TYPE, SmokeleafIndustries.MODID);
 
 
-    // BlockEntityType.Builder API changed in 1.21.8 - trying BlockEntityType.of() instead
+    // BlockEntityType API changed in 1.21.8 - Builder.of() may have been removed
+    // TODO: Fix BlockEntityType creation API for 1.21.8
     public static final Supplier<BlockEntityType<BaseWeedCropBlockEntity>> BASE_WEED_CROP_BE = BLOCK_ENTITIES.register("base_weed_crop_be",
-            () -> BlockEntityType.of(BaseWeedCropBlockEntity::new,
+            () -> {
+                // Temporarily using Builder pattern - may need to change
+                var builder = BlockEntityType.Builder.of(BaseWeedCropBlockEntity::new,
                     ModBlocks.HEMP_CROP.get(),
                     ModBlocks.WHITE_WIDOW_CROP.get(),
                     ModBlocks.BUBBLE_KUSH_CROP.get(),
@@ -48,43 +51,81 @@ public class ModBlockEntities {
     ));
 
 
-    // BlockEntityType.Builder API changed in 1.21.8 - trying BlockEntityType.of() instead
+    // BlockEntityType API changed in 1.21.8 - Builder.of() may have been removed
+    // TODO: Fix BlockEntityType creation API for 1.21.8
     public static final Supplier<BlockEntityType<GeneratorBlockEntity>> GENERATOR_BE = BLOCK_ENTITIES.register("generator_be",
-            () -> BlockEntityType.of(GeneratorBlockEntity::new, ModBlocks.GENERATOR.get()));
+            () -> {
+                var builder = BlockEntityType.Builder.of(GeneratorBlockEntity::new, ModBlocks.GENERATOR.get());
+                return builder.build();
+            });
 
-    // BlockEntityType.Builder API changed in 1.21.8 - trying BlockEntityType.of() instead
+    // BlockEntityType API changed in 1.21.8 - Builder.of() may have been removed
+    // TODO: Fix BlockEntityType creation API for 1.21.8
     public static final Supplier<BlockEntityType<GrinderBlockEntity>> GRINDER_BE = BLOCK_ENTITIES.register("grinder_be",
-            () -> BlockEntityType.of(GrinderBlockEntity::new, ModBlocks.GRINDER.get()));
+            () -> {
+                var builder = BlockEntityType.Builder.of(GrinderBlockEntity::new, ModBlocks.GRINDER.get());
+                return builder.build();
+            });
 
     public static final Supplier<BlockEntityType<ExtractorBlockEntity>> EXTRACTOR_BE = BLOCK_ENTITIES.register("extractor_be",
-            () -> BlockEntityType.of(ExtractorBlockEntity::new, ModBlocks.EXTRACTOR.get()));
+            () -> {
+                var builder = BlockEntityType.Builder.of(ExtractorBlockEntity::new, ModBlocks.EXTRACTOR.get());
+                return builder.build();
+            });
 
     public static final Supplier<BlockEntityType<LiquifierBlockEntity>> LIQUIFIER_BE = BLOCK_ENTITIES.register("liquifier_be",
-            () -> BlockEntityType.of(LiquifierBlockEntity::new, ModBlocks.LIQUIFIER.get()));
+            () -> {
+                var builder = BlockEntityType.Builder.of(LiquifierBlockEntity::new, ModBlocks.LIQUIFIER.get());
+                return builder.build();
+            });
 
     public static final Supplier<BlockEntityType<MutatorBlockEntity>> MUTATOR_BE = BLOCK_ENTITIES.register("mutator_be",
-            () -> BlockEntityType.of(MutatorBlockEntity::new, ModBlocks.MUTATOR.get()));
+            () -> {
+                var builder = BlockEntityType.Builder.of(MutatorBlockEntity::new, ModBlocks.MUTATOR.get());
+                return builder.build();
+            });
 
     public static final Supplier<BlockEntityType<SynthesizerBlockEntity>> SYNTHESIZER_BE = BLOCK_ENTITIES.register("synthesizer_be",
-            () -> BlockEntityType.of(SynthesizerBlockEntity::new, ModBlocks.SYNTHESIZER.get()));
+            () -> {
+                var builder = BlockEntityType.Builder.of(SynthesizerBlockEntity::new, ModBlocks.SYNTHESIZER.get());
+                return builder.build();
+            });
 
     public static final Supplier<BlockEntityType<SequencerBlockEntity>> SEQUENCER_BE = BLOCK_ENTITIES.register("sequencer_be",
-            () -> BlockEntityType.of(SequencerBlockEntity::new, ModBlocks.SEQUENCER.get()));
+            () -> {
+                var builder = BlockEntityType.Builder.of(SequencerBlockEntity::new, ModBlocks.SEQUENCER.get());
+                return builder.build();
+            });
 
     public static final Supplier<BlockEntityType<DryerBlockEntity>> DRYER_BE = BLOCK_ENTITIES.register("dryer_be",
-            () -> BlockEntityType.of(DryerBlockEntity::new, ModBlocks.DRYER.get()));
+            () -> {
+                var builder = BlockEntityType.Builder.of(DryerBlockEntity::new, ModBlocks.DRYER.get());
+                return builder.build();
+            });
 
     public static final Supplier<BlockEntityType<DryingRackBlockEntity>> DRYING_RACK_BE = BLOCK_ENTITIES.register("drying_rack_be",
-            () -> BlockEntityType.of(DryingRackBlockEntity::new, ModBlocks.DRYING_RACK.get()));
+            () -> {
+                var builder = BlockEntityType.Builder.of(DryingRackBlockEntity::new, ModBlocks.DRYING_RACK.get());
+                return builder.build();
+            });
 
     public static final DeferredHolder<BlockEntityType<?>, BlockEntityType<ReflectorBlockEntity>> REFLECTOR = BLOCK_ENTITIES.register("reflector_be",
-            () -> BlockEntityType.of(ReflectorBlockEntity::new, ModBlocks.REFLECTOR.get()));
+            () -> {
+                var builder = BlockEntityType.Builder.of(ReflectorBlockEntity::new, ModBlocks.REFLECTOR.get());
+                return builder.build();
+            });
 
     public static final DeferredHolder<BlockEntityType<?>, BlockEntityType<GrowLightBlockEntity>> GROW_LIGHT = BLOCK_ENTITIES.register("grow_light_be",
-            () -> BlockEntityType.of(GrowLightBlockEntity::new, ModBlocks.LED_LIGHT.get()));
+            () -> {
+                var builder = BlockEntityType.Builder.of(GrowLightBlockEntity::new, ModBlocks.LED_LIGHT.get());
+                return builder.build();
+            });
 
     public static final DeferredHolder<BlockEntityType<?>, BlockEntityType<GrowPotBlockEntity>> GROW_POT = BLOCK_ENTITIES.register("grow_pot_be",
-            () -> BlockEntityType.of(GrowPotBlockEntity::new, ModBlocks.GROW_POT.get()));
+            () -> {
+                var builder = BlockEntityType.Builder.of(GrowPotBlockEntity::new, ModBlocks.GROW_POT.get());
+                return builder.build();
+            });
 
 
 
