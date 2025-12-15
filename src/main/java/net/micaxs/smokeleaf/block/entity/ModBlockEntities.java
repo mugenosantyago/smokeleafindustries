@@ -2,16 +2,13 @@ package net.micaxs.smokeleaf.block.entity;
 
 import net.micaxs.smokeleaf.SmokeleafIndustries;
 import net.micaxs.smokeleaf.block.ModBlocks;
-import net.micaxs.smokeleaf.block.custom.SequencerBlock;
 import net.minecraft.core.registries.BuiltInRegistries;
-import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.neoforged.bus.api.IEventBus;
 import net.neoforged.neoforge.registries.DeferredHolder;
 import net.neoforged.neoforge.registries.DeferredRegister;
 
 import java.util.Set;
-import java.util.function.Supplier;
 
 public class ModBlockEntities {
 
@@ -21,9 +18,36 @@ public class ModBlockEntities {
     // The lambda is evaluated when BlockEntityType is registered, at which point blocks should be available
     public static final DeferredHolder<BlockEntityType<?>, BlockEntityType<BaseWeedCropBlockEntity>> BASE_WEED_CROP_BE = BLOCK_ENTITIES.register("base_weed_crop_be",
             () -> {
-                // Get block when BlockEntityType is actually created (during registration)
-                Block block = ModBlocks.HEMP_CROP.get();
-                return new BlockEntityType<BaseWeedCropBlockEntity>(BaseWeedCropBlockEntity::new, Set.of(block), false);
+                // Get all crop blocks when BlockEntityType is actually created (during registration)
+                // All BaseWeedCropBlock instances need to be included in the block entity type
+                return new BlockEntityType<BaseWeedCropBlockEntity>(BaseWeedCropBlockEntity::new, Set.of(
+                        ModBlocks.HEMP_CROP.get(),
+                        ModBlocks.WHITE_WIDOW_CROP.get(),
+                        ModBlocks.BUBBLE_KUSH_CROP.get(),
+                        ModBlocks.PURPLE_HAZE_CROP.get(),
+                        ModBlocks.AMNESIA_HAZE_CROP.get(),
+                        ModBlocks.BLUE_COOKIES_CROP.get(),
+                        ModBlocks.LEMON_HAZE_CROP.get(),
+                        ModBlocks.SOUR_DIESEL_CROP.get(),
+                        ModBlocks.JACK_HERER_CROP.get(),
+                        ModBlocks.GHOST_TRAIN_CROP.get(),
+                        ModBlocks.GRAPE_APE_CROP.get(),
+                        ModBlocks.COTTON_CANDY_CROP.get(),
+                        ModBlocks.AFGHANI_CROP.get(),
+                        ModBlocks.LAVA_CAKE_CROP.get(),
+                        ModBlocks.JELLY_RANCHER_CROP.get(),
+                        ModBlocks.STRAWBERRY_SHORTCAKE_CROP.get(),
+                        ModBlocks.BLUE_ICE_CROP.get(),
+                        ModBlocks.BUBBLEGUM_CROP.get(),
+                        ModBlocks.GARY_PEYTON_CROP.get(),
+                        ModBlocks.AK47_CROP.get(),
+                        ModBlocks.BANANA_KUSH_CROP.get(),
+                        ModBlocks.PINK_KUSH_CROP.get(),
+                        ModBlocks.OG_KUSH_CROP.get(),
+                        ModBlocks.CARBON_FIBER_CROP.get(),
+                        ModBlocks.BIRTHDAY_CAKE_CROP.get(),
+                        ModBlocks.MOONBOW_CROP.get()
+                ), false);
             });
 
     public static final DeferredHolder<BlockEntityType<?>, BlockEntityType<GeneratorBlockEntity>> GENERATOR_BE = BLOCK_ENTITIES.register("generator_be",
