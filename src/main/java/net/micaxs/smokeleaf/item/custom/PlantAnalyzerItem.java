@@ -42,17 +42,15 @@ public class PlantAnalyzerItem extends Item {
     }
 
     public static void openAnalyzerScreen(BlockPos pos) {
-        // Use reflection to avoid NoClassDefFoundError on server side
+        // Use reflection to avoid loading client-side classes on server
         try {
             Class<?> minecraftClass = Class.forName("net.minecraft.client.Minecraft");
-            Object minecraftInstance = minecraftClass.getMethod("getInstance").invoke(null);
+            Object minecraft = minecraftClass.getMethod("getInstance").invoke(null);
             Class<?> screenClass = Class.forName("net.micaxs.smokeleaf.screen.custom.MagnifyingGlassScreen");
-            Object screenInstance = screenClass.getConstructor(BlockPos.class).newInstance(pos);
-            Class<?> screenBaseClass = Class.forName("net.minecraft.client.gui.screens.Screen");
-            minecraftClass.getMethod("setScreen", screenBaseClass).invoke(minecraftInstance, screenInstance);
+            Object screen = screenClass.getConstructor(BlockPos.class).newInstance(pos);
+            minecraftClass.getMethod("setScreen", Class.forName("net.minecraft.client.gui.screens.Screen")).invoke(minecraft, screen);
         } catch (Exception e) {
-            // Log or handle the exception if client-side classes are not available
-            System.err.println("Could not open MagnifyingGlassScreen: " + e.getMessage());
+            // Silently fail on server side
         }
     }
 

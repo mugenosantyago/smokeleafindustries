@@ -1,20 +1,12 @@
 package net.micaxs.smokeleaf.event;
 
-import com.mojang.blaze3d.vertex.PoseStack;
 import net.micaxs.smokeleaf.SmokeleafIndustries;
 import net.micaxs.smokeleaf.effect.ModEffects;
 import net.micaxs.smokeleaf.effect.ModParticles;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.multiplayer.ClientLevel;
 import net.minecraft.client.player.LocalPlayer;
-import net.minecraft.client.renderer.MultiBufferSource;
-import net.minecraft.client.renderer.entity.EntityRenderDispatcher;
-import net.minecraft.client.renderer.entity.LivingEntityRenderer;
 import net.minecraft.client.resources.sounds.SoundInstance;
-import net.minecraft.util.Mth;
-import net.minecraft.world.entity.Entity;
-import net.minecraft.world.entity.EquipmentSlot;
-import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.monster.Zombie;
 import net.minecraft.world.entity.npc.Villager;
 import net.minecraft.world.entity.player.Player;
@@ -22,7 +14,6 @@ import net.neoforged.api.distmarker.Dist;
 import net.neoforged.bus.api.SubscribeEvent;
 import net.neoforged.fml.common.EventBusSubscriber;
 import net.neoforged.neoforge.client.event.RenderLivingEvent;
-import net.neoforged.neoforge.client.event.RenderNameTagEvent;
 import net.neoforged.neoforge.client.event.ViewportEvent;
 import net.neoforged.neoforge.client.event.sound.PlaySoundEvent;
 import net.neoforged.neoforge.event.entity.player.PlayerInteractEvent;
@@ -76,17 +67,8 @@ public class ClientEvents {
 
 
     // -------- Friend or Foe spoofed name tags --------
-    @SubscribeEvent
-    public static void onRenderName(RenderNameTagEvent event) {
-        LocalPlayer viewer = Minecraft.getInstance().player;
-        if (viewer == null || !viewer.hasEffect(ModEffects.FRIEND_OR_FOE)) return;
-
-        // TODO: Fix RenderNameTagEvent API for 1.21.8 - getEntity() and setContent() methods changed
-        // Entity e = event.getEntity();
-        // String[] pool = new String[]{"Zombie", "Villager", "Creeper", "Cow", "Sheep", "Enderman", "Pig", "Spider"};
-        // int idx = Math.floorMod(e.getUUID().hashCode(), pool.length);
-        // event.setContent(net.minecraft.network.chat.Component.literal(pool[idx]));
-    }
+    // TODO: Re-implement using concrete subclass of RenderNameTagEvent (e.g., RenderNameTagEvent.Entity)
+    // The abstract RenderNameTagEvent cannot be subscribed to directly in NeoForge 1.21.8
 
 
 
