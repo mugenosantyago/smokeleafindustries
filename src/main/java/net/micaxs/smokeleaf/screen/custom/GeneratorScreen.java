@@ -39,7 +39,7 @@ public class GeneratorScreen extends AbstractContainerScreen<GeneratorMenu> {
         super.init();
         this.inventoryLabelY = 100000;
         this.titleLabelY = 100000;
-        assignEnergyInfoArea();
+        // Don't assign here - width/height might not be set yet
     }
     
     @Override
@@ -58,7 +58,9 @@ public class GeneratorScreen extends AbstractContainerScreen<GeneratorMenu> {
     }
 
     private void assignEnergyInfoArea() {
-        energyInfoArea = new EnergyDisplayTooltipArea(((this.width - this.imageWidth) / 2) + 125, ((this.height - this.imageHeight) / 2) + 21, menu.blockEntity.getEnergyStorage(null), 13, 38);
+        if (this.width > 0 && this.height > 0 && menu != null && menu.blockEntity != null) {
+            energyInfoArea = new EnergyDisplayTooltipArea(((this.width - this.imageWidth) / 2) + 125, ((this.height - this.imageHeight) / 2) + 21, menu.blockEntity.getEnergyStorage(null), 13, 38);
+        }
     }
 
 
@@ -73,6 +75,10 @@ public class GeneratorScreen extends AbstractContainerScreen<GeneratorMenu> {
         int y = (this.height - this.imageHeight) / 2;
         guiGraphics.blit(GUI_TEXTURE, x, y, 0, 0, this.imageWidth, this.imageHeight, 256, 256);
 
+        // Initialize energyInfoArea if not already done
+        if (energyInfoArea == null) {
+            assignEnergyInfoArea();
+        }
         if (energyInfoArea != null) {
             energyInfoArea.render(guiGraphics);
         }
