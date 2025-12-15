@@ -263,10 +263,21 @@ public class DryingRackBlock extends BaseEntityBlock {
     }
 
     public void onRemove(BlockState state, Level level, BlockPos pos, BlockState newState, boolean isMoving) {
-        if (state.getBlock() != newState.getBlock()) {
+        if (state.getBlock() != newState.getBlock() && !level.isClientSide && level instanceof net.minecraft.server.level.ServerLevel serverLevel) {
             BlockEntity be = level.getBlockEntity(pos);
             if (be instanceof DryingRackBlockEntity rack) {
+                // Drop items before block entity is removed
                 rack.dropContents();
+            } else {
+                // Block entity might not exist yet, try to load it from chunk data
+                // This can happen if the block was placed but never interacted with
+                var chunk = serverLevel.getChunkAt(pos);
+                if (chunk != null) {
+                    var chunkBe = chunk.getBlockEntity(pos);
+                    if (chunkBe instanceof DryingRackBlockEntity rack) {
+                        rack.dropContents();
+                    }
+                }
             }
         }
         // super.onRemove removed - base Block method signature changed in 1.21.8

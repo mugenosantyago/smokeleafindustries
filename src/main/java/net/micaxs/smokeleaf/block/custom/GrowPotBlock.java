@@ -181,6 +181,10 @@ public class GrowPotBlock extends BaseEntityBlock {
             pot.setSoil(soilBlock.defaultBlockState());
             if (!player.isCreative()) stack.shrink(1);
             pot.setChangedAndSync();
+            // Force immediate sync to client
+            if (level instanceof ServerLevel serverLevel) {
+                serverLevel.sendBlockUpdated(pos, state, state, 3);
+            }
             return InteractionResult.SUCCESS;
         }
 
@@ -191,6 +195,10 @@ public class GrowPotBlock extends BaseEntityBlock {
                 pot.plantCrop(crop);
                 if (!player.isCreative()) stack.shrink(1);
                 pot.setChangedAndSync();
+                // Force immediate sync to client
+                if (level instanceof ServerLevel serverLevel) {
+                    serverLevel.sendBlockUpdated(pos, state, state, 3);
+                }
                 return InteractionResult.SUCCESS;
             }
         }
