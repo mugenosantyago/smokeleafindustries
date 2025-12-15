@@ -11,10 +11,7 @@ import net.minecraft.network.chat.Component;
 import net.minecraft.world.entity.ai.village.poi.PoiType;
 import net.minecraft.world.entity.npc.VillagerProfession;
 import net.neoforged.bus.api.IEventBus;
-import net.neoforged.bus.api.SubscribeEvent;
-import net.neoforged.fml.common.EventBusSubscriber;
 import net.neoforged.neoforge.registries.DeferredRegister;
-import net.neoforged.neoforge.registries.RegisterEvent;
 
 public class ModVillagers {
 
@@ -56,26 +53,4 @@ public class ModVillagers {
         VILLAGER_PROFESSIONS.register(eventBus);
     }
 
-    @EventBusSubscriber(modid = SmokeleafIndustries.MODID, bus = EventBusSubscriber.Bus.MOD)
-    public static class RegistrationHandler {
-        private static boolean blocksRegistered = false;
-
-        @SubscribeEvent
-        public static void onRegisterBlocks(RegisterEvent event) {
-            // Mark blocks as registered when BLOCK registry is being registered
-            if (event.getRegistryKey() == Registries.BLOCK) {
-                blocksRegistered = true;
-            }
-        }
-
-        @SubscribeEvent
-        public static void onRegisterPOIs(RegisterEvent event) {
-            // Only register POI types after blocks are registered
-            if (event.getRegistryKey() == Registries.POINT_OF_INTEREST_TYPE && blocksRegistered) {
-                // Blocks are now registered, so we can safely access them
-                // The DeferredRegister will handle the actual registration
-                // This handler just ensures blocks are registered first
-            }
-        }
-    }
 }
