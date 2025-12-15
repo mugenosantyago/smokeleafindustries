@@ -101,7 +101,7 @@ public class GrowPotBlock extends BaseEntityBlock {
                     level.setBlockEntity(be);
                 }
             }
-            if (!(be instanceof GrowPotBlockEntity pot)) return InteractionResult.PASS;
+        if (!(be instanceof GrowPotBlockEntity pot)) return InteractionResult.PASS;
         }
         GrowPotBlockEntity pot = (GrowPotBlockEntity) be;
 
@@ -201,7 +201,7 @@ public class GrowPotBlock extends BaseEntityBlock {
                 // Reuse the existing 'be' variable (pot is already the block entity)
                 serverLevel.getChunkSource().blockChanged(pos);
                 // Also explicitly send the update packet
-                pot.setChangedAndSync();
+            pot.setChangedAndSync();
             }
             return InteractionResult.SUCCESS;
         }
@@ -221,7 +221,7 @@ public class GrowPotBlock extends BaseEntityBlock {
                     // Reuse the existing 'be' variable (pot is already the block entity)
                     serverLevel.getChunkSource().blockChanged(pos);
                     // Also explicitly send the update packet
-                    pot.setChangedAndSync();
+                pot.setChangedAndSync();
                 }
                 return InteractionResult.SUCCESS;
             }

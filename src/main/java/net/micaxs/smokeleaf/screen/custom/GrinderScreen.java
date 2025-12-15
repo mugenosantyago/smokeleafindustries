@@ -37,7 +37,7 @@ public class GrinderScreen extends AbstractContainerScreen<GrinderMenu> {
         this.inventoryLabelY = 100000;
         this.titleLabelY = 100000;
     }
-    
+
     @Override
     public void resize(net.minecraft.client.Minecraft minecraft, int width, int height) {
         super.resize(minecraft, width, height);
@@ -81,7 +81,7 @@ public class GrinderScreen extends AbstractContainerScreen<GrinderMenu> {
             assignEnergyInfoArea();
         }
         if (energyInfoArea != null) {
-            energyInfoArea.render(guiGraphics);
+        energyInfoArea.render(guiGraphics);
         }
         renderProgressArrow(guiGraphics, x, y);
         renderInfoIcon(guiGraphics, x, y);
@@ -114,7 +114,7 @@ public class GrinderScreen extends AbstractContainerScreen<GrinderMenu> {
 
     private void assignEnergyInfoArea() {
         if (this.width > 0 && this.height > 0 && menu != null && menu.blockEntity != null) {
-            energyInfoArea = new EnergyDisplayTooltipArea(((width - imageWidth) / 2) + 156, ((height - imageHeight) / 2) + 11, menu.blockEntity.getEnergyStorage(null), 8, 64);
+        energyInfoArea = new EnergyDisplayTooltipArea(((width - imageWidth) / 2) + 156, ((height - imageHeight) / 2) + 11, menu.blockEntity.getEnergyStorage(null), 8, 64);
         }
     }
 

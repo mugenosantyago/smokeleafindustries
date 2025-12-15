@@ -41,7 +41,7 @@ public class GeneratorScreen extends AbstractContainerScreen<GeneratorMenu> {
         this.titleLabelY = 100000;
         // Don't assign here - width/height might not be set yet
     }
-    
+
     @Override
     public void resize(net.minecraft.client.Minecraft minecraft, int width, int height) {
         super.resize(minecraft, width, height);
@@ -95,7 +95,7 @@ public class GeneratorScreen extends AbstractContainerScreen<GeneratorMenu> {
             assignEnergyInfoArea();
         }
         if (energyInfoArea != null) {
-            energyInfoArea.render(guiGraphics);
+        energyInfoArea.render(guiGraphics);
         }
         renderFuelProgress(guiGraphics, x, y);
         renderInfoIcon(guiGraphics, x, y);

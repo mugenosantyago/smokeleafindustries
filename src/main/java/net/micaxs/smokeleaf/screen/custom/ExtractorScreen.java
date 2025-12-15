@@ -85,7 +85,7 @@ public class ExtractorScreen extends AbstractContainerScreen<ExtractorMenu> {
             assignEnergyInfoArea();
         }
         if (energyInfoArea != null) {
-            energyInfoArea.render(guiGraphics);
+        energyInfoArea.render(guiGraphics);
         }
         renderProgressArrow(guiGraphics, x, y);
     }

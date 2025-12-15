@@ -278,11 +278,9 @@ public class DryingRackBlock extends BaseEntityBlock {
     @Override
     public BlockState playerWillDestroy(Level level, BlockPos pos, BlockState state, Player player) {
         // Ensure block entity exists and drops items when player breaks the block
-        // This is called BEFORE the block is removed, so the block entity should still exist
         if (!level.isClientSide) {
             BlockEntity be = level.getBlockEntity(pos);
             if (be instanceof DryingRackBlockEntity rack) {
-                // Drop all items before the block is destroyed
                 rack.dropContents();
             }
         }
