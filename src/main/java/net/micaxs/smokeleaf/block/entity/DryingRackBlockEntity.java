@@ -234,7 +234,12 @@ public class DryingRackBlockEntity extends BlockEntity {
         for (int i = 0; i < SLOT_COUNT; i++) {
             if (!items[i].isEmpty()) {
                 ItemStack stack = items[i].copy();
-                net.minecraft.world.level.block.Block.popResource(serverLevel, worldPosition, stack);
+                // Use Containers.dropItemStack like ReflectorBlockEntity for consistency
+                net.minecraft.world.Containers.dropItemStack(serverLevel,
+                        worldPosition.getX() + 0.5,
+                        worldPosition.getY() + 0.5,
+                        worldPosition.getZ() + 0.5,
+                        stack);
                 items[i] = ItemStack.EMPTY;
                 progress[i] = 0;
             }

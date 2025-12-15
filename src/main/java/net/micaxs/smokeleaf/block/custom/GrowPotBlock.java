@@ -76,6 +76,18 @@ public class GrowPotBlock extends BaseEntityBlock {
         return level.isClientSide ? null :
                 createTickerHelper(type, ModBlockEntities.GROW_POT.get(), GrowPotBlockEntity::tick);
     }
+    
+    @Override
+    public void setPlacedBy(Level level, BlockPos pos, BlockState state, @Nullable net.minecraft.world.entity.LivingEntity placer, net.minecraft.world.item.ItemStack stack) {
+        super.setPlacedBy(level, pos, state, placer, stack);
+        // Ensure block entity is created and synced when block is placed
+        if (!level.isClientSide && level instanceof net.minecraft.server.level.ServerLevel serverLevel) {
+            BlockEntity be = level.getBlockEntity(pos);
+            if (be instanceof GrowPotBlockEntity pot) {
+                pot.setChangedAndSync();
+            }
+        }
+    }
 
     @Override
     protected InteractionResult useItemOn(ItemStack stack, BlockState state, Level level, BlockPos pos,

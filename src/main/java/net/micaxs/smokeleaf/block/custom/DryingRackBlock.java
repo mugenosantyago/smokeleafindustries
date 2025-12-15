@@ -271,6 +271,19 @@ public class DryingRackBlock extends BaseEntityBlock {
                 rack.dropContents();
             }
         }
+        // Call super to ensure proper cleanup
         // super.onRemove removed - base Block method signature changed in 1.21.8
+    }
+    
+    @Override
+    public BlockState playerWillDestroy(Level level, BlockPos pos, BlockState state, Player player) {
+        // Ensure block entity exists and drops items when player breaks the block
+        if (!level.isClientSide) {
+            BlockEntity be = level.getBlockEntity(pos);
+            if (be instanceof DryingRackBlockEntity rack) {
+                rack.dropContents();
+            }
+        }
+        return super.playerWillDestroy(level, pos, state, player);
     }
 }

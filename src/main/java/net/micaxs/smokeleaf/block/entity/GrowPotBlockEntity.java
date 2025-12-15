@@ -422,20 +422,18 @@ public class GrowPotBlockEntity extends BlockEntity {
         CompoundTag tag = pkt.getTag();
         if (tag != null) {
             loadAdditional(tag, lookupProvider);
-            // Request a re-render after loading data
-            if (level != null && level.isClientSide) {
-                level.sendBlockUpdated(worldPosition, getBlockState(), getBlockState(), 3);
-            }
         }
     }
     
     @Override
     public void onLoad() {
         super.onLoad();
-        // Request update from server when block entity loads on client
-        if (level != null && level.isClientSide) {
-            // Request data from server
+        // When block entity loads on client, request initial data from server if needed
+        if (level != null && level.isClientSide && (soilState == null && cropBlock == null)) {
+            // Block entity just loaded, request update from server
+            // This ensures we get the data when the block is first placed
             if (level instanceof net.minecraft.client.multiplayer.ClientLevel clientLevel) {
+                // Request block update to get block entity data
                 clientLevel.sendBlockUpdated(worldPosition, getBlockState(), getBlockState(), 3);
             }
         }
