@@ -6,10 +6,8 @@ import net.micaxs.smokeleaf.block.entity.GrowPotBlockEntity;
 import net.micaxs.smokeleaf.block.entity.ModBlockEntities;
 import net.micaxs.smokeleaf.item.custom.FertilizerItem;
 import net.micaxs.smokeleaf.item.custom.PlantAnalyzerItem;
-import net.micaxs.smokeleaf.screen.custom.MagnifyingGlassScreen;
 import net.micaxs.smokeleaf.utils.ModTags;
 import net.minecraft.ChatFormatting;
-import net.minecraft.client.Minecraft;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.network.chat.Component;
@@ -184,7 +182,16 @@ public class GrowPotBlock extends BaseEntityBlock {
 
 
     public static void openAnalyzerScreen(BlockPos pos) {
-        Minecraft.getInstance().setScreen(new MagnifyingGlassScreen(pos));
+        // Use reflection to avoid loading client-side classes on server
+        try {
+            Class<?> minecraftClass = Class.forName("net.minecraft.client.Minecraft");
+            Object minecraft = minecraftClass.getMethod("getInstance").invoke(null);
+            Class<?> screenClass = Class.forName("net.micaxs.smokeleaf.screen.custom.MagnifyingGlassScreen");
+            Object screen = screenClass.getConstructor(BlockPos.class).newInstance(pos);
+            minecraftClass.getMethod("setScreen", Class.forName("net.minecraft.client.gui.screens.Screen")).invoke(minecraft, screen);
+        } catch (Exception e) {
+            // Silently fail on server side
+        }
     }
 
 

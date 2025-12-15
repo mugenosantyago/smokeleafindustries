@@ -4,6 +4,9 @@ import net.micaxs.smokeleaf.SmokeleafIndustries;
 import net.micaxs.smokeleaf.block.ModBlocks;
 import net.micaxs.smokeleaf.effect.ModEffects;
 import net.micaxs.smokeleaf.item.custom.*;
+import net.minecraft.core.registries.Registries;
+import net.minecraft.resources.ResourceKey;
+import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.effect.MobEffects;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.BlockItem;
@@ -13,13 +16,22 @@ import net.neoforged.neoforge.registries.DeferredRegister;
 
 public class ModItems {
     public static final DeferredRegister.Items ITEMS = DeferredRegister.createItems(SmokeleafIndustries.MODID);
+    
+    /**
+     * Helper to create Item.Properties with the item ID set.
+     * This is required in NeoForge 1.21.8 to avoid "Item id not set" errors.
+     */
+    private static Item.Properties itemProps(String name) {
+        ResourceKey<Item> itemKey = ResourceKey.create(Registries.ITEM, ResourceLocation.fromNamespaceAndPath(SmokeleafIndustries.MODID, name));
+        return new Item.Properties().setId(itemKey);
+    }
 
     // Tobacco
-    public static final DeferredItem<Item> TOBACCO = ITEMS.register("tobacco",  () -> new Item(new Item.Properties()));
+    public static final DeferredItem<Item> TOBACCO = ITEMS.register("tobacco",  () -> new Item(itemProps("tobacco")));
     public static final DeferredItem<Item>  TOBACCO_SEEDS = ITEMS.register("tobacco_seeds",
-            () -> new BlockItem(ModBlocks.TOBACCO_CROP.get(), new Item.Properties()));
-    public static final DeferredItem<Item> TOBACCO_LEAF = ITEMS.register("tobacco_leaves",  () -> new Item(new Item.Properties()));
-    public static final DeferredItem<Item> DRIED_TOBACCO_LEAF = ITEMS.register("dried_tobacco_leaves",  () -> new Item(new Item.Properties()));
+            () -> new BlockItem(ModBlocks.TOBACCO_CROP.get(), itemProps("tobacco_seeds")));
+    public static final DeferredItem<Item> TOBACCO_LEAF = ITEMS.register("tobacco_leaves",  () -> new Item(itemProps("tobacco_leaves")));
+    public static final DeferredItem<Item> DRIED_TOBACCO_LEAF = ITEMS.register("dried_tobacco_leaves",  () -> new Item(itemProps("dried_tobacco_leaves")));
 
 
 
