@@ -10,13 +10,14 @@ import net.neoforged.neoforge.registries.datamaps.builtin.NeoForgeDataMaps;
 import java.util.concurrent.CompletableFuture;
 
 public class ModDataMapProvder extends DataMapProvider {
-    protected ModDataMapProvder(PackOutput packOutput, CompletableFuture<HolderLookup.Provider> lookupProvider) {
+    public ModDataMapProvder(PackOutput packOutput, CompletableFuture<HolderLookup.Provider> lookupProvider) {
         super(packOutput, lookupProvider);
     }
 
-//    @Override
-//    protected void gather() {
-//        this.builder(NeoForgeDataMaps.FURNACE_FUELS)
-//                .add(ModItems.SOMEWEEDFUEL.getId(), new FurnaceFuel(1200), false);
-//    }
+    @Override
+    protected void gather(HolderLookup.Provider provider) {
+        // TODO: Fix DataMapProvider gather method for 1.21.8
+        // this.builder(NeoForgeDataMaps.FURNACE_FUELS)
+        //         .add(ModItems.SOMEWEEDFUEL.getId(), new FurnaceFuel(1200), false);
+    }
 }

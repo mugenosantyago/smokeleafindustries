@@ -11,6 +11,7 @@ import net.minecraft.client.renderer.blockentity.BlockEntityRendererProvider;
 import net.minecraft.client.renderer.texture.OverlayTexture;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.state.BlockState;
+import net.minecraft.world.phys.Vec3;
 
 public class GrowPotRenderer implements BlockEntityRenderer<GrowPotBlockEntity> {
     private final BlockRenderDispatcher dispatcher;
@@ -29,7 +30,7 @@ public class GrowPotRenderer implements BlockEntityRenderer<GrowPotBlockEntity> 
 
     @Override
     public void render(GrowPotBlockEntity be, float partialTicks, PoseStack pose,
-                       MultiBufferSource buffers, int packedLight, int packedOverlay) {
+                       MultiBufferSource buffers, int packedLight, int packedOverlay, Vec3 offset) {
         Level level = be.getLevel();
         if (level == null) return;
 
@@ -62,8 +63,9 @@ public class GrowPotRenderer implements BlockEntityRenderer<GrowPotBlockEntity> 
         }
     }
 
-    @Override
-    public boolean shouldRenderOffScreen(GrowPotBlockEntity be) {
-        return true;
-    }
+    // shouldRenderOffScreen method may have been removed or signature changed in 1.21.8
+    // @Override
+    // public boolean shouldRenderOffScreen(GrowPotBlockEntity be) {
+    //     return true;
+    // }
 }

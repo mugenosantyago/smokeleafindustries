@@ -10,6 +10,7 @@ import net.minecraft.client.renderer.blockentity.BlockEntityRendererProvider;
 import net.minecraft.world.item.ItemDisplayContext;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.block.state.properties.BlockStateProperties;
+import net.minecraft.world.phys.Vec3;
 
 public class DryingRackRenderer implements BlockEntityRenderer<DryingRackBlockEntity> {
 
@@ -20,7 +21,7 @@ public class DryingRackRenderer implements BlockEntityRenderer<DryingRackBlockEn
 
     @Override
     public void render(DryingRackBlockEntity be, float partialTicks, PoseStack pose,
-                       MultiBufferSource buffers, int light, int overlay) {
+                       MultiBufferSource buffers, int light, int overlay, Vec3 offset) {
         if (be.getLevel() == null) return;
         var state = be.getBlockState();
         var facing = state.getValue(BlockStateProperties.HORIZONTAL_FACING);
