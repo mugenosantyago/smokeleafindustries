@@ -274,13 +274,11 @@ public class GrowPotBlockEntity extends BlockEntity {
 
     public void setChangedAndSync() {
         setChanged();
-        if (level != null && !level.isClientSide) {
-            // Send block update with block entity data
+        if (level != null && !level.isClientSide && level instanceof ServerLevel serverLevel) {
+            // Send block update with block entity data (flag 3 = send to clients)
             level.sendBlockUpdated(worldPosition, getBlockState(), getBlockState(), 3);
             // Also ensure the block entity data packet is sent
-            if (level instanceof ServerLevel serverLevel) {
-                serverLevel.getChunkSource().blockChanged(worldPosition);
-            }
+            serverLevel.getChunkSource().blockChanged(worldPosition);
         }
     }
 

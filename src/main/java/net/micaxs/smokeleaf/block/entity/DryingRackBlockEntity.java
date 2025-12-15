@@ -231,6 +231,8 @@ public class DryingRackBlockEntity extends BlockEntity {
     public void dropContents() {
         if (level == null || level.isClientSide) return;
         if (!(level instanceof ServerLevel serverLevel)) return;
+        
+        // Drop all items
         for (int i = 0; i < SLOT_COUNT; i++) {
             if (!items[i].isEmpty()) {
                 ItemStack stack = items[i].copy();
@@ -244,6 +246,9 @@ public class DryingRackBlockEntity extends BlockEntity {
                 progress[i] = 0;
             }
         }
+        
+        // Mark as changed to ensure data is saved
+        setChanged();
     }
 
     private void setChangedAndSync() {

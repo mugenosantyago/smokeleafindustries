@@ -196,6 +196,8 @@ public class GrowPotBlock extends BaseEntityBlock {
             // Force immediate sync to client - ensure block entity data is sent
             if (level instanceof ServerLevel serverLevel) {
                 serverLevel.sendBlockUpdated(pos, state, state, 3);
+                // Also request a block entity data packet
+                serverLevel.getChunkSource().blockChanged(pos);
             }
             return InteractionResult.SUCCESS;
         }
@@ -210,6 +212,8 @@ public class GrowPotBlock extends BaseEntityBlock {
                 // Force immediate sync to client - ensure block entity data is sent
                 if (level instanceof ServerLevel serverLevel) {
                     serverLevel.sendBlockUpdated(pos, state, state, 3);
+                    // Also request a block entity data packet
+                    serverLevel.getChunkSource().blockChanged(pos);
                 }
                 return InteractionResult.SUCCESS;
             }
