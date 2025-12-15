@@ -29,13 +29,13 @@ public class ExtractorScreen extends AbstractContainerScreen<ExtractorMenu> {
 
     public ExtractorScreen(ExtractorMenu menu, Inventory playerInvetory, Component title) {
         super(menu, playerInvetory, title);
-        this.imageWidth = IMAGE_WIDTH;
-        this.imageHeight = IMAGE_HEIGHT;
     }
 
     @Override
     protected void init() {
         super.init();
+        this.imageWidth = IMAGE_WIDTH;
+        this.imageHeight = IMAGE_HEIGHT;
         this.inventoryLabelY = 100000;
         this.titleLabelY = 7;
         assignEnergyInfoArea();

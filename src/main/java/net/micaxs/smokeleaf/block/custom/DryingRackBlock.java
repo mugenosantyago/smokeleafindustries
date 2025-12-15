@@ -263,8 +263,8 @@ public class DryingRackBlock extends BaseEntityBlock {
     }
 
     public void onRemove(BlockState state, Level level, BlockPos pos, BlockState newState, boolean isMoving) {
-        if (state.getBlock() != newState.getBlock() && !level.isClientSide && level instanceof net.minecraft.server.level.ServerLevel serverLevel) {
-            // Get block entity before it's removed
+        if (state.getBlock() != newState.getBlock() && !level.isClientSide) {
+            // Get block entity before it's removed - must check before block is actually removed
             BlockEntity be = level.getBlockEntity(pos);
             if (be instanceof DryingRackBlockEntity rack) {
                 // Drop items before block entity is removed

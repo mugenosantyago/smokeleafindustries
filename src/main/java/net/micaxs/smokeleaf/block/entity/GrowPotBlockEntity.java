@@ -422,6 +422,22 @@ public class GrowPotBlockEntity extends BlockEntity {
         CompoundTag tag = pkt.getTag();
         if (tag != null) {
             loadAdditional(tag, lookupProvider);
+            // Request a re-render after loading data
+            if (level != null && level.isClientSide) {
+                level.sendBlockUpdated(worldPosition, getBlockState(), getBlockState(), 3);
+            }
+        }
+    }
+    
+    @Override
+    public void onLoad() {
+        super.onLoad();
+        // Request update from server when block entity loads on client
+        if (level != null && level.isClientSide) {
+            // Request data from server
+            if (level instanceof net.minecraft.client.multiplayer.ClientLevel clientLevel) {
+                clientLevel.sendBlockUpdated(worldPosition, getBlockState(), getBlockState(), 3);
+            }
         }
     }
 }

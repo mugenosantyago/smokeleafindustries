@@ -32,13 +32,13 @@ public class MutatorScreen extends AbstractContainerScreen<MutatorMenu> {
 
     public MutatorScreen(MutatorMenu menu, Inventory playerInventory, Component title) {
         super(menu, playerInventory, title);
-        this.imageWidth = IMAGE_WIDTH;
-        this.imageHeight = IMAGE_HEIGHT;
     }
 
     @Override
     protected void init() {
         super.init();
+        this.imageWidth = IMAGE_WIDTH;
+        this.imageHeight = IMAGE_HEIGHT;
         this.inventoryLabelY = 100000;
         this.titleLabelY = 100000;
 
