@@ -198,15 +198,10 @@ public class GrowPotBlock extends BaseEntityBlock {
                 // Send block update with flag 3 (sends to clients)
                 serverLevel.sendBlockUpdated(pos, state, state, 3);
                 // Force block entity data packet to be sent
-                BlockEntity be = level.getBlockEntity(pos);
-                if (be != null) {
-                    // This triggers the block entity data packet to be sent
-                    serverLevel.getChunkSource().blockChanged(pos);
-                    // Also explicitly send the update packet
-                    if (be instanceof GrowPotBlockEntity potBe) {
-                        potBe.setChangedAndSync();
-                    }
-                }
+                // Reuse the existing 'be' variable (pot is already the block entity)
+                serverLevel.getChunkSource().blockChanged(pos);
+                // Also explicitly send the update packet
+                pot.setChangedAndSync();
             }
             return InteractionResult.SUCCESS;
         }
@@ -223,15 +218,10 @@ public class GrowPotBlock extends BaseEntityBlock {
                     // Send block update with flag 3 (sends to clients)
                     serverLevel.sendBlockUpdated(pos, state, state, 3);
                     // Force block entity data packet to be sent
-                    BlockEntity be = level.getBlockEntity(pos);
-                    if (be != null) {
-                        // This triggers the block entity data packet to be sent
-                        serverLevel.getChunkSource().blockChanged(pos);
-                        // Also explicitly send the update packet
-                        if (be instanceof GrowPotBlockEntity potBe) {
-                            potBe.setChangedAndSync();
-                        }
-                    }
+                    // Reuse the existing 'be' variable (pot is already the block entity)
+                    serverLevel.getChunkSource().blockChanged(pos);
+                    // Also explicitly send the update packet
+                    pot.setChangedAndSync();
                 }
                 return InteractionResult.SUCCESS;
             }

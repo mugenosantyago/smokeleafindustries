@@ -163,7 +163,8 @@ public class GrowPotBlockEntity extends BlockEntity {
         this.cropAge = 0;
         this.growthProgressTicks = 0;
         initFromCrop(crop);
-        setChangedAndSync();
+        setChanged();
+        // Sync will be handled by the calling code
     }
 
     public void clearCrop() {
