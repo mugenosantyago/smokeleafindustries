@@ -38,6 +38,7 @@ public class ExtractorScreen extends AbstractContainerScreen<ExtractorMenu> {
         super.init();
         this.inventoryLabelY = 100000;
         this.titleLabelY = 7;
+        assignEnergyInfoArea();
     }
     
     @Override
@@ -60,7 +61,9 @@ public class ExtractorScreen extends AbstractContainerScreen<ExtractorMenu> {
 
         renderInfoIcon(guiGraphics, x, y);
 
-        energyInfoArea.render(guiGraphics);
+        if (energyInfoArea != null) {
+            energyInfoArea.render(guiGraphics);
+        }
         renderProgressArrow(guiGraphics, x, y);
     }
 

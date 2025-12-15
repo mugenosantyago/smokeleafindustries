@@ -43,6 +43,8 @@ public class LiquifierScreen extends AbstractContainerScreen<LiquifierMenu> {
         super.init();
         this.inventoryLabelY = 100000;
         this.titleLabelY = 100000;
+        assignEnergyInfoArea();
+        assignFluidrenderer();
     }
     
     @Override
@@ -77,7 +79,9 @@ public class LiquifierScreen extends AbstractContainerScreen<LiquifierMenu> {
         int y = (this.height - this.imageHeight) / 2;
         guiGraphics.blit(GUI_TEXTURE, x, y, 0, 0, this.imageWidth, this.imageHeight, 256, 256);
 
-        energyInfoArea.render(guiGraphics);
+        if (energyInfoArea != null) {
+            energyInfoArea.render(guiGraphics);
+        }
         fluidRenderer.render(guiGraphics, x + 134, y + 11, menu.blockEntity.getFluid());
         renderProgressArrow(guiGraphics, x, y);
         renderInfoIcon(guiGraphics, x, y);

@@ -39,6 +39,7 @@ public class GeneratorScreen extends AbstractContainerScreen<GeneratorMenu> {
         super.init();
         this.inventoryLabelY = 100000;
         this.titleLabelY = 100000;
+        assignEnergyInfoArea();
     }
     
     @Override
@@ -72,7 +73,9 @@ public class GeneratorScreen extends AbstractContainerScreen<GeneratorMenu> {
         int y = (this.height - this.imageHeight) / 2;
         guiGraphics.blit(GUI_TEXTURE, x, y, 0, 0, this.imageWidth, this.imageHeight, 256, 256);
 
-        energyInfoArea.render(guiGraphics);
+        if (energyInfoArea != null) {
+            energyInfoArea.render(guiGraphics);
+        }
         renderFuelProgress(guiGraphics, x, y);
         renderInfoIcon(guiGraphics, x, y);
     }

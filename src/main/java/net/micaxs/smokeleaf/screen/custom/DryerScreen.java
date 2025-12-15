@@ -36,6 +36,7 @@ public class DryerScreen extends AbstractContainerScreen<DryerMenu> {
         super.init();
         this.inventoryLabelY = 100000;
         this.titleLabelY = 100000;
+        assignEnergyInfoArea();
     }
     
     @Override
@@ -56,7 +57,9 @@ public class DryerScreen extends AbstractContainerScreen<DryerMenu> {
         int y = (this.height - this.imageHeight) / 2;
         guiGraphics.blit(GUI_TEXTURE, x, y, 0, 0, this.imageWidth, this.imageHeight, 256, 256);
 
-        energyInfoArea.render(guiGraphics);
+        if (energyInfoArea != null) {
+            energyInfoArea.render(guiGraphics);
+        }
         renderProgressArrow(guiGraphics, x, y);
         renderInfoIcon(guiGraphics, x, y);
     }
