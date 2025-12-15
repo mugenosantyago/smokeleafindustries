@@ -17,8 +17,9 @@ import java.util.concurrent.CompletableFuture;
 
 public class ModItemTagProvider extends net.neoforged.neoforge.common.data.ItemTagsProvider {
 
+    // existingFileHelper parameter removed in 1.21.8
     public ModItemTagProvider(PackOutput output, CompletableFuture<HolderLookup.Provider> lookupProvider, CompletableFuture<TagLookup<Block>> blockTags, @Nullable Object existingFileHelper) {
-        super(output, lookupProvider, blockTags, SmokeleafIndustries.MODID, existingFileHelper);
+        super(output, lookupProvider, blockTags, SmokeleafIndustries.MODID);
     }
 
     @Override

@@ -30,10 +30,12 @@ public class DataGenerators {
         // TODO: Fix ModRecipeProvider for 1.21.8 - all helper methods (slab, pressurePlate, wall, shapeless, shaped) have new signatures
         // generator.addProvider(event.includeServer(), new ModRecipeProvider(packOutput, lookupProvider));
 
-        BlockTagsProvider blockTagsProvider = new ModBlockTagProvider(packOutput, lookupProvider, null);
-        generator.addProvider(event.includeServer(), blockTagsProvider);
-        generator.addProvider(event.includeServer(), new ModItemTagProvider(packOutput, lookupProvider, blockTagsProvider.contentsGetter(), null));
-        generator.addProvider(event.includeServer(), new ModFluidTagsProvider(packOutput, lookupProvider, null));
+        // Tag providers temporarily disabled - constructor signatures changed in 1.21.8
+        // TODO: Fix tag provider constructors for 1.21.8
+        // BlockTagsProvider blockTagsProvider = new ModBlockTagProvider(packOutput, lookupProvider, null);
+        // generator.addProvider(event.includeServer(), blockTagsProvider);
+        // generator.addProvider(event.includeServer(), new ModItemTagProvider(packOutput, lookupProvider, blockTagsProvider.contentsGetter(), null));
+        // generator.addProvider(event.includeServer(), new ModFluidTagsProvider(packOutput, lookupProvider, null));
 
         // Model generators removed in NeoForge 1.21.8 - need to use vanilla data generators or manual JSON
         // generator.addProvider(event.includeClient(), new ModItemModelProvider(packOutput, null));

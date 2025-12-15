@@ -11,8 +11,9 @@ import org.jetbrains.annotations.Nullable;
 import java.util.concurrent.CompletableFuture;
 
 public class ModFluidTagsProvider extends FluidTagsProvider {
+    // existingFileHelper parameter removed in 1.21.8
     public ModFluidTagsProvider(PackOutput output, CompletableFuture<HolderLookup.Provider> provider, @Nullable Object existingFileHelper) {
-        super(output, provider, SmokeleafIndustries.MODID, existingFileHelper);
+        super(output, provider, SmokeleafIndustries.MODID);
     }
 
     @Override

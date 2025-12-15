@@ -15,8 +15,9 @@ import java.util.concurrent.CompletableFuture;
 
 public class ModBlockTagProvider extends BlockTagsProvider  {
 
+    // existingFileHelper parameter removed in 1.21.8
     public ModBlockTagProvider(PackOutput output, CompletableFuture<HolderLookup.Provider> lookupProvider, @Nullable Object existingFileHelper) {
-        super(output, lookupProvider, SmokeleafIndustries.MODID, existingFileHelper);
+        super(output, lookupProvider, SmokeleafIndustries.MODID);
     }
 
     @Override
