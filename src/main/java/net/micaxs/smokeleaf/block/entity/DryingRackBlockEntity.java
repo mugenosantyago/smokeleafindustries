@@ -36,8 +36,10 @@ public class DryingRackBlockEntity extends BlockEntity {
     private final ItemStack[] items = new ItemStack[SLOT_COUNT];
     private final int[] progress = new int[SLOT_COUNT];
 
+    // DustParticleOptions constructor signature changed in 1.21.8 - Vector3f replaced with int color
+    // TODO: Fix DustParticleOptions constructor for 1.21.8
     private static final DustParticleOptions DRYING_PARTICLE =
-            new DustParticleOptions(new Vector3f(0.4f, 0.4f, 0.4f), 0.5f);
+            new DustParticleOptions(0x666666, 0.5f); // Gray color (0.4, 0.4, 0.4) as RGB int
 
     private static final float[] LAYER_Y = {3 / 16f, 9 / 16f, 15 / 16f};
     private static final float[][] QUAD_OFFSETS = {
