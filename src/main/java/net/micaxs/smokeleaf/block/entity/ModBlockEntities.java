@@ -52,7 +52,7 @@ public class ModBlockEntities {
             () -> new BlockEntityType<>(ReflectorBlockEntity::new, Set.of(ModBlocks.REFLECTOR.get()), null));
 
     public static final DeferredHolder<BlockEntityType<?>, BlockEntityType<GrowLightBlockEntity>> GROW_LIGHT = BLOCK_ENTITIES.register("grow_light_be",
-            () -> new BlockEntityType<>((GrowLightBlockEntity::new, ModBlocks.LED_LIGHT.get()).build());
+            () -> new BlockEntityType<>(GrowLightBlockEntity::new, Set.of(ModBlocks.LED_LIGHT.get()), null));
 
     public static final DeferredHolder<BlockEntityType<?>, BlockEntityType<GrowPotBlockEntity>> GROW_POT = BLOCK_ENTITIES.register("grow_pot_be",
             () -> new BlockEntityType<>((GrowPotBlockEntity::new, ModBlocks.GROW_POT.get()).build());
