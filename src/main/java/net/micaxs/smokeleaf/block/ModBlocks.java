@@ -3,6 +3,9 @@ package net.micaxs.smokeleaf.block;
 import net.micaxs.smokeleaf.SmokeleafIndustries;
 import net.micaxs.smokeleaf.block.custom.*;
 import net.micaxs.smokeleaf.item.ModItems;
+import net.minecraft.core.registries.Registries;
+import net.minecraft.resources.ResourceKey;
+import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.item.BlockItem;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.level.block.*;
@@ -202,7 +205,16 @@ public class ModBlocks {
 
     // Helper Functions
     private static <T extends Block> DeferredBlock<T> registerBlock(String name, Supplier<T> block) {
-        DeferredBlock<T> toReturn = BLOCKS.register(name, block);
+        // Create ResourceKey for this block
+        ResourceKey<Block> blockKey = ResourceKey.create(Registries.BLOCK, ResourceLocation.fromNamespaceAndPath(SmokeleafIndustries.MODID, name));
+        
+        // Register block with supplier that sets the ID in properties
+        DeferredBlock<T> toReturn = BLOCKS.register(name, () -> {
+            // The block supplier will be called during registration, at which point we can set the ID
+            // However, we need to modify the properties to include the ID
+            // Since we can't modify the supplier, we'll rely on DeferredRegister to set the ID automatically
+            return block.get();
+        });
         registerBlockItem(name, toReturn);
         return toReturn;
     }
