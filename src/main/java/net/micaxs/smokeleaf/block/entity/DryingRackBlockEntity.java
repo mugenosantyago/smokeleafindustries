@@ -244,7 +244,12 @@ public class DryingRackBlockEntity extends BlockEntity {
     private void setChangedAndSync() {
         setChanged();
         if (level != null && !level.isClientSide) {
+            // Send block update with block entity data
             level.sendBlockUpdated(worldPosition, getBlockState(), getBlockState(), 3);
+            // Also ensure the block entity data packet is sent
+            if (level instanceof ServerLevel serverLevel) {
+                serverLevel.getChunkSource().blockChanged(worldPosition);
+            }
         }
     }
 
@@ -293,5 +298,9 @@ public class DryingRackBlockEntity extends BlockEntity {
     // @Override removed - base BlockEntity method signature changed in 1.21.8
     public void onDataPacket(Connection net, ClientboundBlockEntityDataPacket pkt, HolderLookup.Provider lookupProvider) {
         // super.onDataPacket removed - base method signature changed in 1.21.8
+        CompoundTag tag = pkt.getTag();
+        if (tag != null) {
+            loadAdditional(tag, lookupProvider);
+        }
     }
 }
