@@ -260,7 +260,7 @@ public class DryingRackBlockEntity extends BlockEntity {
             } else {
                 items[i] = ItemStack.EMPTY;
             }
-            progress[i] = slotTag.getInt("prog");
+            progress[i] = slotTag.getInt("prog").orElse(0);
         }
     }
 

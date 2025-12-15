@@ -96,7 +96,8 @@ public class GrowLightBlock extends BaseEntityBlock {
             double y = pos.getY() + 0.9;
             double z = pos.getZ() + 0.5;
             level.addParticle(
-                    new DustParticleOptions(new Vector3f(0.9f, 0.2f, 0.9f), 1.0f),
+                    // DustParticleOptions constructor signature changed in 1.21.8 - Vector3f replaced with int color
+                    new DustParticleOptions(0xE633E6, 1.0f), // Purple color (0.9, 0.2, 0.9) as RGB int
                     x + (random.nextDouble() - 0.5) * 0.3,
                     y,
                     z + (random.nextDouble() - 0.5) * 0.3,
