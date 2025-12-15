@@ -30,7 +30,7 @@ public class ModFluids {
     public static final Supplier<FlowingFluid> FLOWING_HEMP_OIL_FLUID = FLUIDS.register("flowing_hemp_oil",
             () -> new BaseFlowingFluid.Flowing(ModFluids.HEMP_OIL_FLUID_PROPERTIES));
     public static final DeferredBlock<LiquidBlock> HEMP_OIL_FLUID_BLOCK = ModBlocks.BLOCKS.register("hemp_oil_fluid_block",
-            () -> new LiquidBlock(ModFluids.SOURCE_HEMP_OIL_FLUID.get(), BlockBehaviour.Properties.ofFullCopy(Blocks.WATER).noLootTable()));
+            () -> new LiquidBlock(ModFluids.SOURCE_HEMP_OIL_FLUID.get(), ModBlocks.blockProps("hemp_oil_fluid_block").noLootTable()));
     public static final DeferredItem<Item> HEMP_OIL_BUCKET = ModItems.ITEMS.registerItem("hemp_oil_bucket",
             properties -> new BucketItem(ModFluids.SOURCE_HEMP_OIL_FLUID.get(), properties.craftRemainder(Items.BUCKET).stacksTo(1)));
     public static final BaseFlowingFluid.Properties HEMP_OIL_FLUID_PROPERTIES = new BaseFlowingFluid.Properties(
@@ -44,7 +44,7 @@ public class ModFluids {
     public static final Supplier<FlowingFluid> FLOWING_HASH_OIL_FLUID = FLUIDS.register("flowing_hash_oil",
             () -> new BaseFlowingFluid.Flowing(ModFluids.HASH_OIL_FLUID_PROPERTIES));
     public static final DeferredBlock<LiquidBlock> HASH_OIL_FLUID_BLOCK = ModBlocks.BLOCKS.register("hash_oil_fluid_block",
-            () -> new LiquidBlock(ModFluids.SOURCE_HASH_OIL_FLUID.get(), BlockBehaviour.Properties.ofFullCopy(Blocks.WATER).noLootTable()));
+            () -> new LiquidBlock(ModFluids.SOURCE_HASH_OIL_FLUID.get(), ModBlocks.blockProps("hash_oil_fluid_block").noLootTable()));
     public static final DeferredItem<Item> HASH_OIL_BUCKET = ModItems.ITEMS.registerItem("hash_oil_bucket",
             properties -> new BucketItem(ModFluids.SOURCE_HASH_OIL_FLUID.get(), properties.craftRemainder(Items.BUCKET).stacksTo(1)));
     public static final BaseFlowingFluid.Properties HASH_OIL_FLUID_PROPERTIES = new BaseFlowingFluid.Properties(
@@ -58,7 +58,7 @@ public class ModFluids {
     public static final Supplier<FlowingFluid> FLOWING_HASH_OIL_SLUDGE_FLUID = FLUIDS.register("flowing_hash_oil_sludge",
             () -> new BaseFlowingFluid.Flowing(ModFluids.HASH_OIL_SLUDGE_FLUID_PROPERTIES));
     public static final DeferredBlock<LiquidBlock> HASH_OIL_SLUDGE_FLUID_BLOCK = ModBlocks.BLOCKS.register("hash_oil_sludge_fluid_block",
-            () -> new LiquidBlock(ModFluids.SOURCE_HASH_OIL_SLUDGE_FLUID.get(), BlockBehaviour.Properties.ofFullCopy(Blocks.WATER).noLootTable()));
+            () -> new LiquidBlock(ModFluids.SOURCE_HASH_OIL_SLUDGE_FLUID.get(), ModBlocks.blockProps("hash_oil_sludge_fluid_block").noLootTable()));
     public static final DeferredItem<Item> HASH_OIL_SLUDGE_BUCKET = ModItems.ITEMS.registerItem("hash_oil_sludge_bucket",
             properties -> new BucketItem(ModFluids.SOURCE_HASH_OIL_SLUDGE_FLUID.get(), properties.craftRemainder(Items.BUCKET).stacksTo(1)));
     public static final BaseFlowingFluid.Properties HASH_OIL_SLUDGE_FLUID_PROPERTIES = new BaseFlowingFluid.Properties(

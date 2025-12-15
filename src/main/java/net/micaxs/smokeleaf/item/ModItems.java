@@ -39,242 +39,242 @@ public class ModItems {
     public static final DeferredItem<Item>  HEMP_SEEDS = ITEMS.register("hemp_seeds",
             () -> new BlockItem(ModBlocks.HEMP_CROP.get(), itemProps("hemp_seeds")));
     public static final DeferredItem<Item>  WHITE_WIDOW_SEEDS = ITEMS.register("white_widow_seeds",
-            () -> new BlockItem(ModBlocks.WHITE_WIDOW_CROP.get(), new Item.Properties()));
+            () -> new BlockItem(ModBlocks.WHITE_WIDOW_CROP.get(), itemProps("white_widow_seeds")));
     public static final DeferredItem<Item>  BUBBLE_KUSH_SEEDS = ITEMS.register("bubble_kush_seeds",
-            () -> new BlockItem(ModBlocks.BUBBLE_KUSH_CROP.get(), new Item.Properties()));
+            () -> new BlockItem(ModBlocks.BUBBLE_KUSH_CROP.get(), itemProps("bubble_kush_seeds")));
     public static final DeferredItem<Item> LEMON_HAZE_SEEDS = ITEMS.register("lemon_haze_seeds",
-            () -> new BlockItem(ModBlocks.LEMON_HAZE_CROP.get(), new Item.Properties()));
+            () -> new BlockItem(ModBlocks.LEMON_HAZE_CROP.get(), itemProps("lemon_haze_seeds")));
     public static final DeferredItem<Item> SOUR_DIESEL_SEEDS = ITEMS.register("sour_diesel_seeds",
-            () -> new BlockItem(ModBlocks.SOUR_DIESEL_CROP.get(), new Item.Properties()));
+            () -> new BlockItem(ModBlocks.SOUR_DIESEL_CROP.get(), itemProps("sour_diesel_seeds")));
     public static final DeferredItem<Item> BLUE_ICE_SEEDS = ITEMS.register("blue_ice_seeds",
-            () -> new BlockItem(ModBlocks.BLUE_ICE_CROP.get(), new Item.Properties()));
+            () -> new BlockItem(ModBlocks.BLUE_ICE_CROP.get(), itemProps("blue_ice_seeds")));
     public static final DeferredItem<Item> BUBBLEGUM_SEEDS = ITEMS.register("bubblegum_seeds",
-            () -> new BlockItem(ModBlocks.BUBBLEGUM_CROP.get(), new Item.Properties()));
+            () -> new BlockItem(ModBlocks.BUBBLEGUM_CROP.get(), itemProps("bubblegum_seeds")));
     public static final DeferredItem<Item> PURPLE_HAZE_SEEDS = ITEMS.register("purple_haze_seeds",
-            () -> new BlockItem(ModBlocks.PURPLE_HAZE_CROP.get(), new Item.Properties()));
+            () -> new BlockItem(ModBlocks.PURPLE_HAZE_CROP.get(), itemProps("purple_haze_seeds")));
     public static final DeferredItem<Item> OG_KUSH_SEEDS = ITEMS.register("og_kush_seeds",
-            () -> new BlockItem(ModBlocks.OG_KUSH_CROP.get(), new Item.Properties()));
+            () -> new BlockItem(ModBlocks.OG_KUSH_CROP.get(), itemProps("og_kush_seeds")));
     public static final DeferredItem<Item> JACK_HERER_SEEDS = ITEMS.register("jack_herer_seeds",
-            () -> new BlockItem(ModBlocks.JACK_HERER_CROP.get(), new Item.Properties()));
+            () -> new BlockItem(ModBlocks.JACK_HERER_CROP.get(), itemProps("jack_herer_seeds")));
     public static final DeferredItem<Item> GARY_PEYTON_SEEDS = ITEMS.register("gary_peyton_seeds",
-            () -> new BlockItem(ModBlocks.GARY_PEYTON_CROP.get(), new Item.Properties()));
+            () -> new BlockItem(ModBlocks.GARY_PEYTON_CROP.get(), itemProps("gary_peyton_seeds")));
     public static final DeferredItem<Item> AMNESIA_HAZE_SEEDS = ITEMS.register("amnesia_haze_seeds",
-            () -> new BlockItem(ModBlocks.AMNESIA_HAZE_CROP.get(), new Item.Properties()));
+            () -> new BlockItem(ModBlocks.AMNESIA_HAZE_CROP.get(), itemProps("amnesia_haze_seeds")));
     public static final DeferredItem<Item> AK47_SEEDS = ITEMS.register("ak47_seeds",
-            () -> new BlockItem(ModBlocks.AK47_CROP.get(), new Item.Properties()));
+            () -> new BlockItem(ModBlocks.AK47_CROP.get(), itemProps("ak47_seeds")));
     public static final DeferredItem<Item> GHOST_TRAIN_SEEDS = ITEMS.register("ghost_train_seeds",
-            () -> new BlockItem(ModBlocks.GHOST_TRAIN_CROP.get(), new Item.Properties()));
+            () -> new BlockItem(ModBlocks.GHOST_TRAIN_CROP.get(), itemProps("ghost_train_seeds")));
     public static final DeferredItem<Item> GRAPE_APE_SEEDS = ITEMS.register("grape_ape_seeds",
-            () -> new BlockItem(ModBlocks.GRAPE_APE_CROP.get(), new Item.Properties()));
+            () -> new BlockItem(ModBlocks.GRAPE_APE_CROP.get(), itemProps("grape_ape_seeds")));
     public static final DeferredItem<Item> COTTON_CANDY_SEEDS = ITEMS.register("cotton_candy_seeds",
-            () -> new BlockItem(ModBlocks.COTTON_CANDY_CROP.get(), new Item.Properties()));
+            () -> new BlockItem(ModBlocks.COTTON_CANDY_CROP.get(), itemProps("cotton_candy_seeds")));
     public static final DeferredItem<Item> BANANA_KUSH_SEEDS = ITEMS.register("banana_kush_seeds",
-            () -> new BlockItem(ModBlocks.BANANA_KUSH_CROP.get(), new Item.Properties()));
+            () -> new BlockItem(ModBlocks.BANANA_KUSH_CROP.get(), itemProps("banana_kush_seeds")));
     public static final DeferredItem<Item> CARBON_FIBER_SEEDS = ITEMS.register("carbon_fiber_seeds",
-            () -> new BlockItem(ModBlocks.CARBON_FIBER_CROP.get(), new Item.Properties()));
+            () -> new BlockItem(ModBlocks.CARBON_FIBER_CROP.get(), itemProps("carbon_fiber_seeds")));
     public static final DeferredItem<Item> BIRTHDAY_CAKE_SEEDS = ITEMS.register("birthday_cake_seeds",
-            () -> new BlockItem(ModBlocks.BIRTHDAY_CAKE_CROP.get(), new Item.Properties()));
+            () -> new BlockItem(ModBlocks.BIRTHDAY_CAKE_CROP.get(), itemProps("birthday_cake_seeds")));
     public static final DeferredItem<Item> BLUE_COOKIES_SEEDS = ITEMS.register("blue_cookies_seeds",
-            () -> new BlockItem(ModBlocks.BLUE_COOKIES_CROP.get(), new Item.Properties()));
+            () -> new BlockItem(ModBlocks.BLUE_COOKIES_CROP.get(), itemProps("blue_cookies_seeds")));
     public static final DeferredItem<Item> AFGHANI_SEEDS = ITEMS.register("afghani_seeds",
-            () -> new BlockItem(ModBlocks.AFGHANI_CROP.get(), new Item.Properties()));
+            () -> new BlockItem(ModBlocks.AFGHANI_CROP.get(), itemProps("afghani_seeds")));
     public static final DeferredItem<Item> MOONBOW_SEEDS = ITEMS.register("moonbow_seeds",
-            () -> new BlockItem(ModBlocks.MOONBOW_CROP.get(), new Item.Properties()));
+            () -> new BlockItem(ModBlocks.MOONBOW_CROP.get(), itemProps("moonbow_seeds")));
     public static final DeferredItem<Item> LAVA_CAKE_SEEDS = ITEMS.register("lava_cake_seeds",
-            () -> new BlockItem(ModBlocks.LAVA_CAKE_CROP.get(), new Item.Properties()));
+            () -> new BlockItem(ModBlocks.LAVA_CAKE_CROP.get(), itemProps("lava_cake_seeds")));
     public static final DeferredItem<Item> JELLY_RANCHER_SEEDS = ITEMS.register("jelly_rancher_seeds",
-            () -> new BlockItem(ModBlocks.JELLY_RANCHER_CROP.get(), new Item.Properties()));
+            () -> new BlockItem(ModBlocks.JELLY_RANCHER_CROP.get(), itemProps("jelly_rancher_seeds")));
     public static final DeferredItem<Item> STRAWBERRY_SHORTCAKE_SEEDS = ITEMS.register("strawberry_shortcake_seeds",
-            () -> new BlockItem(ModBlocks.STRAWBERRY_SHORTCAKE_CROP.get(), new Item.Properties()));
+            () -> new BlockItem(ModBlocks.STRAWBERRY_SHORTCAKE_CROP.get(), itemProps("strawberry_shortcake_seeds")));
     public static final DeferredItem<Item> PINK_KUSH_SEEDS = ITEMS.register("pink_kush_seeds",
-            () -> new BlockItem(ModBlocks.PINK_KUSH_CROP.get(), new Item.Properties()));
+            () -> new BlockItem(ModBlocks.PINK_KUSH_CROP.get(), itemProps("pink_kush_seeds")));
 
 
     // Buds
     public static final DeferredItem<Item> WHITE_WIDOW_BUD = ITEMS.register("white_widow_bud",
-            () -> new BaseBudItem(new Item.Properties(), 0, 1200));
+            () -> new BaseBudItem(itemProps("white_widow_bud"), 0, 1200));
     public static final DeferredItem<Item> BUBBLE_KUSH_BUD = ITEMS.register("bubble_kush_bud",
-            () -> new BaseBudItem(new Item.Properties(), 0, 1000));
+            () -> new BaseBudItem(itemProps("bubble_kush_bud"), 0, 1000));
     public static final DeferredItem<Item> LEMON_HAZE_BUD = ITEMS.register("lemon_haze_bud",
-            () -> new BaseBudItem(new Item.Properties(), 0, 800));
+            () -> new BaseBudItem(itemProps("lemon_haze_bud"), 0, 800));
     public static final DeferredItem<Item> SOUR_DIESEL_BUD = ITEMS.register("sour_diesel_bud",
-            () -> new BaseBudItem(new Item.Properties(), 0, 900));
+            () -> new BaseBudItem(itemProps("sour_diesel_bud"), 0, 900));
     public static final DeferredItem<Item> BLUE_ICE_BUD = ITEMS.register("blue_ice_bud",
-            () -> new BaseBudItem(new Item.Properties(), 0, 1100));
+            () -> new BaseBudItem(itemProps("blue_ice_bud"), 0, 1100));
     public static final DeferredItem<Item> BUBBLEGUM_BUD = ITEMS.register("bubblegum_bud",
-            () -> new BaseBudItem(new Item.Properties(), 0, 700));
+            () -> new BaseBudItem(itemProps("bubblegum_bud"), 0, 700));
     public static final DeferredItem<Item> PURPLE_HAZE_BUD = ITEMS.register("purple_haze_bud",
-            () -> new BaseBudItem(new Item.Properties(), 0, 600));
+            () -> new BaseBudItem(itemProps("purple_haze_bud"), 0, 600));
     public static final DeferredItem<Item> OG_KUSH_BUD = ITEMS.register("og_kush_bud",
-            () -> new BaseBudItem(new Item.Properties(), 0, 1300));
+            () -> new BaseBudItem(itemProps("og_kush_bud"), 0, 1300));
     public static final DeferredItem<Item> JACK_HERER_BUD = ITEMS.register("jack_herer_bud",
-            () -> new BaseBudItem(new Item.Properties(), 0, 1250));
+            () -> new BaseBudItem(itemProps("jack_herer_bud"), 0, 1250));
     public static final DeferredItem<Item> GARY_PEYTON_BUD = ITEMS.register("gary_peyton_bud",
-            () -> new BaseBudItem(new Item.Properties(), 0, 1150));
+            () -> new BaseBudItem(itemProps("gary_peyton_bud"), 0, 1150));
     public static final DeferredItem<Item> AMNESIA_HAZE_BUD = ITEMS.register("amnesia_haze_bud",
-            () -> new BaseBudItem(new Item.Properties(), 0, 1050));
+            () -> new BaseBudItem(itemProps("amnesia_haze_bud"), 0, 1050));
     public static final DeferredItem<Item> AK47_BUD = ITEMS.register("ak47_bud",
-            () -> new BaseBudItem(new Item.Properties(), 0, 1100));
+            () -> new BaseBudItem(itemProps("ak47_bud"), 0, 1100));
     public static final DeferredItem<Item> GHOST_TRAIN_BUD = ITEMS.register("ghost_train_bud",
-            () -> new BaseBudItem(new Item.Properties(), 0, 1400));
+            () -> new BaseBudItem(itemProps("ghost_train_bud"), 0, 1400));
     public static final DeferredItem<Item> GRAPE_APE_BUD = ITEMS.register("grape_ape_bud",
-            () -> new BaseBudItem(new Item.Properties(), 0, 950));
+            () -> new BaseBudItem(itemProps("grape_ape_bud"), 0, 950));
     public static final DeferredItem<Item> COTTON_CANDY_BUD = ITEMS.register("cotton_candy_bud",
-            () -> new BaseBudItem(new Item.Properties(), 0, 850));
+            () -> new BaseBudItem(itemProps("cotton_candy_bud"), 0, 850));
     public static final DeferredItem<Item> BANANA_KUSH_BUD = ITEMS.register("banana_kush_bud",
-            () -> new BaseBudItem(new Item.Properties(), 0, 1200));
+            () -> new BaseBudItem(itemProps("banana_kush_bud"), 0, 1200));
     public static final DeferredItem<Item> CARBON_FIBER_BUD = ITEMS.register("carbon_fiber_bud",
-            () -> new BaseBudItem(new Item.Properties(), 0, 1500));
+            () -> new BaseBudItem(itemProps("carbon_fiber_bud"), 0, 1500));
     public static final DeferredItem<Item> BIRTHDAY_CAKE_BUD = ITEMS.register("birthday_cake_bud",
-            () -> new BaseBudItem(new Item.Properties(), 0, 900));
+            () -> new BaseBudItem(itemProps("birthday_cake_bud"), 0, 900));
     public static final DeferredItem<Item> BLUE_COOKIES_BUD = ITEMS.register("blue_cookies_bud",
-            () -> new BaseBudItem(new Item.Properties(), 0, 1000));
+            () -> new BaseBudItem(itemProps("blue_cookies_bud"), 0, 1000));
     public static final DeferredItem<Item> AFGHANI_BUD = ITEMS.register("afghani_bud",
-            () -> new BaseBudItem(new Item.Properties(), 0, 1600));
+            () -> new BaseBudItem(itemProps("afghani_bud"), 0, 1600));
     public static final DeferredItem<Item> MOONBOW_BUD = ITEMS.register("moonbow_bud",
-            () -> new BaseBudItem(new Item.Properties(), 0, 1350));
+            () -> new BaseBudItem(itemProps("moonbow_bud"), 0, 1350));
     public static final DeferredItem<Item> LAVA_CAKE_BUD = ITEMS.register("lava_cake_bud",
-            () -> new BaseBudItem(new Item.Properties(), 0, 950));
+            () -> new BaseBudItem(itemProps("lava_cake_bud"), 0, 950));
     public static final DeferredItem<Item> JELLY_RANCHER_BUD = ITEMS.register("jelly_rancher_bud",
-            () -> new BaseBudItem(new Item.Properties(), 0, 850));
+            () -> new BaseBudItem(itemProps("jelly_rancher_bud"), 0, 850));
     public static final DeferredItem<Item> STRAWBERRY_SHORTCAKE_BUD = ITEMS.register("strawberry_shortcake_bud",
-            () -> new BaseBudItem(new Item.Properties(), 0, 800));
+            () -> new BaseBudItem(itemProps("strawberry_shortcake_bud"), 0, 800));
     public static final DeferredItem<Item> PINK_KUSH_BUD = ITEMS.register("pink_kush_bud",
-            () -> new BaseBudItem(new Item.Properties(), 0, 1250));
+            () -> new BaseBudItem(itemProps("pink_kush_bud"), 0, 1250));
 
 
 
 
     // Weeds
     public static final DeferredItem<Item> WHITE_WIDOW_WEED = ITEMS.register("white_widow_weed",
-            () -> new BaseWeedItem(new Item.Properties(), MobEffects.WIND_CHARGED.value(), 200, 1, 15, 10,
+            () -> new BaseWeedItem(itemProps( MobEffects.WIND_CHARGED.value(), 200, 1, 15, 10,
                     "White", "Widow"));
     public static final DeferredItem<Item> BUBBLE_KUSH_WEED = ITEMS.register("bubble_kush_weed",
-            () -> new BaseWeedItem(new Item.Properties(), MobEffects.STRENGTH.value(), 180, 1, 20, 5,
+            () -> new BaseWeedItem(itemProps( MobEffects.STRENGTH.value(), 180, 1, 20, 5,
                     "Bubble", "Kush"));
     public static final DeferredItem<Item> LEMON_HAZE_WEED = ITEMS.register("lemon_haze_weed",
-            () -> new BaseWeedItem(new Item.Properties(), MobEffects.SPEED.value(), 160, 1, 19, 6,
+            () -> new BaseWeedItem(itemProps( MobEffects.SPEED.value(), 160, 1, 19, 6,
                     "Lemon", "Haze"));
     public static final DeferredItem<Item> SOUR_DIESEL_WEED = ITEMS.register("sour_diesel_weed",
-            () -> new BaseWeedItem(new Item.Properties(), MobEffects.HASTE.value(), 170, 1, 19, 6,
+            () -> new BaseWeedItem(itemProps( MobEffects.HASTE.value(), 170, 1, 19, 6,
                     "Sour", "Diesel"));
     public static final DeferredItem<Item> BLUE_ICE_WEED = ITEMS.register("blue_ice_weed",
-            () -> new BaseWeedItem(new Item.Properties(), MobEffects.NIGHT_VISION.value(), 190, 1, 20, 5,
+            () -> new BaseWeedItem(itemProps( MobEffects.NIGHT_VISION.value(), 190, 1, 20, 5,
                     "Blue", "Ice"));
     public static final DeferredItem<Item> BUBBLEGUM_WEED = ITEMS.register("bubblegum_weed",
-            () -> new BaseWeedItem(new Item.Properties(), MobEffects.HEALTH_BOOST.value(), 150, 1, 17, 8,
+            () -> new BaseWeedItem(itemProps( MobEffects.HEALTH_BOOST.value(), 150, 1, 17, 8,
                     "Bubble", "Gum"));
     public static final DeferredItem<Item> PURPLE_HAZE_WEED = ITEMS.register("purple_haze_weed",
-            () -> new BaseWeedItem(new Item.Properties(), MobEffects.LUCK.value(), 140, 1, 16, 9,
+            () -> new BaseWeedItem(itemProps( MobEffects.LUCK.value(), 140, 1, 16, 9,
                     "Purple", "Haze"));
     public static final DeferredItem<Item> OG_KUSH_WEED = ITEMS.register("og_kush_weed",
-            () -> new BaseWeedItem(new Item.Properties(), MobEffects.RESISTANCE.value(), 210, 1, 25, 10,
+            () -> new BaseWeedItem(itemProps( MobEffects.RESISTANCE.value(), 210, 1, 25, 10,
                     "OG", "Kush"));
     public static final DeferredItem<Item> JACK_HERER_WEED = ITEMS.register("jack_herer_weed",
-            () -> new BaseWeedItem(new Item.Properties(), ModEffects.R_TREES.value(), 205, 1, 18, 7,
+            () -> new BaseWeedItem(itemProps( ModEffects.R_TREES.value(), 205, 1, 18, 7,
                     "Jack", "Herer"));
     public static final DeferredItem<Item> GARY_PEYTON_WEED = ITEMS.register("gary_peyton_weed",
-            () -> new BaseWeedItem(new Item.Properties(), ModEffects.UPLIFTED.value(), 195, 1, 22, 3,
+            () -> new BaseWeedItem(itemProps( ModEffects.UPLIFTED.value(), 195, 1, 22, 3,
                     "Gary", "Peyton"));
     public static final DeferredItem<Item> AMNESIA_HAZE_WEED = ITEMS.register("amnesia_haze_weed",
-            () -> new BaseWeedItem(new Item.Properties(), ModEffects.ZOMBIFIED.value(), 185, 1, 19, 6,
+            () -> new BaseWeedItem(itemProps( ModEffects.ZOMBIFIED.value(), 185, 1, 19, 6,
                     "Amnesia", "Haze"));
     public static final DeferredItem<Item> AK47_WEED = ITEMS.register("ak47_weed",
-            () -> new BaseWeedItem(new Item.Properties(), ModEffects.RELAXED.value(), 190, 1, 19, 6,
+            () -> new BaseWeedItem(itemProps( ModEffects.RELAXED.value(), 190, 1, 19, 6,
                     "AK", "47"));
     public static final DeferredItem<Item> GHOST_TRAIN_WEED = ITEMS.register("ghost_train_weed",
-            () -> new BaseWeedItem(new Item.Properties(), ModEffects.SHY.value(), 220, 1, 19, 6,
+            () -> new BaseWeedItem(itemProps( ModEffects.SHY.value(), 220, 1, 19, 6,
                     "Ghost", "Train"));
     public static final DeferredItem<Item> GRAPE_APE_WEED = ITEMS.register("grape_ape_weed",
-            () -> new BaseWeedItem(new Item.Properties(), ModEffects.AROUSED.value(), 175, 1, 18, 7,
+            () -> new BaseWeedItem(itemProps( ModEffects.AROUSED.value(), 175, 1, 18, 7,
                     "Grape", "Ape"));
     public static final DeferredItem<Item> COTTON_CANDY_WEED = ITEMS.register("cotton_candy_weed",
-            () -> new BaseWeedItem(new Item.Properties(), ModEffects.CHILLOUT.value(), 165, 1, 19, 6,
+            () -> new BaseWeedItem(itemProps( ModEffects.CHILLOUT.value(), 165, 1, 19, 6,
                     "Cotton", "Candy"));
     public static final DeferredItem<Item> BANANA_KUSH_WEED = ITEMS.register("banana_kush_weed",
-            () -> new BaseWeedItem(new Item.Properties(), ModEffects.STICKY_ICKY.value(), 200, 1, 21, 4,
+            () -> new BaseWeedItem(itemProps( ModEffects.STICKY_ICKY.value(), 200, 1, 21, 4,
                     "Banana", "Kush"));
     public static final DeferredItem<Item> CARBON_FIBER_WEED = ITEMS.register("carbon_fiber_weed",
-            () -> new BaseWeedItem(new Item.Properties(), ModEffects.VEIN_HIGH.value(), 230, 1, 24, 1,
+            () -> new BaseWeedItem(itemProps( ModEffects.VEIN_HIGH.value(), 230, 1, 24, 1,
                     "Carbon", "Fiber"));
     public static final DeferredItem<Item> BIRTHDAY_CAKE_WEED = ITEMS.register("birthday_cake_weed",
-            () -> new BaseWeedItem(new Item.Properties(), MobEffects.OOZING.value(), 170, 1, 23, 2,
+            () -> new BaseWeedItem(itemProps( MobEffects.OOZING.value(), 170, 1, 23, 2,
                     "Birthday", "Cake"));
     public static final DeferredItem<Item> BLUE_COOKIES_WEED = ITEMS.register("blue_cookies_weed",
-            () -> new BaseWeedItem(new Item.Properties(), ModEffects.LINGUISTS_HIGH.value(), 180, 1, 17, 8,
+            () -> new BaseWeedItem(itemProps( ModEffects.LINGUISTS_HIGH.value(), 180, 1, 17, 8,
                     "Blue", "Cookies"));
     public static final DeferredItem<Item> AFGHANI_WEED = ITEMS.register("afghani_weed",
-            () -> new BaseWeedItem(new Item.Properties(), MobEffects.BAD_OMEN.value(), 240, 1, 18, 7,
+            () -> new BaseWeedItem(itemProps( MobEffects.BAD_OMEN.value(), 240, 1, 18, 7,
                     "Afghani", "Kush"));
     public static final DeferredItem<Item> MOONBOW_WEED = ITEMS.register("moonbow_weed",
-            () -> new BaseWeedItem(new Item.Properties(), MobEffects.NIGHT_VISION.value(), 215, 1, 30, 13,
+            () -> new BaseWeedItem(itemProps( MobEffects.NIGHT_VISION.value(), 215, 1, 30, 13,
                     "Moonbow", "Kush"));
     public static final DeferredItem<Item> LAVA_CAKE_WEED = ITEMS.register("lava_cake_weed",
-            () -> new BaseWeedItem(new Item.Properties(), MobEffects.GLOWING.value(), 175, 1, 22, 3,
+            () -> new BaseWeedItem(itemProps( MobEffects.GLOWING.value(), 175, 1, 22, 3,
                     "Lava", "Cake"));
     public static final DeferredItem<Item> JELLY_RANCHER_WEED = ITEMS.register("jelly_rancher_weed",
-            () -> new BaseWeedItem(new Item.Properties(), MobEffects.DOLPHINS_GRACE.value(), 165, 1, 20, 5,
+            () -> new BaseWeedItem(itemProps( MobEffects.DOLPHINS_GRACE.value(), 165, 1, 20, 5,
                     "Jelly", "Rancher"));
     public static final DeferredItem<Item> STRAWBERRY_SHORTCAKE_WEED = ITEMS.register("strawberry_shortcake_weed",
-            () -> new BaseWeedItem(new Item.Properties(), ModEffects.HIGH_FLYER.value(), 160, 1, 16, 9,
+            () -> new BaseWeedItem(itemProps( ModEffects.HIGH_FLYER.value(), 160, 1, 16, 9,
                     "Strawberry", "Shortcake"));
     public static final DeferredItem<Item> PINK_KUSH_WEED = ITEMS.register("pink_kush_weed",
-            () -> new BaseWeedItem(new Item.Properties(), MobEffects.REGENERATION.value(), 205, 1, 19, 6,
+            () -> new BaseWeedItem(itemProps( MobEffects.REGENERATION.value(), 205, 1, 19, 6,
                     "Pink", "Kush"));
 
 
     // Extracts
     public static final DeferredItem<Item> BASE_EXTRACT = ITEMS.register("base_extract",  () -> new Item(new Item.Properties()));
     public static final DeferredItem<Item> WHITE_WIDOW_EXTRACT = ITEMS.register("white_widow_extract",
-            () -> new BaseWeedItem(new Item.Properties(), MobEffects.WIND_CHARGED.value(), 400, 2, 15, 10, false));
+            () -> new BaseWeedItem(itemProps( MobEffects.WIND_CHARGED.value(), 400, 2, 15, 10, false));
     public static final DeferredItem<Item> BUBBLE_KUSH_EXTRACT = ITEMS.register("bubble_kush_extract",
-            () -> new BaseWeedItem(new Item.Properties(), MobEffects.STRENGTH.value(), 360, 2, 20, 5, false));
+            () -> new BaseWeedItem(itemProps( MobEffects.STRENGTH.value(), 360, 2, 20, 5, false));
     public static final DeferredItem<Item> LEMON_HAZE_EXTRACT = ITEMS.register("lemon_haze_extract",
-            () -> new BaseWeedItem(new Item.Properties(), MobEffects.SPEED.value(), 320, 2, 19, 6, false));
+            () -> new BaseWeedItem(itemProps( MobEffects.SPEED.value(), 320, 2, 19, 6, false));
     public static final DeferredItem<Item> SOUR_DIESEL_EXTRACT = ITEMS.register("sour_diesel_extract",
-            () -> new BaseWeedItem(new Item.Properties(), MobEffects.HASTE.value(), 340, 2, 19, 6, false));
+            () -> new BaseWeedItem(itemProps( MobEffects.HASTE.value(), 340, 2, 19, 6, false));
     public static final DeferredItem<Item> BLUE_ICE_EXTRACT = ITEMS.register("blue_ice_extract",
-            () -> new BaseWeedItem(new Item.Properties(), MobEffects.NIGHT_VISION.value(), 380, 2, 20, 5, false));
+            () -> new BaseWeedItem(itemProps( MobEffects.NIGHT_VISION.value(), 380, 2, 20, 5, false));
     public static final DeferredItem<Item> BUBBLEGUM_EXTRACT = ITEMS.register("bubblegum_extract",
-            () -> new BaseWeedItem(new Item.Properties(), MobEffects.HEALTH_BOOST.value(), 300, 2, 17, 8, false));
+            () -> new BaseWeedItem(itemProps( MobEffects.HEALTH_BOOST.value(), 300, 2, 17, 8, false));
     public static final DeferredItem<Item> PURPLE_HAZE_EXTRACT = ITEMS.register("purple_haze_extract",
-            () -> new BaseWeedItem(new Item.Properties(), MobEffects.LUCK.value(), 280, 2, 16, 9, false));
+            () -> new BaseWeedItem(itemProps( MobEffects.LUCK.value(), 280, 2, 16, 9, false));
     public static final DeferredItem<Item> OG_KUSH_EXTRACT = ITEMS.register("og_kush_extract",
-            () -> new BaseWeedItem(new Item.Properties(), MobEffects.RESISTANCE.value(), 420, 2, 25, 0, false));
+            () -> new BaseWeedItem(itemProps( MobEffects.RESISTANCE.value(), 420, 2, 25, 0, false));
     public static final DeferredItem<Item> JACK_HERER_EXTRACT = ITEMS.register("jack_herer_extract",
-            () -> new BaseWeedItem(new Item.Properties(), ModEffects.R_TREES.value(), 410, 2, 18, 7, false));
+            () -> new BaseWeedItem(itemProps( ModEffects.R_TREES.value(), 410, 2, 18, 7, false));
     public static final DeferredItem<Item> GARY_PEYTON_EXTRACT = ITEMS.register("gary_peyton_extract",
-            () -> new BaseWeedItem(new Item.Properties(), ModEffects.UPLIFTED.value(), 390, 2, 22, 3, false));
+            () -> new BaseWeedItem(itemProps( ModEffects.UPLIFTED.value(), 390, 2, 22, 3, false));
     public static final DeferredItem<Item> AMNESIA_HAZE_EXTRACT = ITEMS.register("amnesia_haze_extract",
-            () -> new BaseWeedItem(new Item.Properties(), ModEffects.ZOMBIFIED.value(), 370, 2, 19, 6, false));
+            () -> new BaseWeedItem(itemProps( ModEffects.ZOMBIFIED.value(), 370, 2, 19, 6, false));
     public static final DeferredItem<Item> AK47_EXTRACT = ITEMS.register("ak47_extract",
-            () -> new BaseWeedItem(new Item.Properties(), ModEffects.RELAXED.value(), 380, 2, 19, 6, false));
+            () -> new BaseWeedItem(itemProps( ModEffects.RELAXED.value(), 380, 2, 19, 6, false));
     public static final DeferredItem<Item> GHOST_TRAIN_EXTRACT = ITEMS.register("ghost_train_extract",
-            () -> new BaseWeedItem(new Item.Properties(), ModEffects.SHY.value(), 440, 2, 19, 6, false));
+            () -> new BaseWeedItem(itemProps( ModEffects.SHY.value(), 440, 2, 19, 6, false));
     public static final DeferredItem<Item> GRAPE_APE_EXTRACT = ITEMS.register("grape_ape_extract",
-            () -> new BaseWeedItem(new Item.Properties(), ModEffects.AROUSED.value(), 350, 2, 18, 7, false));
+            () -> new BaseWeedItem(itemProps( ModEffects.AROUSED.value(), 350, 2, 18, 7, false));
     public static final DeferredItem<Item> COTTON_CANDY_EXTRACT = ITEMS.register("cotton_candy_extract",
-            () -> new BaseWeedItem(new Item.Properties(), ModEffects.CHILLOUT.value(), 330, 2, 19, 6, false));
+            () -> new BaseWeedItem(itemProps( ModEffects.CHILLOUT.value(), 330, 2, 19, 6, false));
     public static final DeferredItem<Item> BANANA_KUSH_EXTRACT = ITEMS.register("banana_kush_extract",
-            () -> new BaseWeedItem(new Item.Properties(), ModEffects.STICKY_ICKY.value(), 400, 2, 21, 4, false));
+            () -> new BaseWeedItem(itemProps( ModEffects.STICKY_ICKY.value(), 400, 2, 21, 4, false));
     public static final DeferredItem<Item> CARBON_FIBER_EXTRACT = ITEMS.register("carbon_fiber_extract",
-            () -> new BaseWeedItem(new Item.Properties(), ModEffects.VEIN_HIGH.value(), 460, 2, 24, 1, false));
+            () -> new BaseWeedItem(itemProps( ModEffects.VEIN_HIGH.value(), 460, 2, 24, 1, false));
     public static final DeferredItem<Item> BIRTHDAY_CAKE_EXTRACT = ITEMS.register("birthday_cake_extract",
-            () -> new BaseWeedItem(new Item.Properties(), MobEffects.OOZING.value(), 340, 2, 23, 2, false));
+            () -> new BaseWeedItem(itemProps( MobEffects.OOZING.value(), 340, 2, 23, 2, false));
     public static final DeferredItem<Item> BLUE_COOKIES_EXTRACT = ITEMS.register("blue_cookies_extract",
-            () -> new BaseWeedItem(new Item.Properties(), ModEffects.LINGUISTS_HIGH.value(), 360, 2, 17, 8, false));
+            () -> new BaseWeedItem(itemProps( ModEffects.LINGUISTS_HIGH.value(), 360, 2, 17, 8, false));
     public static final DeferredItem<Item> AFGHANI_EXTRACT = ITEMS.register("afghani_extract",
-            () -> new BaseWeedItem(new Item.Properties(), MobEffects.BAD_OMEN.value(), 480, 2, 18, 7, false));
+            () -> new BaseWeedItem(itemProps( MobEffects.BAD_OMEN.value(), 480, 2, 18, 7, false));
     public static final DeferredItem<Item> MOONBOW_EXTRACT = ITEMS.register("moonbow_extract",
-            () -> new BaseWeedItem(new Item.Properties(), MobEffects.NIGHT_VISION.value(), 430, 2, 30, 13, false));
+            () -> new BaseWeedItem(itemProps( MobEffects.NIGHT_VISION.value(), 430, 2, 30, 13, false));
     public static final DeferredItem<Item> LAVA_CAKE_EXTRACT = ITEMS.register("lava_cake_extract",
-            () -> new BaseWeedItem(new Item.Properties(), MobEffects.GLOWING.value(), 350, 2, 22, 3, false));
+            () -> new BaseWeedItem(itemProps( MobEffects.GLOWING.value(), 350, 2, 22, 3, false));
     public static final DeferredItem<Item> JELLY_RANCHER_EXTRACT = ITEMS.register("jelly_rancher_extract",
-            () -> new BaseWeedItem(new Item.Properties(), MobEffects.DOLPHINS_GRACE.value(), 330, 2, 20, 5, false));
+            () -> new BaseWeedItem(itemProps( MobEffects.DOLPHINS_GRACE.value(), 330, 2, 20, 5, false));
     public static final DeferredItem<Item> STRAWBERRY_SHORTCAKE_EXTRACT = ITEMS.register("strawberry_shortcake_extract",
-            () -> new BaseWeedItem(new Item.Properties(), ModEffects.HIGH_FLYER.value(), 320, 2, 16, 9, false));
+            () -> new BaseWeedItem(itemProps( ModEffects.HIGH_FLYER.value(), 320, 2, 16, 9, false));
     public static final DeferredItem<Item> PINK_KUSH_EXTRACT = ITEMS.register("pink_kush_extract",
-            () -> new BaseWeedItem(new Item.Properties(), MobEffects.REGENERATION.value(), 410, 2, 19, 6, false));
+            () -> new BaseWeedItem(itemProps( MobEffects.REGENERATION.value(), 410, 2, 19, 6, false));
 
 
     // Bags

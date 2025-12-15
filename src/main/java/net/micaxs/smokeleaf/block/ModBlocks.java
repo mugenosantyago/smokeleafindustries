@@ -204,7 +204,7 @@ public class ModBlocks {
      * Helper to create BlockBehaviour.Properties with the block ID set.
      * This is required in NeoForge 1.21.8 to avoid "Block id not set" errors when using requiresCorrectToolForDrops().
      */
-    private static BlockBehaviour.Properties blockProps(String name) {
+    public static BlockBehaviour.Properties blockProps(String name) {
         ResourceKey<Block> blockKey = ResourceKey.create(Registries.BLOCK, ResourceLocation.fromNamespaceAndPath(SmokeleafIndustries.MODID, name));
         return BlockBehaviour.Properties.of().setId(blockKey);
     }
