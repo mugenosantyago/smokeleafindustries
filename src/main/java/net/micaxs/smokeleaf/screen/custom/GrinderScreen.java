@@ -53,13 +53,13 @@ public class GrinderScreen extends AbstractContainerScreen<GrinderMenu> {
         // RenderSystem.setShaderColor(1.0f, 1.0f, 1.0f, 1.0f);
         // RenderSystem.setShaderTexture(0, GUI_TEXTURE);
         
-        // Safety check: ensure menu is valid
-        if (this.menu == null) {
-            return;
-        }
+        // Get screen dimensions - use Minecraft window if width/height aren't set yet
+        int screenWidth = this.width > 0 ? this.width : (this.minecraft != null ? this.minecraft.getWindow().getGuiScaledWidth() : 320);
+        int screenHeight = this.height > 0 ? this.height : (this.minecraft != null ? this.minecraft.getWindow().getGuiScaledHeight() : 240);
         
-        int x = (this.width - this.imageWidth) / 2;
-        int y = (this.height - this.imageHeight) / 2;
+        // Calculate centered position
+        int x = (screenWidth - this.imageWidth) / 2;
+        int y = (screenHeight - this.imageHeight) / 2;
         
         // Render the background texture
         guiGraphics.blit(GUI_TEXTURE, x, y, 0, 0, this.imageWidth, this.imageHeight, 256, 256);
