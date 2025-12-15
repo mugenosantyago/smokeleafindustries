@@ -32,16 +32,20 @@ public class MutatorScreen extends AbstractContainerScreen<MutatorMenu> {
 
     public MutatorScreen(MutatorMenu menu, Inventory playerInventory, Component title) {
         super(menu, playerInventory, title);
+        this.imageWidth = IMAGE_WIDTH;
+        this.imageHeight = IMAGE_HEIGHT;
     }
 
     @Override
     protected void init() {
         super.init();
-        this.imageWidth = IMAGE_WIDTH;
-        this.imageHeight = IMAGE_HEIGHT;
         this.inventoryLabelY = 100000;
         this.titleLabelY = 100000;
-
+    }
+    
+    @Override
+    public void resize(net.minecraft.client.Minecraft minecraft, int width, int height) {
+        super.resize(minecraft, width, height);
         assignEnergyInfoArea();
         assignFluidrenderer();
     }
@@ -67,9 +71,9 @@ public class MutatorScreen extends AbstractContainerScreen<MutatorMenu> {
         // RenderSystem.setShader(GameRenderer::getPositionTexShader);
         // RenderSystem.setShaderColor(1.0f, 1.0f, 1.0f, 1.0f);
         // RenderSystem.setShaderTexture(0, GUI_TEXTURE);
-        int x = (width - imageWidth) / 2;
-        int y = (height - imageHeight) / 2;
-        guiGraphics.blit(GUI_TEXTURE, x, y, 0, 0, imageWidth, imageHeight, imageWidth, imageHeight);
+        int x = (this.width - this.imageWidth) / 2;
+        int y = (this.height - this.imageHeight) / 2;
+        guiGraphics.blit(GUI_TEXTURE, x, y, 0, 0, this.imageWidth, this.imageHeight, 256, 256);
 
         energyInfoArea.render(guiGraphics);
         fluidRenderer.render(guiGraphics, x + 55, y + 15, menu.blockEntity.getFluid());
@@ -97,12 +101,12 @@ public class MutatorScreen extends AbstractContainerScreen<MutatorMenu> {
 
     private void renderProgressArrow(GuiGraphics guiGraphics, int x, int y) {
         if(menu.isCrafting()) {
-            guiGraphics.blit(GUI_TEXTURE, x + 103, y + 37, 176, 0, 8, menu.getScaledProgress(), imageWidth, imageHeight);
+            guiGraphics.blit(GUI_TEXTURE, x + 103, y + 37, 176, 0, 8, menu.getScaledProgress(), 256, 256);
         }
     }
 
     private void assignEnergyInfoArea() {
-        energyInfoArea = new EnergyDisplayTooltipArea(((width - imageWidth) / 2) + 156, ((height - imageHeight) / 2) + 13, menu.blockEntity.getEnergyStorage(null), 8, 64);
+        energyInfoArea = new EnergyDisplayTooltipArea(((this.width - this.imageWidth) / 2) + 156, ((this.height - this.imageHeight) / 2) + 13, menu.blockEntity.getEnergyStorage(null), 8, 64);
     }
 
     private void renderEnergyInfoArea(GuiGraphics guiGraphics, int mouseX, int mouseY, int x, int y) {
