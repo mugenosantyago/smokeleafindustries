@@ -262,11 +262,11 @@ public class DryingRackBlock extends BaseEntityBlock {
         return defaultBlockState().setValue(FACING, context.getHorizontalDirection());
     }
 
-    protected void onRemove(BlockState state, Level level, BlockPos pos, BlockState newState, boolean movedByPiston) {
+    public void onRemove(BlockState state, Level level, BlockPos pos, BlockState newState, boolean isMoving) {
         if (state.getBlock() != newState.getBlock()) {
             BlockEntity be = level.getBlockEntity(pos);
             if (be instanceof DryingRackBlockEntity rack) {
-                rack.dropContents(level, pos);
+                rack.dropContents();
             }
         }
         // super.onRemove removed - base Block method signature changed in 1.21.8

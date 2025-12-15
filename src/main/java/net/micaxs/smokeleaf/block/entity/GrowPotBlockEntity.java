@@ -414,5 +414,8 @@ public class GrowPotBlockEntity extends BlockEntity {
     // @Override removed - base BlockEntity method signature changed in 1.21.8
     public void onDataPacket(Connection net, ClientboundBlockEntityDataPacket pkt, HolderLookup.Provider lookupProvider) {
         // super.onDataPacket removed - base method signature changed in 1.21.8
+        if (pkt.getTag() != null) {
+            loadAdditional(pkt.getTag(), lookupProvider);
+        }
     }
 }
