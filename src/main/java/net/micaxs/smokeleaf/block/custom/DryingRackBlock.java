@@ -97,19 +97,37 @@ public class DryingRackBlock extends BaseEntityBlock {
         }
         DryingRackBlockEntity rack = (DryingRackBlockEntity) be;
 
-        // If empty hand, try to extract item
+        // If empty hand, try to extract all items from all layers
         if (stack.isEmpty()) {
             if (level.isClientSide) return InteractionResult.SUCCESS;
             
-            int layer = rack.computeLayerFromHit(hitResult);
-            if (layer >= 0) {
-                ItemStack out = rack.removeLastInRow(layer);
+            // Try to extract from all layers, starting from the clicked layer
+            int clickedLayer = rack.computeLayerFromHit(hitResult);
+            boolean extracted = false;
+            
+            // First try the clicked layer
+            if (clickedLayer >= 0) {
+                ItemStack out = rack.removeLastInRow(clickedLayer);
                 if (!out.isEmpty()) {
                     if (!player.addItem(out)) player.drop(out, false);
-                    return InteractionResult.CONSUME;
+                    extracted = true;
                 }
             }
-            return InteractionResult.PASS;
+            
+            // Then try other layers if nothing was extracted
+            if (!extracted) {
+                for (int layer = 0; layer <= 2; layer++) {
+                    if (layer == clickedLayer) continue; // Already tried
+                    ItemStack out = rack.removeLastInRow(layer);
+                    if (!out.isEmpty()) {
+                        if (!player.addItem(out)) player.drop(out, false);
+                        extracted = true;
+                        break;
+                    }
+                }
+            }
+            
+            return extracted ? InteractionResult.CONSUME : InteractionResult.PASS;
         }
 
         // Client side: allow animation if item looks like it could be dried
@@ -194,15 +212,33 @@ public class DryingRackBlock extends BaseEntityBlock {
         }
         DryingRackBlockEntity rack = (DryingRackBlockEntity) be;
 
-        int layer = rack.computeLayerFromHit(hit);
-        if (layer >= 0) {
-            ItemStack out = rack.removeLastInRow(layer);
+        // Try to extract from all layers, starting from the clicked layer
+        int clickedLayer = rack.computeLayerFromHit(hit);
+        boolean extracted = false;
+        
+        // First try the clicked layer
+        if (clickedLayer >= 0) {
+            ItemStack out = rack.removeLastInRow(clickedLayer);
             if (!out.isEmpty()) {
                 if (!player.addItem(out)) player.drop(out, false);
-                return InteractionResult.CONSUME;
+                extracted = true;
             }
         }
-        return InteractionResult.PASS;
+        
+        // Then try other layers if nothing was extracted
+        if (!extracted) {
+            for (int layer = 0; layer <= 2; layer++) {
+                if (layer == clickedLayer) continue; // Already tried
+                ItemStack out = rack.removeLastInRow(layer);
+                if (!out.isEmpty()) {
+                    if (!player.addItem(out)) player.drop(out, false);
+                    extracted = true;
+                    break;
+                }
+            }
+        }
+        
+        return extracted ? InteractionResult.CONSUME : InteractionResult.PASS;
     }
 
     @Nullable
@@ -224,5 +260,15 @@ public class DryingRackBlock extends BaseEntityBlock {
     @Override
     public @Nullable BlockState getStateForPlacement(BlockPlaceContext context) {
         return defaultBlockState().setValue(FACING, context.getHorizontalDirection());
+    }
+
+    protected void onRemove(BlockState state, Level level, BlockPos pos, BlockState newState, boolean movedByPiston) {
+        if (state.getBlock() != newState.getBlock()) {
+            BlockEntity be = level.getBlockEntity(pos);
+            if (be instanceof DryingRackBlockEntity rack) {
+                rack.dropContents(level, pos);
+            }
+        }
+        // super.onRemove removed - base Block method signature changed in 1.21.8
     }
 }

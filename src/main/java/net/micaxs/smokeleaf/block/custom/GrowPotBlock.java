@@ -110,6 +110,7 @@ public class GrowPotBlock extends BaseEntityBlock {
         // Client side: allow animation for potential interactions, server will validate
         if (level.isClientSide) {
             // Check if it looks like a valid interaction
+            // Always allow if it's a BlockItem when pot has no soil (most common case)
             boolean looksLikeSoilInsert = !pot.hasSoil() && stack.getItem() instanceof BlockItem;
             boolean looksLikeSeedPlant = pot.hasSoil() && !pot.hasCrop() && !stack.isEmpty();
             boolean looksLikeFertilizer = pot.hasCrop() && holdingFertilizer;
@@ -119,6 +120,10 @@ public class GrowPotBlock extends BaseEntityBlock {
             
             if (looksLikeSoilInsert || looksLikeSeedPlant || looksLikeFertilizer 
                     || looksLikeBonemeal || looksLikeHarvest || looksLikeRemove) {
+                return InteractionResult.SUCCESS;
+            }
+            // Also allow if it's a BlockItem (might be soil) - server will validate
+            if (!pot.hasSoil() && stack.getItem() instanceof BlockItem) {
                 return InteractionResult.SUCCESS;
             }
             return InteractionResult.PASS;

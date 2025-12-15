@@ -227,6 +227,18 @@ public class DryingRackBlockEntity extends BlockEntity {
         return ItemStack.EMPTY;
     }
 
+    // Drop all items when block is broken
+    public void dropContents(Level level, BlockPos pos) {
+        if (level == null || level.isClientSide) return;
+        for (int i = 0; i < SLOT_COUNT; i++) {
+            if (!items[i].isEmpty()) {
+                net.minecraft.world.level.block.Block.popResource(level, pos, items[i]);
+                items[i] = ItemStack.EMPTY;
+                progress[i] = 0;
+            }
+        }
+    }
+
     private void setChangedAndSync() {
         setChanged();
         if (level != null && !level.isClientSide) {
