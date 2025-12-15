@@ -66,12 +66,6 @@ public class GeneratorScreen extends AbstractContainerScreen<GeneratorMenu> {
 
     @Override
     protected void renderBg(GuiGraphics guiGraphics, float v, int i, int i1) {
-        // RenderSystem.setShader() and setShaderColor() API changed in 1.21.8
-        // GuiGraphics handles shader setup automatically
-        // RenderSystem.setShader(GameRenderer::getPositionTexShader);
-        // RenderSystem.setShaderColor(1.0f, 1.0f, 1.0f, 1.0f);
-        // RenderSystem.setShaderTexture(0, GUI_TEXTURE);
-        
         // Get screen dimensions - ensure we always have valid dimensions
         int screenWidth = this.width;
         int screenHeight = this.height;
@@ -93,6 +87,7 @@ public class GeneratorScreen extends AbstractContainerScreen<GeneratorMenu> {
         int y = (screenHeight - this.imageHeight) / 2;
         
         // Render the background texture - always render, even if coordinates seem wrong
+        // Use the correct texture width/height (256x256) for the blit call
         guiGraphics.blit(GUI_TEXTURE, x, y, 0, 0, this.imageWidth, this.imageHeight, 256, 256);
 
         // Initialize energyInfoArea if not already done
@@ -153,8 +148,8 @@ public class GeneratorScreen extends AbstractContainerScreen<GeneratorMenu> {
 
     @Override
     public void render(GuiGraphics guiGraphics, int mouseX, int mouseY, float partialTick) {
-        // Ensure background is rendered even if super.render() doesn't call renderBg()
-        this.renderBg(guiGraphics, partialTick, mouseX, mouseY);
+        // In 1.21.8, ensure renderBackground is called first
+        this.renderBackground(guiGraphics, mouseX, mouseY, partialTick);
         super.render(guiGraphics, mouseX, mouseY, partialTick);
 
         int x = (width - imageWidth) / 2;
