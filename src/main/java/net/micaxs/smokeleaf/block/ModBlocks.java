@@ -23,7 +23,7 @@ public class ModBlocks {
 
 
     public static final DeferredBlock<Block> HEMP_STONE = registerBlock("hemp_stone",
-            () -> new Block(BlockBehaviour.Properties.of()
+            () -> new Block(blockProps("hemp_stone")
                     .strength(1f).requiresCorrectToolForDrops().sound(SoundType.STONE)));
     public static final DeferredBlock<Block> HEMP_STONE_STAIRS = registerBlock("hemp_stone_stairs",
             () -> new StairBlock(ModBlocks.HEMP_STONE.get().defaultBlockState(), BlockBehaviour.Properties.of()
@@ -204,17 +204,17 @@ public class ModBlocks {
 
 
     // Helper Functions
-    private static <T extends Block> DeferredBlock<T> registerBlock(String name, Supplier<T> block) {
-        // Create ResourceKey for this block
+    /**
+     * Helper to create BlockBehaviour.Properties with the block ID set.
+     * This is required in NeoForge 1.21.8 to avoid "Block id not set" errors when using requiresCorrectToolForDrops().
+     */
+    private static BlockBehaviour.Properties blockProps(String name) {
         ResourceKey<Block> blockKey = ResourceKey.create(Registries.BLOCK, ResourceLocation.fromNamespaceAndPath(SmokeleafIndustries.MODID, name));
-        
-        // Register block with supplier that sets the ID in properties
-        DeferredBlock<T> toReturn = BLOCKS.register(name, () -> {
-            // The block supplier will be called during registration, at which point we can set the ID
-            // However, we need to modify the properties to include the ID
-            // Since we can't modify the supplier, we'll rely on DeferredRegister to set the ID automatically
-            return block.get();
-        });
+        return BlockBehaviour.Properties.of().setId(blockKey);
+    }
+    
+    private static <T extends Block> DeferredBlock<T> registerBlock(String name, Supplier<T> block) {
+        DeferredBlock<T> toReturn = BLOCKS.register(name, block);
         registerBlockItem(name, toReturn);
         return toReturn;
     }
