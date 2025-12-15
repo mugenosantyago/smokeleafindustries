@@ -13,7 +13,6 @@ import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResult;
-import net.minecraft.world.InteractionResult;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.context.BlockPlaceContext;
@@ -92,7 +91,23 @@ public class DryingRackBlock extends BaseEntityBlock {
             return InteractionResult.PASS;
         }
 
-        // Find a drying recipe for the held stack
+        // Client side: allow animation if item looks like it could be dried
+        // Server will do the actual validation
+        if (level.isClientSide) {
+            // Quick client-side check: if it's a bud and not dry, allow the animation
+            if (stack.getItem() instanceof BaseBudItem) {
+                Boolean dry = stack.get(ModDataComponentTypes.DRY);
+                if (dry == null || !dry) {
+                    // Looks like a fresh bud, allow animation - server will validate
+                    return InteractionResult.SUCCESS;
+                }
+            }
+            // For other items that might have drying recipes, allow animation - server will validate
+            // (We can't check recipes on client, so we allow it and let server reject if needed)
+            return InteractionResult.SUCCESS;
+        }
+
+        // Server side: Find a drying recipe for the held stack
         // Level.getRecipeManager() removed in 1.21.8 - need to use ServerLevel.getServer().getRecipeManager()
         Optional<RecipeHolder<DryingRecipe>> recipeOpt = Optional.empty();
         if (level instanceof net.minecraft.server.level.ServerLevel serverLevel) {
@@ -113,11 +128,6 @@ public class DryingRackBlock extends BaseEntityBlock {
             if (dry != null && dry) {
                 return InteractionResult.PASS;
             }
-        }
-
-        // Client side: just signal success for hand animation (do NOT modify inventory)
-        if (level.isClientSide) {
-            return InteractionResult.SUCCESS;
         }
 
         // Server side insertion
