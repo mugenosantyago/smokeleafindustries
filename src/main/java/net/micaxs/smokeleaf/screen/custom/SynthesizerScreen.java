@@ -53,8 +53,16 @@ public class SynthesizerScreen extends AbstractContainerScreen<SynthesizerMenu> 
         // RenderSystem.setShader(GameRenderer::getPositionTexShader);
         // RenderSystem.setShaderColor(1.0f, 1.0f, 1.0f, 1.0f);
         // RenderSystem.setShaderTexture(0, GUI_TEXTURE);
+        
+        // Safety checks: ensure width, height, and menu are valid
+        if (this.width <= 0 || this.height <= 0 || this.menu == null) {
+            return;
+        }
+        
         int x = (this.width - this.imageWidth) / 2;
         int y = (this.height - this.imageHeight) / 2;
+        
+        // Render the background texture
         guiGraphics.blit(GUI_TEXTURE, x, y, 0, 0, this.imageWidth, this.imageHeight, 256, 256);
 
         renderInfoIcon(guiGraphics, x, y);
@@ -64,7 +72,7 @@ public class SynthesizerScreen extends AbstractContainerScreen<SynthesizerMenu> 
             assignEnergyInfoArea();
         }
         if (energyInfoArea != null) {
-            energyInfoArea.render(guiGraphics);
+        energyInfoArea.render(guiGraphics);
         }
         renderProgressArrow(guiGraphics, x, y);
     }

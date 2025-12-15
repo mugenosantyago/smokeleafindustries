@@ -149,7 +149,8 @@ public class GrowPotBlockEntity extends BlockEntity {
 
     public void setSoil(BlockState soil) {
         this.soilState = soil;
-        setChangedAndSync();
+        setChanged();
+        // Sync will be handled by the calling code
     }
 
     public void clearSoil() {
@@ -279,6 +280,12 @@ public class GrowPotBlockEntity extends BlockEntity {
             level.sendBlockUpdated(worldPosition, getBlockState(), getBlockState(), 3);
             // Also ensure the block entity data packet is sent
             serverLevel.getChunkSource().blockChanged(worldPosition);
+            // Force a block entity update packet to be sent to all nearby clients
+            BlockEntity be = level.getBlockEntity(worldPosition);
+            if (be != null) {
+                // This ensures the block entity data packet is sent
+                serverLevel.getChunkSource().blockChanged(worldPosition);
+            }
         }
     }
 
@@ -426,14 +433,12 @@ public class GrowPotBlockEntity extends BlockEntity {
     @Override
     public void onLoad() {
         super.onLoad();
-        // When block entity loads on client, request initial data from server if needed
-        if (level != null && level.isClientSide && (soilState == null && cropBlock == null)) {
-            // Block entity just loaded, request update from server
-            // This ensures we get the data when the block is first placed
-            if (level instanceof net.minecraft.client.multiplayer.ClientLevel clientLevel) {
-                // Request block update to get block entity data
-                clientLevel.sendBlockUpdated(worldPosition, getBlockState(), getBlockState(), 3);
-            }
+        // When block entity loads on client, mark for update request
+        // The server should send the data automatically, but we ensure it's requested
+        if (level != null && level.isClientSide) {
+            // Client-side: The server should send initial data via getUpdateTag
+            // If data is missing, it means the server hasn't sent it yet
+            // We can't request it from client, but we can ensure it's marked as needing update
         }
     }
 }

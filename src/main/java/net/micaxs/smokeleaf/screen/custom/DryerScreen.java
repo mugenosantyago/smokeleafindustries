@@ -37,7 +37,7 @@ public class DryerScreen extends AbstractContainerScreen<DryerMenu> {
         this.inventoryLabelY = 100000;
         this.titleLabelY = 100000;
     }
-    
+
     @Override
     public void resize(net.minecraft.client.Minecraft minecraft, int width, int height) {
         super.resize(minecraft, width, height);
@@ -52,8 +52,16 @@ public class DryerScreen extends AbstractContainerScreen<DryerMenu> {
         // RenderSystem.setShader(GameRenderer::getPositionTexShader);
         // RenderSystem.setShaderColor(1.0f, 1.0f, 1.0f, 1.0f);
         // RenderSystem.setShaderTexture(0, GUI_TEXTURE);
+        
+        // Safety checks: ensure width, height, and menu are valid
+        if (this.width <= 0 || this.height <= 0 || this.menu == null) {
+            return;
+        }
+        
         int x = (this.width - this.imageWidth) / 2;
         int y = (this.height - this.imageHeight) / 2;
+        
+        // Render the background texture
         guiGraphics.blit(GUI_TEXTURE, x, y, 0, 0, this.imageWidth, this.imageHeight, 256, 256);
 
         // Initialize energyInfoArea if not already done
@@ -61,7 +69,7 @@ public class DryerScreen extends AbstractContainerScreen<DryerMenu> {
             assignEnergyInfoArea();
         }
         if (energyInfoArea != null) {
-            energyInfoArea.render(guiGraphics);
+        energyInfoArea.render(guiGraphics);
         }
         renderProgressArrow(guiGraphics, x, y);
         renderInfoIcon(guiGraphics, x, y);

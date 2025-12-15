@@ -192,12 +192,21 @@ public class GrowPotBlock extends BaseEntityBlock {
             Block soilBlock = ((BlockItem) stack.getItem()).getBlock();
             pot.setSoil(soilBlock.defaultBlockState());
             if (!player.isCreative()) stack.shrink(1);
-            pot.setChangedAndSync();
+            pot.setChanged();
             // Force immediate sync to client - ensure block entity data is sent
             if (level instanceof ServerLevel serverLevel) {
+                // Send block update with flag 3 (sends to clients)
                 serverLevel.sendBlockUpdated(pos, state, state, 3);
-                // Also request a block entity data packet
-                serverLevel.getChunkSource().blockChanged(pos);
+                // Force block entity data packet to be sent
+                BlockEntity be = level.getBlockEntity(pos);
+                if (be != null) {
+                    // This triggers the block entity data packet to be sent
+                    serverLevel.getChunkSource().blockChanged(pos);
+                    // Also explicitly send the update packet
+                    if (be instanceof GrowPotBlockEntity potBe) {
+                        potBe.setChangedAndSync();
+                    }
+                }
             }
             return InteractionResult.SUCCESS;
         }
@@ -208,12 +217,21 @@ public class GrowPotBlock extends BaseEntityBlock {
                 pot.initFromCrop(crop);
                 pot.plantCrop(crop);
                 if (!player.isCreative()) stack.shrink(1);
-                pot.setChangedAndSync();
+                pot.setChanged();
                 // Force immediate sync to client - ensure block entity data is sent
                 if (level instanceof ServerLevel serverLevel) {
+                    // Send block update with flag 3 (sends to clients)
                     serverLevel.sendBlockUpdated(pos, state, state, 3);
-                    // Also request a block entity data packet
-                    serverLevel.getChunkSource().blockChanged(pos);
+                    // Force block entity data packet to be sent
+                    BlockEntity be = level.getBlockEntity(pos);
+                    if (be != null) {
+                        // This triggers the block entity data packet to be sent
+                        serverLevel.getChunkSource().blockChanged(pos);
+                        // Also explicitly send the update packet
+                        if (be instanceof GrowPotBlockEntity potBe) {
+                            potBe.setChangedAndSync();
+                        }
+                    }
                 }
                 return InteractionResult.SUCCESS;
             }
