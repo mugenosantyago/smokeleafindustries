@@ -163,6 +163,8 @@ public class MutatorScreen extends AbstractContainerScreen<MutatorMenu> {
 
     @Override
     public void render(GuiGraphics guiGraphics, int mouseX, int mouseY, float partialTick) {
+        // Ensure background is rendered even if super.render() doesn't call renderBg()
+        this.renderBg(guiGraphics, partialTick, mouseX, mouseY);
         super.render(guiGraphics, mouseX, mouseY, partialTick);
 
         int x = (width - imageWidth) / 2;
