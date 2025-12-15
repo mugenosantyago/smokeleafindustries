@@ -20,18 +20,16 @@ import java.util.concurrent.CompletableFuture;
 
 // TODO: Fix ModRecipeProvider for 1.21.8 - RecipeProvider API changed significantly
 // Constructor signature changed, buildRecipes signature changed, and all helper methods have new signatures
+// Entire class temporarily commented out to allow compilation
+/*
 public class ModRecipeProvider extends RecipeProvider {
     public ModRecipeProvider(PackOutput output, CompletableFuture<HolderLookup.Provider> registries) {
-        // TODO: Fix constructor - super() signature changed in 1.21.8
-        // super(output, registries);
         super(output, registries);
     }
-
+    
     @Override
     protected void buildRecipes(RecipeOutput recipeOutput) {
-        // TODO: Fix all recipe builder methods for 1.21.8 - API changed significantly
-        // Temporarily empty to allow compilation
-        return;
+        // All recipe generation code - API changed significantly in 1.21.8
         /*
         slab(recipeOutput, RecipeCategory.BUILDING_BLOCKS, ModBlocks.HEMP_PLANK_SLAB.get(), ModBlocks.HEMP_PLANKS.get());
         slab(recipeOutput, RecipeCategory.BUILDING_BLOCKS, ModBlocks.HEMP_STONE_SLAB.get(), ModBlocks.HEMP_STONE.get());
@@ -885,3 +883,4 @@ public class ModRecipeProvider extends RecipeProvider {
         */
     }
 }
+*/
