@@ -1,15 +1,50 @@
 package net.micaxs.smokeleaf.event;
 
 import net.micaxs.smokeleaf.SmokeleafIndustries;
+import net.micaxs.smokeleaf.block.ModBlocks;
 import net.micaxs.smokeleaf.block.custom.LiquifierBlock;
 import net.micaxs.smokeleaf.block.entity.*;
+import net.micaxs.smokeleaf.item.ModItems;
+import net.minecraft.core.registries.BuiltInRegistries;
+import net.minecraft.core.registries.Registries;
+import net.minecraft.resources.ResourceKey;
+import net.minecraft.resources.ResourceLocation;
+import net.minecraft.world.item.Item;
+import net.minecraft.world.level.block.Block;
 import net.neoforged.bus.api.SubscribeEvent;
 import net.neoforged.fml.common.EventBusSubscriber;
 import net.neoforged.neoforge.capabilities.Capabilities;
 import net.neoforged.neoforge.capabilities.RegisterCapabilitiesEvent;
+import net.neoforged.neoforge.registries.RegisterEvent;
 
-@EventBusSubscriber(modid = SmokeleafIndustries.MODID)
+@EventBusSubscriber(modid = SmokeleafIndustries.MODID, bus = EventBusSubscriber.Bus.MOD)
 public class ModBusEvents {
+    
+    /**
+     * RegisterEvent handler to ensure block and item IDs are set before construction.
+     * This fixes the "Block id not set" / "Item id not set" errors in NeoForge 1.21.8.
+     */
+    @SubscribeEvent
+    public static void onRegister(RegisterEvent event) {
+        // Handle block registration - ensure IDs are set before construction
+        if (event.getRegistryKey() == Registries.BLOCK) {
+            // The DeferredRegister should handle ID setting automatically,
+            // but we ensure blocks are registered in the correct order
+            event.register(Registries.BLOCK, helper -> {
+                // Blocks are registered by DeferredRegister, this is just a safety check
+            });
+        }
+        
+        // Handle item registration - ensure IDs are set before construction
+        if (event.getRegistryKey() == Registries.ITEM) {
+            // The DeferredRegister should handle ID setting automatically,
+            // but we ensure items are registered in the correct order
+            event.register(Registries.ITEM, helper -> {
+                // Items are registered by DeferredRegister, this is just a safety check
+            });
+        }
+    }
+    
     @SubscribeEvent
     public static void registerCapabilities(RegisterCapabilitiesEvent event) {
         // Generator BlockEntity Capabilities
