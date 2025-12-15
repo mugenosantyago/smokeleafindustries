@@ -55,7 +55,7 @@ public class ModBlockEntities {
             () -> new BlockEntityType<>(GrowLightBlockEntity::new, Set.of(ModBlocks.LED_LIGHT.get()), null));
 
     public static final DeferredHolder<BlockEntityType<?>, BlockEntityType<GrowPotBlockEntity>> GROW_POT = BLOCK_ENTITIES.register("grow_pot_be",
-            () -> new BlockEntityType<>((GrowPotBlockEntity::new, ModBlocks.GROW_POT.get()).build());
+            () -> new BlockEntityType<>(GrowPotBlockEntity::new, Set.of(ModBlocks.GROW_POT.get()), null));
 
 
 
