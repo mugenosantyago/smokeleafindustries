@@ -115,8 +115,25 @@ public class DryingRackBlock extends BaseEntityBlock {
                     .getRecipeFor(ModRecipes.DRYING_TYPE.get(), new DryingRecipeInput(stack), level);
         }
 
+        // Fallback: if it's a fresh bud item, allow it even if recipe lookup failed
+        // (This handles cases where recipe system might not be fully initialized or tag lookup fails)
+        if (recipeOpt.isEmpty() && stack.getItem() instanceof BaseBudItem) {
+            Boolean dry = stack.get(ModDataComponentTypes.DRY);
+            if (dry == null || !dry) {
+                // Fresh bud - allow insertion, it will dry in-place
+                if (rack.insertOne(stack)) {
+                    if (!player.isCreative()) {
+                        player.getInventory().setChanged();
+                    }
+                    return InteractionResult.CONSUME;
+                }
+            }
+            // Already dry bud - reject
+            return InteractionResult.PASS;
+        }
+
         if (recipeOpt.isEmpty()) {
-            // No recipe -> not insertable
+            // No recipe and not a bud -> not insertable
             return InteractionResult.PASS;
         }
 

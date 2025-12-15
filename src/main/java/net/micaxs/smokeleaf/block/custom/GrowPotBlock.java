@@ -14,7 +14,6 @@ import net.minecraft.network.chat.Component;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResult;
-import net.minecraft.world.InteractionResult;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.*;
 import net.minecraft.world.level.BlockGetter;
@@ -87,6 +86,34 @@ public class GrowPotBlock extends BaseEntityBlock {
         boolean holdingMagnifyingGlass = !stack.isEmpty() && stack.getItem() instanceof PlantAnalyzerItem;
         boolean holdingFertilizer = !stack.isEmpty() && stack.getItem() instanceof FertilizerItem;
 
+        boolean emptyHand = stack.isEmpty();
+        boolean sneaking = player.isShiftKeyDown();
+
+        if (holdingMagnifyingGlass) {
+            if (level.isClientSide) {
+                openAnalyzerScreen(pos);
+            }
+            return InteractionResult.SUCCESS;
+        }
+
+        // Client side: allow animation for potential interactions, server will validate
+        if (level.isClientSide) {
+            // Check if it looks like a valid interaction
+            boolean looksLikeSoilInsert = !pot.hasSoil() && stack.getItem() instanceof BlockItem;
+            boolean looksLikeSeedPlant = pot.hasSoil() && !pot.hasCrop() && !stack.isEmpty();
+            boolean looksLikeFertilizer = pot.hasCrop() && holdingFertilizer;
+            boolean looksLikeBonemeal = pot.hasCrop() && holdingBoneMeal;
+            boolean looksLikeHarvest = pot.canHarvest();
+            boolean looksLikeRemove = sneaking && emptyHand && (pot.hasCrop() || pot.hasSoil());
+            
+            if (looksLikeSoilInsert || looksLikeSeedPlant || looksLikeFertilizer 
+                    || looksLikeBonemeal || looksLikeHarvest || looksLikeRemove) {
+                return InteractionResult.SUCCESS;
+            }
+            return InteractionResult.PASS;
+        }
+
+        // Server side: actual validation
         boolean canInsertSoil = !pot.hasSoil()
                 && stack.getItem() instanceof BlockItem bi
                 && bi.getBlock().builtInRegistryHolder().is(ModTags.POT_SOILS);
@@ -100,23 +127,6 @@ public class GrowPotBlock extends BaseEntityBlock {
         boolean tryingFertilizeFullyGrown = pot.hasCrop() && holdingFertilizer && pot.canHarvest();
         boolean canBonemeal = pot.hasCrop() && holdingBoneMeal;
         boolean canHarvest = pot.canHarvest();
-        boolean emptyHand = stack.isEmpty();
-        boolean sneaking = player.isShiftKeyDown();
-
-        if (holdingMagnifyingGlass) {
-            if (level.isClientSide) {
-                openAnalyzerScreen(pos);
-            }
-            return InteractionResult.SUCCESS;
-        }
-
-        if (level.isClientSide) {
-            if ((sneaking && emptyHand && (pot.hasCrop() || pot.hasSoil()))
-                    || canInsertSoil || canPlantCrop || canFertilize || canBonemeal || canHarvest || tryingFertilizeFullyGrown) {
-                return InteractionResult.SUCCESS;
-            }
-            return InteractionResult.PASS;
-        }
 
         if (sneaking && emptyHand && level instanceof ServerLevel serverLevel) {
             if (pot.hasCrop()) {
