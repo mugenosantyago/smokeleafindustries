@@ -59,35 +59,20 @@ public class GeneratorScreen extends AbstractContainerScreen<GeneratorMenu> {
 
     private void assignEnergyInfoArea() {
         if (this.width > 0 && this.height > 0 && menu != null && menu.blockEntity != null) {
-            energyInfoArea = new EnergyDisplayTooltipArea(((this.width - this.imageWidth) / 2) + 125, ((this.height - this.imageHeight) / 2) + 21, menu.blockEntity.getEnergyStorage(null), 13, 38);
+            int x = this.leftPos;
+            int y = this.topPos;
+            energyInfoArea = new EnergyDisplayTooltipArea(x + 125, y + 21, menu.blockEntity.getEnergyStorage(null), 13, 38);
         }
     }
 
 
     @Override
     protected void renderBg(GuiGraphics guiGraphics, float v, int i, int i1) {
-        // Get screen dimensions - ensure we always have valid dimensions
-        int screenWidth = this.width;
-        int screenHeight = this.height;
+        // Use leftPos and topPos from AbstractContainerScreen for proper positioning
+        int x = this.leftPos;
+        int y = this.topPos;
         
-        // Fallback to Minecraft window dimensions if screen dimensions aren't set
-        if (screenWidth <= 0 || screenHeight <= 0) {
-            if (this.minecraft != null && this.minecraft.getWindow() != null) {
-                screenWidth = this.minecraft.getWindow().getGuiScaledWidth();
-                screenHeight = this.minecraft.getWindow().getGuiScaledHeight();
-            } else {
-                // Last resort fallback
-                screenWidth = 320;
-                screenHeight = 240;
-            }
-        }
-        
-        // Calculate centered position
-        int x = (screenWidth - this.imageWidth) / 2;
-        int y = (screenHeight - this.imageHeight) / 2;
-        
-        // Render the background texture - always render, even if coordinates seem wrong
-        // Use the correct texture width/height (256x256) for the blit call
+        // Render the background texture
         guiGraphics.blit(GUI_TEXTURE, x, y, 0, 0, this.imageWidth, this.imageHeight, 256, 256);
 
         // Initialize energyInfoArea if not already done
@@ -141,8 +126,8 @@ public class GeneratorScreen extends AbstractContainerScreen<GeneratorMenu> {
 
     @Override
     protected void renderLabels(GuiGraphics guiGraphics, int mouseX, int mouseY) {
-        int x = (width - imageWidth) / 2;
-        int y = (height - imageHeight) / 2;
+        int x = this.leftPos;
+        int y = this.topPos;
         renderEnergyInfoArea(guiGraphics, mouseX, mouseY, x, y);
     }
 
@@ -150,22 +135,9 @@ public class GeneratorScreen extends AbstractContainerScreen<GeneratorMenu> {
     public void render(GuiGraphics guiGraphics, int mouseX, int mouseY, float partialTick) {
         super.render(guiGraphics, mouseX, mouseY, partialTick);
 
-        // Explicitly render the background texture after super.render() to ensure it's visible
-        int screenWidth = this.width;
-        int screenHeight = this.height;
-        if (screenWidth <= 0 || screenHeight <= 0) {
-            if (this.minecraft != null && this.minecraft.getWindow() != null) {
-                screenWidth = this.minecraft.getWindow().getGuiScaledWidth();
-                screenHeight = this.minecraft.getWindow().getGuiScaledHeight();
-            } else {
-                screenWidth = 320;
-                screenHeight = 240;
-            }
-        }
-        int x = (screenWidth - this.imageWidth) / 2;
-        int y = (screenHeight - this.imageHeight) / 2;
-        guiGraphics.blit(GUI_TEXTURE, x, y, 0, 0, this.imageWidth, this.imageHeight, 256, 256);
-
+        // Use leftPos and topPos for tooltip positioning
+        int x = this.leftPos;
+        int y = this.topPos;
         renderInfoIconTooltip(guiGraphics, mouseX, mouseY, x, y);
 
         renderTooltip(guiGraphics, mouseX, mouseY);
