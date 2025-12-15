@@ -54,8 +54,9 @@ public class SmokeleafIndustries {
 
         ModCreativeModeTabs.register(modEventBus);
 
-        ModItems.register(modEventBus);
+        // Register blocks first, then items (block items are registered during block registration)
         ModBlocks.register(modEventBus);
+        ModItems.register(modEventBus);
         ModBlockEntities.register(modEventBus);
         ModMenuTypes.register(modEventBus);
         ModRecipes.register(modEventBus);

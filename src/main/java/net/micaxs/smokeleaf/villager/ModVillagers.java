@@ -18,15 +18,33 @@ public class ModVillagers {
     public static DeferredRegister<VillagerProfession> VILLAGER_PROFESSIONS = DeferredRegister.create(BuiltInRegistries.VILLAGER_PROFESSION, SmokeleafIndustries.MODID);
 
     // Point of Interest Types
-    public static final Holder<PoiType> DEALER_POI = POI_TYPES.register("dealer_poi", () -> new PoiType(ImmutableSet.copyOf(ModBlocks.GRINDER.get().getStateDefinition().getPossibleStates()), 1, 1));
-    public static final Holder<PoiType> STONER_POI = POI_TYPES.register("stoner_poi", () -> new PoiType(ImmutableSet.copyOf(ModBlocks.HEMP_CHISELED_STONE.get().getStateDefinition().getPossibleStates()), 1, 1));
+    // Use lazy evaluation - access blocks only when POI is actually registered (after blocks are registered)
+    public static final Holder<PoiType> DEALER_POI = POI_TYPES.register("dealer_poi", () -> {
+        // This lambda is called during RegisterEvent, after blocks should be registered
+        return new PoiType(ImmutableSet.copyOf(ModBlocks.GRINDER.get().getStateDefinition().getPossibleStates()), 1, 1);
+    });
+    public static final Holder<PoiType> STONER_POI = POI_TYPES.register("stoner_poi", () -> {
+        // This lambda is called during RegisterEvent, after blocks should be registered
+        return new PoiType(ImmutableSet.copyOf(ModBlocks.HEMP_CHISELED_STONE.get().getStateDefinition().getPossibleStates()), 1, 1);
+    });
 
     // Villagers
     // VillagerProfession constructor changed in 1.21.8 - first parameter is now Component instead of String
-    public static final Holder<VillagerProfession> DEALER = VILLAGER_PROFESSIONS.register("dealer", () -> new VillagerProfession(Component.translatable("entity.minecraft.villager.dealer"), holder -> holder.value() == DEALER_POI.value(), holder -> holder.value() == DEALER_POI.value(),
-            ImmutableSet.of(), ImmutableSet.of(), ModSounds.MANUAL_GRINDER.get()));
-    public static final Holder<VillagerProfession> STONER = VILLAGER_PROFESSIONS.register("stoner", () -> new VillagerProfession(Component.translatable("entity.minecraft.villager.stoner"), holder -> holder.value() == STONER_POI.value(), holder -> holder.value() == STONER_POI.value(),
-            ImmutableSet.of(), ImmutableSet.of(), ModSounds.BONG_HIT.get()));
+    // Use lazy evaluation - access POI and sounds only when profession is actually registered
+    public static final Holder<VillagerProfession> DEALER = VILLAGER_PROFESSIONS.register("dealer", () -> {
+        // This lambda is called during RegisterEvent, after POI types should be registered
+        return new VillagerProfession(Component.translatable("entity.minecraft.villager.dealer"), 
+                holder -> holder.value() == DEALER_POI.value(), 
+                holder -> holder.value() == DEALER_POI.value(),
+                ImmutableSet.of(), ImmutableSet.of(), ModSounds.MANUAL_GRINDER.get());
+    });
+    public static final Holder<VillagerProfession> STONER = VILLAGER_PROFESSIONS.register("stoner", () -> {
+        // This lambda is called during RegisterEvent, after POI types should be registered
+        return new VillagerProfession(Component.translatable("entity.minecraft.villager.stoner"), 
+                holder -> holder.value() == STONER_POI.value(), 
+                holder -> holder.value() == STONER_POI.value(),
+                ImmutableSet.of(), ImmutableSet.of(), ModSounds.BONG_HIT.get());
+    });
 
 
     public static void register(IEventBus eventBus) {
