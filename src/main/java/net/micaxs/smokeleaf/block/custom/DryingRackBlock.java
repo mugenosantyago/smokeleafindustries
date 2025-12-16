@@ -208,7 +208,7 @@ public class DryingRackBlock extends BaseEntityBlock {
                     level.setBlockEntity(be);
                 }
             }
-            if (!(be instanceof DryingRackBlockEntity rack)) return InteractionResult.PASS;
+        if (!(be instanceof DryingRackBlockEntity rack)) return InteractionResult.PASS;
         }
         DryingRackBlockEntity rack = (DryingRackBlockEntity) be;
 
