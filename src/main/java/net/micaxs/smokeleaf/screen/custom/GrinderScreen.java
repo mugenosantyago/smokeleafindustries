@@ -36,6 +36,7 @@ public class GrinderScreen extends AbstractContainerScreen<GrinderMenu> {
         super.init();
         this.inventoryLabelY = 100000;
         this.titleLabelY = 100000;
+        assignEnergyInfoArea();
     }
 
     @Override
@@ -54,12 +55,9 @@ public class GrinderScreen extends AbstractContainerScreen<GrinderMenu> {
         // Render the background texture
         guiGraphics.blit(RenderPipelines.GUI_TEXTURED, GUI_TEXTURE, x, y, 0.0F, 0.0F, this.imageWidth, this.imageHeight, 256, 256);
 
-        // Initialize energyInfoArea if not already done
-        if (energyInfoArea == null) {
-            assignEnergyInfoArea();
-        }
+        // Render energy bar if initialized
         if (energyInfoArea != null) {
-        energyInfoArea.render(guiGraphics);
+            energyInfoArea.render(guiGraphics);
         }
         renderProgressArrow(guiGraphics, x, y);
         renderInfoIcon(guiGraphics, x, y);
@@ -114,7 +112,9 @@ public class GrinderScreen extends AbstractContainerScreen<GrinderMenu> {
     protected void renderLabels(GuiGraphics guiGraphics, int mouseX, int mouseY) {
         int x = this.leftPos;
         int y = this.topPos;
-        renderEnergyInfoArea(guiGraphics, mouseX, mouseY, x, y);
+        if (energyInfoArea != null) {
+            renderEnergyInfoArea(guiGraphics, mouseX, mouseY, x, y);
+        }
     }
 
     @Override

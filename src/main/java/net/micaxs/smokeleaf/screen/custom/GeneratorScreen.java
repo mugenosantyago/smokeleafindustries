@@ -39,7 +39,7 @@ public class GeneratorScreen extends AbstractContainerScreen<GeneratorMenu> {
         super.init();
         this.inventoryLabelY = 100000;
         this.titleLabelY = 100000;
-        // Don't assign here - width/height might not be set yet
+        assignEnergyInfoArea();
     }
 
     @Override
@@ -50,7 +50,7 @@ public class GeneratorScreen extends AbstractContainerScreen<GeneratorMenu> {
 
 
     private void renderEnergyInfoArea(GuiGraphics guiGraphics, int mouseX, int mouseY, int x, int y) {
-        if (isMouseAboveArea(mouseX, mouseY, x, y, 125, 21, 13, 38)) {
+        if (energyInfoArea != null && isMouseAboveArea(mouseX, mouseY, x, y, 125, 21, 13, 38)) {
             // renderTooltip API changed in 1.21.8 - temporarily disabled
             // TODO: Fix renderTooltip signature for 1.21.8
             // guiGraphics.renderTooltip(this.font, energyInfoArea.getTooltips(), Optional.empty(), mouseX - x, mouseY - y);
@@ -75,12 +75,9 @@ public class GeneratorScreen extends AbstractContainerScreen<GeneratorMenu> {
         // Render the background texture
         guiGraphics.blit(RenderPipelines.GUI_TEXTURED, GUI_TEXTURE, x, y, 0.0F, 0.0F, this.imageWidth, this.imageHeight, 256, 256);
 
-        // Initialize energyInfoArea if not already done
-        if (energyInfoArea == null) {
-            assignEnergyInfoArea();
-        }
+        // Render energy bar if initialized
         if (energyInfoArea != null) {
-        energyInfoArea.render(guiGraphics);
+            energyInfoArea.render(guiGraphics);
         }
         renderFuelProgress(guiGraphics, x, y);
         renderInfoIcon(guiGraphics, x, y);
