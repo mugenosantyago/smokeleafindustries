@@ -63,9 +63,8 @@ public class GrowPotRenderer implements BlockEntityRenderer<GrowPotBlockEntity> 
         }
     }
 
-    // shouldRenderOffScreen method may have been removed or signature changed in 1.21.8
-    // @Override
-    // public boolean shouldRenderOffScreen(GrowPotBlockEntity be) {
-    //     return true;
-    // }
+    @Override
+    public boolean shouldRenderOffScreen() {
+        return true;
+    }
 }

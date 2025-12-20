@@ -154,6 +154,10 @@ public class Config {
 
     public static Optional<NutrientTarget> getNutrientTargetFor(ResourceLocation id) {
         if (id == null) return Optional.empty();
+        // Ensure cache is initialized (in case config hasn't loaded yet)
+        if (PLANT_NUTRIENTS_CACHE.isEmpty()) {
+            rebuildPlantNutrientsCache();
+        }
         NutrientTarget t = PLANT_NUTRIENTS_CACHE.get(id.toString());
         if (t != null) return Optional.of(t);
         t = PLANT_NUTRIENTS_CACHE.get(id.getPath());
