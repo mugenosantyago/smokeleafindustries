@@ -31,6 +31,8 @@ import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.properties.BlockStateProperties;
+import net.minecraft.world.level.storage.ValueInput;
+import net.minecraft.world.level.storage.ValueOutput;
 import net.neoforged.neoforge.energy.IEnergyStorage;
 import net.neoforged.neoforge.fluids.FluidStack;
 import net.neoforged.neoforge.fluids.FluidUtil;
@@ -351,68 +353,38 @@ public class MutatorBlockEntity extends BlockEntity implements MenuProvider {
     }
 
     // NBT Data
-    // @Override removed - base BlockEntity method signature changed in 1.21.8
-    protected void saveAdditional(CompoundTag tag, HolderLookup.Provider registries) {
-        // TODO: ItemStackHandler.serializeNBT() API changed in 1.21.8 - manually serialize for now
-        CompoundTag inventoryTag = new CompoundTag();
+    @Override
+    protected void saveAdditional(ValueOutput output) {
+        super.saveAdditional(output);
+        ValueOutput invOutput = output.child("mutator.inventory");
         for (int i = 0; i < itemHandler.getSlots(); i++) {
-            final int slotIndex = i; // Make final for lambda
             ItemStack stack = itemHandler.getStackInSlot(i);
             if (!stack.isEmpty()) {
-                ItemStack.CODEC.encodeStart(net.minecraft.nbt.NbtOps.INSTANCE, stack)
-                        .result()
-                        .ifPresent(encoded -> inventoryTag.put("slot" + slotIndex, encoded));
+                invOutput.store("slot" + i, ItemStack.CODEC, stack);
             }
         }
-        tag.put("mutator.inventory", inventoryTag);
-        tag.putInt("mutator.progress", progress);
-        tag.putInt("mutator.maxProgress", maxProgress);
-        tag.putInt("mutator.energy", ENERGY_STORAGE.getEnergyStored());
-        // TODO: FluidTank.writeToNBT() API changed in 1.21.8 - manually serialize FluidStack
+        output.putInt("mutator.progress", progress);
+        output.putInt("mutator.maxProgress", maxProgress);
+        output.putInt("mutator.energy", ENERGY_STORAGE.getEnergyStored());
         FluidStack fluid = FLUID_TANK.getFluid();
         if (!fluid.isEmpty()) {
-            CompoundTag fluidTag = new CompoundTag();
-            fluidTag.putString("FluidName", fluid.getFluid().builtInRegistryHolder().key().location().toString());
-            fluidTag.putInt("Amount", fluid.getAmount());
-            tag.put("mutator.fluid", fluidTag);
+            output.store("mutator.fluid", FluidStack.CODEC, fluid);
         }
-        // super.saveAdditional removed - base BlockEntity method signature changed in 1.21.8
     }
 
-    // @Override removed - base BlockEntity method signature changed in 1.21.8
-    protected void loadAdditional(CompoundTag tag, HolderLookup.Provider registries) {
-        // super.loadAdditional removed - base BlockEntity method signature changed in 1.21.8
-        // TODO: ItemStackHandler.deserializeNBT() API changed in 1.21.8 - manually deserialize for now
-        CompoundTag inventoryTag = tag.getCompound("mutator.inventory").orElse(new CompoundTag());
+    @Override
+    protected void loadAdditional(ValueInput input) {
+        super.loadAdditional(input);
+        ValueInput invInput = input.childOrEmpty("mutator.inventory");
         for (int i = 0; i < itemHandler.getSlots(); i++) {
-            if (inventoryTag.contains("slot" + i)) {
-                ItemStack stack = ItemStack.CODEC.parse(net.minecraft.nbt.NbtOps.INSTANCE, inventoryTag.get("slot" + i))
-                        .result()
-                        .orElse(ItemStack.EMPTY);
-                itemHandler.setStackInSlot(i, stack);
-            } else {
-                itemHandler.setStackInSlot(i, ItemStack.EMPTY);
-            }
+            ItemStack stack = invInput.read("slot" + i, ItemStack.CODEC).orElse(ItemStack.EMPTY);
+            itemHandler.setStackInSlot(i, stack);
         }
-        ENERGY_STORAGE.setEnergy(tag.getInt("mutator.energy").orElse(0));
-        progress = tag.getInt("mutator.progress").orElse(0);
-        maxProgress = tag.getInt("mutator.maxProgress").orElse(0);
-        // TODO: FluidTank.readFromNBT() API changed in 1.21.8 - manually deserialize FluidStack
-        if (tag.contains("mutator.fluid")) {
-            CompoundTag fluidTag = tag.getCompound("mutator.fluid").orElse(new CompoundTag());
-            if (fluidTag.contains("FluidName") && fluidTag.contains("Amount")) {
-                var fluidKey = net.minecraft.resources.ResourceLocation.parse(fluidTag.getString("FluidName").orElse("minecraft:empty"));
-                var fluidRef = net.minecraft.core.registries.BuiltInRegistries.FLUID.get(fluidKey);
-                if (fluidRef.isPresent()) {
-                    int amount = fluidTag.getInt("Amount").orElse(0);
-                    FLUID_TANK.setFluid(new FluidStack(fluidRef.get().value(), amount));
-                }
-            }
-        } else {
-            FLUID_TANK.setFluid(FluidStack.EMPTY);
-        }
+        ENERGY_STORAGE.setEnergy(input.getIntOr("mutator.energy", 0));
+        progress = input.getIntOr("mutator.progress", 0);
+        maxProgress = input.getIntOr("mutator.maxProgress", 78);
+        FLUID_TANK.setFluid(input.read("mutator.fluid", FluidStack.CODEC).orElse(FluidStack.EMPTY));
     }
-
 
     // Server / Client Syncing
     @Override
@@ -425,8 +397,8 @@ public class MutatorBlockEntity extends BlockEntity implements MenuProvider {
         return saveWithoutMetadata(registries);
     }
 
-    // @Override removed - base BlockEntity method signature changed in 1.21.8
-    public void onDataPacket(Connection net, ClientboundBlockEntityDataPacket pkt, HolderLookup.Provider lookupProvider) {
-        // super.onDataPacket removed - base method signature changed in 1.21.8
+    @Override
+    public void handleUpdateTag(ValueInput input) {
+        loadWithComponents(input);
     }
 }

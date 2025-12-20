@@ -7,7 +7,7 @@ import net.micaxs.smokeleaf.screen.renderer.FluidTankRenderer;
 import net.micaxs.smokeleaf.utils.MouseUtil;
 import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.client.gui.screens.inventory.AbstractContainerScreen;
-import net.minecraft.client.renderer.GameRenderer;
+import net.minecraft.client.renderer.RenderPipelines;
 import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.util.FormattedCharSequence;
@@ -71,7 +71,7 @@ public class MutatorScreen extends AbstractContainerScreen<MutatorMenu> {
         int y = this.topPos;
         
         // Render the background texture
-        guiGraphics.blit(GUI_TEXTURE, x, y, 0, 0, this.imageWidth, this.imageHeight, 256, 256);
+        guiGraphics.blit(RenderPipelines.GUI_TEXTURED, GUI_TEXTURE, x, y, 0.0F, 0.0F, this.imageWidth, this.imageHeight, 256, 256);
 
         // Initialize energyInfoArea if not already done
         if (energyInfoArea == null) {

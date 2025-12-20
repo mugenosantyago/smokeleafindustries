@@ -28,6 +28,8 @@ import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.properties.BlockStateProperties;
+import net.minecraft.world.level.storage.ValueInput;
+import net.minecraft.world.level.storage.ValueOutput;
 import net.neoforged.neoforge.energy.IEnergyStorage;
 import net.neoforged.neoforge.items.IItemHandler;
 import net.neoforged.neoforge.items.ItemStackHandler;
@@ -202,48 +204,36 @@ public class GeneratorBlockEntity extends BlockEntity implements MenuProvider {
         return stack.getItem() instanceof BaseWeedItem || stack.getItem() instanceof BaseBudItem;
     }
 
-    // @Override removed - base BlockEntity method signature changed in 1.21.8
-    protected void saveAdditional(CompoundTag tag, HolderLookup.Provider provider) {
-        // TODO: ItemStackHandler.serializeNBT() API changed in 1.21.8 - manually serialize for now
-        CompoundTag inventoryTag = new CompoundTag();
+    @Override
+    protected void saveAdditional(ValueOutput output) {
+        super.saveAdditional(output);
+        ValueOutput invOutput = output.child("generator.inventory");
         for (int i = 0; i < itemHandler.getSlots(); i++) {
-            final int slotIndex = i; // Make final for lambda
             ItemStack stack = itemHandler.getStackInSlot(i);
             if (!stack.isEmpty()) {
-                ItemStack.CODEC.encodeStart(net.minecraft.nbt.NbtOps.INSTANCE, stack)
-                        .result()
-                        .ifPresent(encoded -> inventoryTag.put("slot" + slotIndex, encoded));
+                invOutput.store("slot" + i, ItemStack.CODEC, stack);
             }
         }
-        tag.put("generator.inventory", inventoryTag);
-        tag.putInt("generator.burnTime", burnTime);
-        tag.putInt("generator.maxBurnTime", maxBurnTime);
-        tag.putInt("generator.remainingEnergy", remainingEnergy);
-        tag.putInt("generator.genPerTick", generationPerTick);
-        tag.putInt("generator.energy", ENERGY_STORAGE.getEnergyStored());
-        // super.saveAdditional removed - base BlockEntity method signature changed in 1.21.8
+        output.putInt("generator.burnTime", burnTime);
+        output.putInt("generator.maxBurnTime", maxBurnTime);
+        output.putInt("generator.remainingEnergy", remainingEnergy);
+        output.putInt("generator.genPerTick", generationPerTick);
+        output.putInt("generator.energy", ENERGY_STORAGE.getEnergyStored());
     }
 
-    // @Override removed - base BlockEntity method signature changed in 1.21.8
-    protected void loadAdditional(CompoundTag tag, HolderLookup.Provider provider) {
-        // super.loadAdditional removed - base BlockEntity method signature changed in 1.21.8
-        // TODO: ItemStackHandler.deserializeNBT() API changed in 1.21.8 - manually deserialize for now
-        CompoundTag inventoryTag = tag.getCompound("generator.inventory").orElse(new CompoundTag());
+    @Override
+    protected void loadAdditional(ValueInput input) {
+        super.loadAdditional(input);
+        ValueInput invInput = input.childOrEmpty("generator.inventory");
         for (int i = 0; i < itemHandler.getSlots(); i++) {
-            if (inventoryTag.contains("slot" + i)) {
-                ItemStack stack = ItemStack.CODEC.parse(net.minecraft.nbt.NbtOps.INSTANCE, inventoryTag.get("slot" + i))
-                        .result()
-                        .orElse(ItemStack.EMPTY);
-                itemHandler.setStackInSlot(i, stack);
-            } else {
-                itemHandler.setStackInSlot(i, ItemStack.EMPTY);
-            }
+            ItemStack stack = invInput.read("slot" + i, ItemStack.CODEC).orElse(ItemStack.EMPTY);
+            itemHandler.setStackInSlot(i, stack);
         }
-        ENERGY_STORAGE.setEnergy(tag.getInt("generator.energy").orElse(0));
-        burnTime = tag.getInt("generator.burnTime").orElse(0);
-        maxBurnTime = tag.getInt("generator.maxBurnTime").orElse(0);
-        remainingEnergy = tag.getInt("generator.remainingEnergy").orElse(0);
-        generationPerTick = tag.getInt("generator.genPerTick").orElse(0);
+        ENERGY_STORAGE.setEnergy(input.getIntOr("generator.energy", 0));
+        burnTime = input.getIntOr("generator.burnTime", 0);
+        maxBurnTime = input.getIntOr("generator.maxBurnTime", 0);
+        remainingEnergy = input.getIntOr("generator.remainingEnergy", 0);
+        generationPerTick = input.getIntOr("generator.genPerTick", 0);
     }
 
     @Override
@@ -256,8 +246,8 @@ public class GeneratorBlockEntity extends BlockEntity implements MenuProvider {
         return saveWithoutMetadata(provider);
     }
 
-    // @Override removed - base BlockEntity method signature changed in 1.21.8
-    public void onDataPacket(Connection net, ClientboundBlockEntityDataPacket pkt, HolderLookup.Provider provider) {
-        // super.onDataPacket removed - base method signature changed in 1.21.8
+    @Override
+    public void handleUpdateTag(ValueInput input) {
+        loadWithComponents(input);
     }
 }

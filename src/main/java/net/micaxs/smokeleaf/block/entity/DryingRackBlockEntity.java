@@ -22,6 +22,8 @@ import net.minecraft.world.level.block.HorizontalDirectionalBlock;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.item.crafting.RecipeHolder;
+import net.minecraft.world.level.storage.ValueInput;
+import net.minecraft.world.level.storage.ValueOutput;
 import net.minecraft.world.phys.BlockHitResult;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
@@ -266,35 +268,25 @@ public class DryingRackBlockEntity extends BlockEntity {
         }
     }
 
-    // @Override removed - base BlockEntity method signature changed in 1.21.8
-    protected void saveAdditional(CompoundTag tag, HolderLookup.Provider registries) {
-        // super.saveAdditional removed - base BlockEntity method signature changed in 1.21.8
+    @Override
+    protected void saveAdditional(ValueOutput output) {
+        super.saveAdditional(output);
         for (int i = 0; i < SLOT_COUNT; i++) {
-            final int slotIndex = i; // Make final for lambda
-            CompoundTag slotTag = new CompoundTag();
+            ValueOutput slotOutput = output.child("S" + i);
             if (!items[i].isEmpty()) {
-                ItemStack.CODEC.encodeStart(net.minecraft.nbt.NbtOps.INSTANCE, items[i])
-                        .result()
-                        .ifPresent(encoded -> slotTag.put("stack", encoded));
+                slotOutput.store("stack", ItemStack.CODEC, items[i]);
             }
-            slotTag.putInt("prog", progress[i]);
-            tag.put("S" + slotIndex, slotTag);
+            slotOutput.putInt("prog", progress[i]);
         }
     }
 
-    // @Override removed - base BlockEntity method signature changed in 1.21.8
-    protected void loadAdditional(CompoundTag tag, HolderLookup.Provider registries) {
-        // super.loadAdditional removed - base BlockEntity method signature changed in 1.21.8
+    @Override
+    protected void loadAdditional(ValueInput input) {
+        super.loadAdditional(input);
         for (int i = 0; i < SLOT_COUNT; i++) {
-            CompoundTag slotTag = tag.getCompound("S" + i).orElse(new CompoundTag());
-            if (slotTag.contains("stack")) {
-                items[i] = ItemStack.CODEC.parse(net.minecraft.nbt.NbtOps.INSTANCE, slotTag.get("stack"))
-                        .result()
-                        .orElse(ItemStack.EMPTY);
-            } else {
-                items[i] = ItemStack.EMPTY;
-            }
-            progress[i] = slotTag.getInt("prog").orElse(0);
+            ValueInput slotInput = input.childOrEmpty("S" + i);
+            items[i] = slotInput.read("stack", ItemStack.CODEC).orElse(ItemStack.EMPTY);
+            progress[i] = slotInput.getIntOr("prog", 0);
         }
     }
 
@@ -308,12 +300,19 @@ public class DryingRackBlockEntity extends BlockEntity {
         return saveWithoutMetadata(registries);
     }
 
-    // @Override removed - base BlockEntity method signature changed in 1.21.8
-    public void onDataPacket(Connection net, ClientboundBlockEntityDataPacket pkt, HolderLookup.Provider lookupProvider) {
-        // super.onDataPacket removed - base method signature changed in 1.21.8
-        CompoundTag tag = pkt.getTag();
-        if (tag != null) {
-            loadAdditional(tag, lookupProvider);
+    @Override
+    public void handleUpdateTag(ValueInput input) {
+        loadWithComponents(input);
+        // Request model data update when receiving new data from server
+        if (level != null && level.isClientSide) {
+            requestModelDataUpdate();
         }
+    }
+    
+    @Override
+    public void onLoad() {
+        super.onLoad();
+        // Request model data update on load for rendering
+        requestModelDataUpdate();
     }
 }

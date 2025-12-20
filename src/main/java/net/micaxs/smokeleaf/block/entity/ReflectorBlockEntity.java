@@ -21,6 +21,8 @@ import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.properties.BooleanProperty;
 import net.minecraft.world.level.block.state.properties.IntegerProperty;
+import net.minecraft.world.level.storage.ValueInput;
+import net.minecraft.world.level.storage.ValueOutput;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
@@ -203,28 +205,20 @@ public class ReflectorBlockEntity extends BlockEntity {
         }
     }
 
-    // @Override removed - base BlockEntity method signature changed in 1.21.8
-    protected void saveAdditional(CompoundTag tag, HolderLookup.Provider provider) {
-        // super.saveAdditional removed - base BlockEntity method signature changed in 1.21.8
+    @Override
+    protected void saveAdditional(ValueOutput output) {
+        super.saveAdditional(output);
         if (!lamp.isEmpty()) {
-            ItemStack.CODEC.encodeStart(net.minecraft.nbt.NbtOps.INSTANCE, lamp)
-                    .result()
-                    .ifPresent(encoded -> tag.put("Lamp", encoded));
+            output.store("Lamp", ItemStack.CODEC, lamp);
         }
-        tag.putInt("TickCounter", tickCounter);
+        output.putInt("TickCounter", tickCounter);
     }
 
-    // @Override removed - base BlockEntity method signature changed in 1.21.8
-    protected void loadAdditional(CompoundTag tag, HolderLookup.Provider provider) {
-        // super.loadAdditional removed - base BlockEntity method signature changed in 1.21.8
-        if (tag.contains("Lamp")) {
-            lamp = ItemStack.CODEC.parse(net.minecraft.nbt.NbtOps.INSTANCE, tag.get("Lamp"))
-                    .result()
-                    .orElse(ItemStack.EMPTY);
-        } else {
-            lamp = ItemStack.EMPTY;
-        }
-        tickCounter = tag.getInt("TickCounter").orElse(0);
+    @Override
+    protected void loadAdditional(ValueInput input) {
+        super.loadAdditional(input);
+        lamp = input.read("Lamp", ItemStack.CODEC).orElse(ItemStack.EMPTY);
+        tickCounter = input.getIntOr("TickCounter", 0);
     }
 
     @Override
@@ -232,13 +226,13 @@ public class ReflectorBlockEntity extends BlockEntity {
         return ClientboundBlockEntityDataPacket.create(this);
     }
 
-    // @Override removed - base BlockEntity method signature changed in 1.21.8
+    @Override
     public @NotNull CompoundTag getUpdateTag(HolderLookup.Provider registries) {
         return saveWithoutMetadata(registries);
     }
 
-    // @Override removed - base BlockEntity method signature changed in 1.21.8
-    public void onDataPacket(Connection net, ClientboundBlockEntityDataPacket pkt, HolderLookup.Provider lookupProvider) {
-        // super.onDataPacket removed - base method signature changed in 1.21.8
+    @Override
+    public void handleUpdateTag(ValueInput input) {
+        loadWithComponents(input);
     }
 }

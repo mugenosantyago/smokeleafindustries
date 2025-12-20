@@ -17,6 +17,8 @@ import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.minecraft.world.level.block.state.BlockState;
+import net.minecraft.world.level.storage.ValueInput;
+import net.minecraft.world.level.storage.ValueOutput;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
@@ -62,26 +64,26 @@ public class BaseWeedCropBlockEntity extends BlockEntity {
     public void addPotassium(int d) { setPotassium(this.potassium + d); }
 
 
-    // @Override removed - base BlockEntity method signature changed in 1.21.8
-    protected void saveAdditional(CompoundTag tag, HolderLookup.Provider registries) {
-        // super.saveAdditional removed - base BlockEntity method signature changed in 1.21.8
-        tag.putInt("thc", this.thc);
-        tag.putInt("cbd", this.cbd);
-        tag.putInt("ph", this.ph);
-        tag.putInt("nitrogen", this.nitrogen);
-        tag.putInt("phosphorus", this.phosphorus);
-        tag.putInt("potassium", this.potassium);
+    @Override
+    protected void saveAdditional(ValueOutput output) {
+        super.saveAdditional(output);
+        output.putInt("thc", this.thc);
+        output.putInt("cbd", this.cbd);
+        output.putInt("ph", this.ph);
+        output.putInt("nitrogen", this.nitrogen);
+        output.putInt("phosphorus", this.phosphorus);
+        output.putInt("potassium", this.potassium);
     }
 
-    // @Override removed - base BlockEntity method signature changed in 1.21.8
-    protected void loadAdditional(CompoundTag tag, HolderLookup.Provider registries) {
-        // super.loadAdditional removed - base BlockEntity method signature changed in 1.21.8
-        this.thc = tag.contains("thc") ? tag.getInt("thc").orElse(0) : 0;
-        this.cbd = tag.contains("cbd") ? tag.getInt("cbd").orElse(0) : 0;
-        this.ph = tag.contains("ph") ? tag.getInt("ph").orElse(0) : 0;
-        this.nitrogen = tag.contains("nitrogen") ? tag.getInt("nitrogen").orElse(0) : 0;
-        this.phosphorus = tag.contains("phosphorus") ? tag.getInt("phosphorus").orElse(0) : 0;
-        this.potassium = tag.contains("potassium") ? tag.getInt("potassium").orElse(0) : 0;
+    @Override
+    protected void loadAdditional(ValueInput input) {
+        super.loadAdditional(input);
+        this.thc = input.getIntOr("thc", 0);
+        this.cbd = input.getIntOr("cbd", 0);
+        this.ph = input.getIntOr("ph", 0);
+        this.nitrogen = input.getIntOr("nitrogen", 0);
+        this.phosphorus = input.getIntOr("phosphorus", 0);
+        this.potassium = input.getIntOr("potassium", 0);
     }
 
 
@@ -182,9 +184,9 @@ public class BaseWeedCropBlockEntity extends BlockEntity {
         return saveWithoutMetadata(registries);
     }
 
-    // @Override removed - base method signature changed in 1.21.8
-    public void onDataPacket(Connection net, ClientboundBlockEntityDataPacket pkt, HolderLookup.Provider lookupProvider) {
-        // super.onDataPacket removed - base method signature changed in 1.21.8
+    @Override
+    public void handleUpdateTag(ValueInput input) {
+        loadWithComponents(input);
     }
 
     public void sync() {

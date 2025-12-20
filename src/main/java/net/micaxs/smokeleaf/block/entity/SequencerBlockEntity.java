@@ -25,6 +25,8 @@ import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.properties.BlockStateProperties;
+import net.minecraft.world.level.storage.ValueInput;
+import net.minecraft.world.level.storage.ValueOutput;
 import net.neoforged.neoforge.energy.IEnergyStorage;
 import net.neoforged.neoforge.items.IItemHandler;
 import net.neoforged.neoforge.items.ItemStackHandler;
@@ -207,44 +209,32 @@ public class SequencerBlockEntity extends BlockEntity implements MenuProvider {
         Containers.dropContents(level, worldPosition, inv);
     }
 
-    // @Override removed - base BlockEntity method signature changed in 1.21.8
-    protected void saveAdditional(CompoundTag tag, HolderLookup.Provider registries) {
-        // TODO: ItemStackHandler.serializeNBT() API changed in 1.21.8 - manually serialize for now
-        CompoundTag inventoryTag = new CompoundTag();
+    @Override
+    protected void saveAdditional(ValueOutput output) {
+        super.saveAdditional(output);
+        ValueOutput invOutput = output.child("sequencer.inventory");
         for (int i = 0; i < itemHandler.getSlots(); i++) {
-            final int slotIndex = i; // Make final for lambda
             ItemStack stack = itemHandler.getStackInSlot(i);
             if (!stack.isEmpty()) {
-                ItemStack.CODEC.encodeStart(net.minecraft.nbt.NbtOps.INSTANCE, stack)
-                        .result()
-                        .ifPresent(encoded -> inventoryTag.put("slot" + slotIndex, encoded));
+                invOutput.store("slot" + i, ItemStack.CODEC, stack);
             }
         }
-        tag.put("sequencer.inventory", inventoryTag);
-        tag.putInt("sequencer.progress", progress);
-        tag.putInt("sequencer.maxProgress", maxProgress);
-        tag.putInt("sequencer.energy", ENERGY_STORAGE.getEnergyStored());
-        // super.saveAdditional removed - base BlockEntity method signature changed in 1.21.8
+        output.putInt("sequencer.progress", progress);
+        output.putInt("sequencer.maxProgress", maxProgress);
+        output.putInt("sequencer.energy", ENERGY_STORAGE.getEnergyStored());
     }
 
-    // @Override removed - base BlockEntity method signature changed in 1.21.8
-    protected void loadAdditional(CompoundTag tag, HolderLookup.Provider registries) {
-        // super.loadAdditional removed - base BlockEntity method signature changed in 1.21.8
-        // TODO: ItemStackHandler.deserializeNBT() API changed in 1.21.8 - manually deserialize for now
-        CompoundTag inventoryTag = tag.getCompound("sequencer.inventory").orElse(new CompoundTag());
+    @Override
+    protected void loadAdditional(ValueInput input) {
+        super.loadAdditional(input);
+        ValueInput invInput = input.childOrEmpty("sequencer.inventory");
         for (int i = 0; i < itemHandler.getSlots(); i++) {
-            if (inventoryTag.contains("slot" + i)) {
-                ItemStack stack = ItemStack.CODEC.parse(net.minecraft.nbt.NbtOps.INSTANCE, inventoryTag.get("slot" + i))
-                        .result()
-                        .orElse(ItemStack.EMPTY);
-                itemHandler.setStackInSlot(i, stack);
-            } else {
-                itemHandler.setStackInSlot(i, ItemStack.EMPTY);
-            }
+            ItemStack stack = invInput.read("slot" + i, ItemStack.CODEC).orElse(ItemStack.EMPTY);
+            itemHandler.setStackInSlot(i, stack);
         }
-        ENERGY_STORAGE.setEnergy(tag.getInt("sequencer.energy").orElse(0));
-        progress = tag.getInt("sequencer.progress").orElse(0);
-        maxProgress = tag.getInt("sequencer.maxProgress").orElse(0);
+        ENERGY_STORAGE.setEnergy(input.getIntOr("sequencer.energy", 0));
+        progress = input.getIntOr("sequencer.progress", 0);
+        maxProgress = input.getIntOr("sequencer.maxProgress", 78);
     }
 
     @Override
@@ -257,8 +247,8 @@ public class SequencerBlockEntity extends BlockEntity implements MenuProvider {
         return ClientboundBlockEntityDataPacket.create(this);
     }
 
-    // @Override removed - base BlockEntity method signature changed in 1.21.8
-    public void onDataPacket(Connection net, ClientboundBlockEntityDataPacket pkt, HolderLookup.Provider lookup) {
-        // super.onDataPacket removed - base method signature changed in 1.21.8
+    @Override
+    public void handleUpdateTag(ValueInput input) {
+        loadWithComponents(input);
     }
 }

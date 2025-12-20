@@ -26,6 +26,8 @@ import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.FarmBlock;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.state.BlockState;
+import net.minecraft.world.level.storage.ValueInput;
+import net.minecraft.world.level.storage.ValueOutput;
 import net.minecraft.world.level.storage.loot.LootParams;
 import net.minecraft.world.level.storage.loot.parameters.LootContextParams;
 import net.minecraft.world.phys.Vec3;
@@ -356,9 +358,9 @@ public class GrowPotBlockEntity extends BlockEntity {
         return null;
     }
 
-    // @Override removed - base BlockEntity method signature changed in 1.21.8
-    protected void saveAdditional(CompoundTag tag, HolderLookup.Provider registries) {
-        // super.saveAdditional removed - base BlockEntity method signature changed in 1.21.8
+    @Override
+    protected void saveAdditional(ValueOutput output) {
+        super.saveAdditional(output);
         Optional<ResourceLocation> soilId = soilState != null
                 ? Optional.ofNullable(BuiltInRegistries.BLOCK.getKey(soilState.getBlock()))
                 : Optional.empty();
@@ -368,48 +370,42 @@ public class GrowPotBlockEntity extends BlockEntity {
 
         PotData data = new PotData(soilId, cropId, cropAge, growthProgressTicks,
                 thc, cbd, ph, nitrogen, phosphorus, potassium);
-        PotData.CODEC.encodeStart(NbtOps.INSTANCE, data)
-                .resultOrPartial(err -> {})
-                .ifPresent(encoded -> tag.put("Pot", encoded));
+        output.store("Pot", PotData.CODEC, data);
     }
 
-    // @Override removed - base BlockEntity method signature changed in 1.21.8
-    protected void loadAdditional(CompoundTag tag, HolderLookup.Provider registries) {
-        // super.loadAdditional removed - base BlockEntity method signature changed in 1.21.8
+    @Override
+    protected void loadAdditional(ValueInput input) {
+        super.loadAdditional(input);
         this.soilState = null;
         this.cropBlock = null;
         this.cropAge = 0;
         this.growthProgressTicks = 0;
         this.thc = this.cbd = this.ph = this.nitrogen = this.phosphorus = this.potassium = 0;
 
-        if (tag.contains("Pot")) {
-            PotData.CODEC.parse(NbtOps.INSTANCE, tag.get("Pot"))
-                    .result()
-                    .ifPresent(data -> {
-                        data.soil().ifPresent(rl -> {
-                            // BuiltInRegistries.BLOCK.get() now returns Optional<Reference<Block>>
-                            BuiltInRegistries.BLOCK.get(rl).ifPresent(ref -> {
-                                Block b = ref.value();
-                                if (b != null) this.soilState = b.defaultBlockState();
-                            });
-                        });
-                        data.crop().ifPresent(rl -> {
-                            // BuiltInRegistries.BLOCK.get() now returns Optional<Reference<Block>>
-                            BuiltInRegistries.BLOCK.get(rl).ifPresent(ref -> {
-                                Block b = ref.value();
-                                if (b instanceof BaseWeedCropBlock crop) this.cropBlock = crop;
-                            });
-                        });
-                        this.cropAge = Math.max(0, data.age());
-                        this.growthProgressTicks = Math.max(0, data.prog());
-                        this.thc = Math.max(0, data.thc());
-                        this.cbd = Math.max(0, data.cbd());
-                        this.ph = Math.max(0, data.ph());
-                        this.nitrogen = Math.max(0, data.n());
-                        this.phosphorus = Math.max(0, data.p());
-                        this.potassium = Math.max(0, data.k());
-                    });
-        }
+        input.read("Pot", PotData.CODEC).ifPresent(data -> {
+            data.soil().ifPresent(rl -> {
+                // BuiltInRegistries.BLOCK.get() now returns Optional<Reference<Block>>
+                BuiltInRegistries.BLOCK.get(rl).ifPresent(ref -> {
+                    Block b = ref.value();
+                    if (b != null) this.soilState = b.defaultBlockState();
+                });
+            });
+            data.crop().ifPresent(rl -> {
+                // BuiltInRegistries.BLOCK.get() now returns Optional<Reference<Block>>
+                BuiltInRegistries.BLOCK.get(rl).ifPresent(ref -> {
+                    Block b = ref.value();
+                    if (b instanceof BaseWeedCropBlock crop) this.cropBlock = crop;
+                });
+            });
+            this.cropAge = Math.max(0, data.age());
+            this.growthProgressTicks = Math.max(0, data.prog());
+            this.thc = Math.max(0, data.thc());
+            this.cbd = Math.max(0, data.cbd());
+            this.ph = Math.max(0, data.ph());
+            this.nitrogen = Math.max(0, data.n());
+            this.phosphorus = Math.max(0, data.p());
+            this.potassium = Math.max(0, data.k());
+        });
     }
 
     @Override
@@ -417,29 +413,24 @@ public class GrowPotBlockEntity extends BlockEntity {
         return ClientboundBlockEntityDataPacket.create(this);
     }
 
-    // @Override removed - base BlockEntity method signature changed in 1.21.8
+    @Override
     public @NotNull CompoundTag getUpdateTag(HolderLookup.Provider registries) {
         return saveWithoutMetadata(registries);
     }
 
-    // @Override removed - base BlockEntity method signature changed in 1.21.8
-    public void onDataPacket(Connection net, ClientboundBlockEntityDataPacket pkt, HolderLookup.Provider lookupProvider) {
-        // super.onDataPacket removed - base method signature changed in 1.21.8
-        CompoundTag tag = pkt.getTag();
-        if (tag != null) {
-            loadAdditional(tag, lookupProvider);
+    @Override
+    public void handleUpdateTag(ValueInput input) {
+        loadWithComponents(input);
+        // Request model data update when receiving new data from server
+        if (level != null && level.isClientSide) {
+            requestModelDataUpdate();
         }
     }
     
     @Override
     public void onLoad() {
         super.onLoad();
-        // When block entity loads on client, mark for update request
-        // The server should send the data automatically, but we ensure it's requested
-        if (level != null && level.isClientSide) {
-            // Client-side: The server should send initial data via getUpdateTag
-            // If data is missing, it means the server hasn't sent it yet
-            // We can't request it from client, but we can ensure it's marked as needing update
-        }
+        // Request model data update on load for rendering
+        requestModelDataUpdate();
     }
 }

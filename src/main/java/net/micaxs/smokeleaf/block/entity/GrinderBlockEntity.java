@@ -30,6 +30,8 @@ import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.properties.BlockStateProperties;
+import net.minecraft.world.level.storage.ValueInput;
+import net.minecraft.world.level.storage.ValueOutput;
 import net.neoforged.neoforge.energy.IEnergyStorage;
 import net.neoforged.neoforge.items.IItemHandler;
 import net.neoforged.neoforge.items.ItemStackHandler;
@@ -273,45 +275,34 @@ public class GrinderBlockEntity extends BlockEntity implements MenuProvider {
     }
 
     // NBT Data
-    // @Override removed - base BlockEntity method signature changed in 1.21.8
-    protected void saveAdditional(CompoundTag tag, HolderLookup.Provider registries) {
-        // TODO: ItemStackHandler.serializeNBT() API changed in 1.21.8 - manually serialize for now
-        CompoundTag inventoryTag = new CompoundTag();
+    @Override
+    protected void saveAdditional(ValueOutput output) {
+        super.saveAdditional(output);
+        // Serialize inventory
+        ValueOutput invOutput = output.child("grinder.inventory");
         for (int i = 0; i < itemHandler.getSlots(); i++) {
-            final int slotIndex = i; // Make final for lambda
             ItemStack stack = itemHandler.getStackInSlot(i);
             if (!stack.isEmpty()) {
-                ItemStack.CODEC.encodeStart(net.minecraft.nbt.NbtOps.INSTANCE, stack)
-                        .result()
-                        .ifPresent(encoded -> inventoryTag.put("slot" + slotIndex, encoded));
+                invOutput.store("slot" + i, ItemStack.CODEC, stack);
             }
         }
-        tag.put("grinder.inventory", inventoryTag);
-        tag.putInt("grinder.progress", progress);
-        tag.putInt("grinder.maxProgress", maxProgress);
-        tag.putInt("grinder.energy", ENERGY_STORAGE.getEnergyStored());
-
-        // super.saveAdditional removed - base BlockEntity method signature changed in 1.21.8
+        output.putInt("grinder.progress", progress);
+        output.putInt("grinder.maxProgress", maxProgress);
+        output.putInt("grinder.energy", ENERGY_STORAGE.getEnergyStored());
     }
 
-    // @Override removed - base BlockEntity method signature changed in 1.21.8
-    protected void loadAdditional(CompoundTag tag, HolderLookup.Provider registries) {
-        // super.loadAdditional removed - base BlockEntity method signature changed in 1.21.8
-        // TODO: ItemStackHandler.deserializeNBT() API changed in 1.21.8 - manually deserialize for now
-        CompoundTag inventoryTag = tag.getCompound("grinder.inventory").orElse(new CompoundTag());
+    @Override
+    protected void loadAdditional(ValueInput input) {
+        super.loadAdditional(input);
+        // Deserialize inventory
+        ValueInput invInput = input.childOrEmpty("grinder.inventory");
         for (int i = 0; i < itemHandler.getSlots(); i++) {
-            if (inventoryTag.contains("slot" + i)) {
-                ItemStack stack = ItemStack.CODEC.parse(net.minecraft.nbt.NbtOps.INSTANCE, inventoryTag.get("slot" + i))
-                        .result()
-                        .orElse(ItemStack.EMPTY);
-                itemHandler.setStackInSlot(i, stack);
-            } else {
-                itemHandler.setStackInSlot(i, ItemStack.EMPTY);
-            }
+            ItemStack stack = invInput.read("slot" + i, ItemStack.CODEC).orElse(ItemStack.EMPTY);
+            itemHandler.setStackInSlot(i, stack);
         }
-        ENERGY_STORAGE.setEnergy(tag.getInt("grinder.energy").orElse(0));
-        progress = tag.getInt("grinder.progress").orElse(0);
-        maxProgress = tag.getInt("grinder.maxProgress").orElse(0);
+        ENERGY_STORAGE.setEnergy(input.getIntOr("grinder.energy", 0));
+        progress = input.getIntOr("grinder.progress", 0);
+        maxProgress = input.getIntOr("grinder.maxProgress", 78);
     }
 
     // Server / Client Syncing
@@ -325,8 +316,8 @@ public class GrinderBlockEntity extends BlockEntity implements MenuProvider {
         return saveWithoutMetadata(registries);
     }
 
-    // @Override removed - base BlockEntity method signature changed in 1.21.8
-    public void onDataPacket(Connection net, ClientboundBlockEntityDataPacket pkt, HolderLookup.Provider lookupProvider) {
-        // super.onDataPacket removed - base method signature changed in 1.21.8
+    @Override
+    public void handleUpdateTag(ValueInput input) {
+        loadWithComponents(input);
     }
 }
