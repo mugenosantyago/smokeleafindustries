@@ -1,8 +1,6 @@
 {
   "type": "smokeleafindustries:extractor",
-  "ingredient": {
-    "item": "smokeleafindustries:purple_haze_weed"
-  },
+  "ingredient": "smokeleafindustries:purple_haze_weed",
   "result": {
     "id": "smokeleafindustries:purple_haze_extract",
     "count": 1

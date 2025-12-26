@@ -1,11 +1,11 @@
 {
   "type": "smokeleafindustries:sequencer",
-  "dna": { "item": "smokeleafindustries:dna_strand" },
-  "base_extract": { "item": "smokeleafindustries:base_extract" },
+  "dna": "smokeleafindustries:dna_strand",
+  "base_extract": "smokeleafindustries:base_extract",
   "required_reagents": [
-    { "item": "minecraft:soul_sand" },
-    { "item": "minecraft:phantom_membrane" },
-    { "item": "minecraft:ghast_tear" }
+    "minecraft:soul_sand",
+    "minecraft:phantom_membrane",
+    "minecraft:ghast_tear"
   ],
   "result": { "id": "smokeleafindustries:ghost_train_extract", "count": 1 }
 }

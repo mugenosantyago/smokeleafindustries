@@ -1,8 +1,6 @@
 {
   "type": "smokeleafindustries:extractor",
-  "ingredient": {
-    "item": "smokeleafindustries:lava_cake_weed"
-  },
+  "ingredient": "smokeleafindustries:lava_cake_weed",
   "result": {
     "id": "smokeleafindustries:lava_cake_extract",
     "count": 1

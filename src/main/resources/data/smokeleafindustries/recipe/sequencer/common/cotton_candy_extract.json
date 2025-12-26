@@ -1,11 +1,11 @@
 {
   "type": "smokeleafindustries:sequencer",
-  "dna": { "item": "smokeleafindustries:dna_strand" },
-  "base_extract": { "item": "smokeleafindustries:base_extract" },
+  "dna": "smokeleafindustries:dna_strand",
+  "base_extract": "smokeleafindustries:base_extract",
   "required_reagents": [
-    { "item": "minecraft:pink_dye" },
-    { "item": "minecraft:sugar" },
-    { "item": "minecraft:feather" }
+    "minecraft:sugar",
+    "minecraft:pink_dye",
+    "minecraft:blue_dye"
   ],
   "result": { "id": "smokeleafindustries:cotton_candy_extract", "count": 1 }
 }

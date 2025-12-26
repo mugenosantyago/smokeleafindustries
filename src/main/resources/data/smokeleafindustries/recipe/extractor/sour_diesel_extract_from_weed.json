@@ -1,8 +1,6 @@
 {
   "type": "smokeleafindustries:extractor",
-  "ingredient": {
-    "item": "smokeleafindustries:sour_diesel_weed"
-  },
+  "ingredient": "smokeleafindustries:sour_diesel_weed",
   "result": {
     "id": "smokeleafindustries:sour_diesel_extract",
     "count": 1

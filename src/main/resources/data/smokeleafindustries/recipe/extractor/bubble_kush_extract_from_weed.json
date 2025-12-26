@@ -1,8 +1,6 @@
 {
   "type": "smokeleafindustries:extractor",
-  "ingredient": {
-    "item": "smokeleafindustries:bubble_kush_weed"
-  },
+  "ingredient": "smokeleafindustries:bubble_kush_weed",
   "result": {
     "id": "smokeleafindustries:bubble_kush_extract",
     "count": 1

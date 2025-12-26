@@ -1,8 +1,6 @@
 {
   "type": "smokeleafindustries:grinder",
-  "ingredient": {
-    "item": "smokeleafindustries:cotton_candy_bud"
-  },
+  "ingredient": "smokeleafindustries:cotton_candy_bud",
   "result": {
     "id": "smokeleafindustries:cotton_candy_weed",
     "count": 2

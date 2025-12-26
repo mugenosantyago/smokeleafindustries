@@ -1,8 +1,6 @@
 {
   "type": "smokeleafindustries:extractor",
-  "ingredient": {
-    "item": "smokeleafindustries:lemon_haze_weed"
-  },
+  "ingredient": "smokeleafindustries:lemon_haze_weed",
   "result": {
     "id": "smokeleafindustries:lemon_haze_extract",
     "count": 1

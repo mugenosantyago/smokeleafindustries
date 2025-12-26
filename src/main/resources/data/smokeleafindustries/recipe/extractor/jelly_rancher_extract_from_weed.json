@@ -1,8 +1,6 @@
 {
   "type": "smokeleafindustries:extractor",
-  "ingredient": {
-    "item": "smokeleafindustries:jelly_rancher_weed"
-  },
+  "ingredient": "smokeleafindustries:jelly_rancher_weed",
   "result": {
     "id": "smokeleafindustries:jelly_rancher_extract",
     "count": 1

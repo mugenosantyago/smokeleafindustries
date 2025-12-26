@@ -1,8 +1,6 @@
 {
   "type": "smokeleafindustries:extractor",
-  "ingredient": {
-    "item": "smokeleafindustries:cotton_candy_weed"
-  },
+  "ingredient": "smokeleafindustries:cotton_candy_weed",
   "result": {
     "id": "smokeleafindustries:cotton_candy_extract",
     "count": 1

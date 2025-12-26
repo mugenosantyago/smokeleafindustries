@@ -1,8 +1,6 @@
 {
   "type": "smokeleafindustries:extractor",
-  "ingredient": {
-    "item": "smokeleafindustries:pink_kush_weed"
-  },
+  "ingredient": "smokeleafindustries:pink_kush_weed",
   "result": {
     "id": "smokeleafindustries:pink_kush_extract",
     "count": 1

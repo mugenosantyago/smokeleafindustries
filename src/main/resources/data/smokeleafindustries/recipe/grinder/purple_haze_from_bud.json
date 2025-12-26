@@ -1,8 +1,6 @@
 {
   "type": "smokeleafindustries:grinder",
-  "ingredient": {
-    "item": "smokeleafindustries:purple_haze_bud"
-  },
+  "ingredient": "smokeleafindustries:purple_haze_bud",
   "result": {
     "id": "smokeleafindustries:purple_haze_weed",
     "count": 2

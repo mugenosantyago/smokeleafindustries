@@ -1,8 +1,6 @@
 {
   "type": "smokeleafindustries:extractor",
-  "ingredient": {
-    "item": "smokeleafindustries:amnesia_haze_weed"
-  },
+  "ingredient": "smokeleafindustries:amnesia_haze_weed",
   "result": {
     "id": "smokeleafindustries:amnesia_haze_extract",
     "count": 1

@@ -1,8 +1,6 @@
 {
   "type": "smokeleafindustries:extractor",
-  "ingredient": {
-    "item": "smokeleafindustries:blue_ice_weed"
-  },
+  "ingredient": "smokeleafindustries:blue_ice_weed",
   "result": {
     "id": "smokeleafindustries:blue_ice_extract",
     "count": 1

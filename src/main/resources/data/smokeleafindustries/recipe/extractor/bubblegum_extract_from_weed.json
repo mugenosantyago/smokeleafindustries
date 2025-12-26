@@ -1,8 +1,6 @@
 {
   "type": "smokeleafindustries:extractor",
-  "ingredient": {
-    "item": "smokeleafindustries:bubblegum_weed"
-  },
+  "ingredient": "smokeleafindustries:bubblegum_weed",
   "result": {
     "id": "smokeleafindustries:bubblegum_extract",
     "count": 1

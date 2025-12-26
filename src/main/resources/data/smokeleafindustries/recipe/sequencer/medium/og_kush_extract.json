@@ -1,11 +1,11 @@
 {
   "type": "smokeleafindustries:sequencer",
-  "dna": { "item": "smokeleafindustries:dna_strand" },
-  "base_extract": { "item": "smokeleafindustries:base_extract" },
+  "dna": "smokeleafindustries:dna_strand",
+  "base_extract": "smokeleafindustries:base_extract",
   "required_reagents": [
-    { "item": "minecraft:green_dye" },
-    { "item": "minecraft:slime_ball" },
-    { "item": "smokeleafindustries:hemp_coal" }
+    "minecraft:green_dye",
+    "minecraft:slime_ball",
+    "smokeleafindustries:hemp_coal"
   ],
   "result": { "id": "smokeleafindustries:og_kush_extract", "count": 1 }
 }

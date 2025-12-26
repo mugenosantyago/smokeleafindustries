@@ -1,8 +1,6 @@
 {
   "type": "smokeleafindustries:extractor",
-  "ingredient": {
-    "item": "smokeleafindustries:strawberry_shortcake_weed"
-  },
+  "ingredient": "smokeleafindustries:strawberry_shortcake_weed",
   "result": {
     "id": "smokeleafindustries:strawberry_shortcake_extract",
     "count": 1

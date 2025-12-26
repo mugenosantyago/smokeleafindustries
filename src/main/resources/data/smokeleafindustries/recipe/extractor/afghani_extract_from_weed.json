@@ -1,8 +1,6 @@
 {
   "type": "smokeleafindustries:extractor",
-  "ingredient": {
-    "item": "smokeleafindustries:afghani_weed"
-  },
+  "ingredient": "smokeleafindustries:afghani_weed",
   "result": {
     "id": "smokeleafindustries:afghani_extract",
     "count": 1

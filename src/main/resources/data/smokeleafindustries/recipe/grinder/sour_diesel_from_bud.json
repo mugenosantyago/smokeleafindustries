@@ -1,8 +1,6 @@
 {
   "type": "smokeleafindustries:grinder",
-  "ingredient": {
-    "item": "smokeleafindustries:sour_diesel_bud"
-  },
+  "ingredient": "smokeleafindustries:sour_diesel_bud",
   "result": {
     "id": "smokeleafindustries:sour_diesel_weed",
     "count": 2
