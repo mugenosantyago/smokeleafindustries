@@ -1,17 +1,16 @@
 package net.micaxs.smokeleaf.event;
 
-import net.micaxs.smokeleaf.SmokeleafIndustries;
-import net.micaxs.smokeleaf.block.custom.LiquifierBlock;
 import net.micaxs.smokeleaf.block.entity.*;
-import net.neoforged.bus.api.SubscribeEvent;
-import net.neoforged.fml.common.EventBusSubscriber;
+import net.neoforged.bus.api.IEventBus;
 import net.neoforged.neoforge.capabilities.Capabilities;
 import net.neoforged.neoforge.capabilities.RegisterCapabilitiesEvent;
 
-@EventBusSubscriber(modid = SmokeleafIndustries.MODID)
 public class ModBusEvents {
-    @SubscribeEvent
-    public static void registerCapabilities(RegisterCapabilitiesEvent event) {
+    public static void register(IEventBus modEventBus) {
+        modEventBus.addListener(ModBusEvents::registerCapabilities);
+    }
+    
+    private static void registerCapabilities(RegisterCapabilitiesEvent event) {
         // Generator BlockEntity Capabilities
         event.registerBlockEntity(Capabilities.EnergyStorage.BLOCK, ModBlockEntities.GENERATOR_BE.get(), GeneratorBlockEntity::getEnergyStorage);
         event.registerBlockEntity(Capabilities.ItemHandler.BLOCK, ModBlockEntities.GENERATOR_BE.get(), GeneratorBlockEntity::getItemHandler);

@@ -16,6 +16,7 @@ import net.micaxs.smokeleaf.recipe.ModRecipes;
 import net.micaxs.smokeleaf.screen.ModMenuTypes;
 import net.micaxs.smokeleaf.sound.ModSounds;
 import net.micaxs.smokeleaf.villager.ModVillagers;
+import net.micaxs.smokeleaf.event.ModBusEvents;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.level.block.ComposterBlock;
 import org.slf4j.Logger;
@@ -74,6 +75,9 @@ public class SmokeleafIndustries {
         ModParticles.register(modEventBus);
 
         ModVillagers.register(modEventBus);
+        
+        // Register capabilities for block entities
+        ModBusEvents.register(modEventBus);
 
         modEventBus.register(ModPayloads.class);
 

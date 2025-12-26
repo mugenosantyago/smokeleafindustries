@@ -59,16 +59,19 @@ public class ExtractorBlockEntity extends BlockEntity implements MenuProvider {
             if (slot != INPUT_SLOT) {
                 return false;
             }
-            if (stack.isEmpty() || level == null) {
+            if (stack.isEmpty()) {
                 return false;
             }
+            
+            // Allow on client side - server will validate the recipe
+            if (level == null || level.isClientSide()) return true;
 
             if (level instanceof net.minecraft.server.level.ServerLevel serverLevel) {
                 return serverLevel.getServer().getRecipeManager()
                         .getRecipeFor(ModRecipes.EXTRACTOR_TYPE.get(), new ExtractorRecipeInput(stack), level)
                         .isPresent();
             }
-            return false;
+            return true;
         }
     };
 

@@ -54,14 +54,17 @@ public class GrinderBlockEntity extends BlockEntity implements MenuProvider {
         @Override
         public boolean isItemValid(int slot, ItemStack stack) {
             if (slot != INPUT_SLOT) return false;
-            if (stack.isEmpty() || level == null) return false;
+            if (stack.isEmpty()) return false;
+            
+            // Allow on client side - server will validate the recipe
+            if (level == null || level.isClientSide()) return true;
 
             if (level instanceof net.minecraft.server.level.ServerLevel serverLevel) {
                 return serverLevel.getServer().getRecipeManager()
                         .getRecipeFor(ModRecipes.GRINDER_TYPE.get(), new GrinderRecipeInput(stack), level)
                         .isPresent();
             }
-            return false;
+            return true;
         }
     };
 

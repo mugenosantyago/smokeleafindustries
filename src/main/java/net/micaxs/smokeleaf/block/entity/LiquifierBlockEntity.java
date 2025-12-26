@@ -63,14 +63,18 @@ public class LiquifierBlockEntity extends BlockEntity implements MenuProvider {
     };
 
     private boolean isValidInput(ItemStack stack) {
-        if (level == null || stack.isEmpty()) return false;
+        if (stack.isEmpty()) return false;
+        
+        // Allow on client side - server will validate the recipe
+        if (level == null || level.isClientSide()) return true;
+        
         LiquifierRecipeInput input = new LiquifierRecipeInput(stack);
         if (level instanceof net.minecraft.server.level.ServerLevel serverLevel) {
             return serverLevel.getServer().getRecipeManager()
                     .getRecipeFor(ModRecipes.LIQUIFIER_TYPE.get(), input, level)
                     .isPresent();
         }
-        return false;
+        return true;
     }
 
     public IItemHandler getItemHandler(@Nullable Direction direction) {
