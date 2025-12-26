@@ -77,13 +77,7 @@ public class SequencerScreen extends AbstractContainerScreen<SequencerMenu> {
     }
 
     private void renderInfoIconTooltip(GuiGraphics g, int mouseX, int mouseY, int baseX, int baseY) {
-        if (isMouseAboveArea(mouseX, mouseY, baseX, baseY, ICON_SIZE, ICON_SIZE, ICON_SIZE, ICON_SIZE)) {
-            Component info = Component.translatable("gui.tooltip.sequencer.info");
-            List<FormattedCharSequence> wrapped = this.font.split(info, 300);
-            // renderTooltip API changed in 1.21.8 - temporarily disabled
-            // TODO: Fix renderTooltip signature for 1.21.8
-            // g.renderTooltip(this.font, wrapped, mouseX, mouseY);
-        }
+        // Tooltips temporarily disabled - GuiGraphics.renderTooltip API changed in 1.21.8
     }
 
 
@@ -103,11 +97,7 @@ public class SequencerScreen extends AbstractContainerScreen<SequencerMenu> {
     }
 
     private void renderEnergyInfoArea(GuiGraphics guiGraphics, int mouseX, int mouseY, int x, int y) {
-        if (isMouseAboveArea(mouseX, mouseY, x, y, 156, 11, 8, 64)) {
-            // renderTooltip API changed in 1.21.8 - temporarily disabled
-            // TODO: Fix renderTooltip signature for 1.21.8
-            // guiGraphics.renderTooltip(this.font, energyInfoArea.getTooltips(), Optional.empty(), mouseX - x, mouseY - y);
-        }
+        // Tooltips temporarily disabled - GuiGraphics.renderTooltip API changed in 1.21.8
     }
 
     private boolean isMouseAboveArea(int mouseX, int mouseY, int x, int y, int offsetX, int offsetY, int width, int height) {

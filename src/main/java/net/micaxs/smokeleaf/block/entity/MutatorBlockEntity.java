@@ -287,11 +287,9 @@ public class MutatorBlockEntity extends BlockEntity implements MenuProvider {
         if (seedStack.isEmpty() || extractStack.isEmpty()) return Optional.empty();
 
         if (this.level instanceof net.minecraft.server.level.ServerLevel serverLevel) {
-            var recipeManager = serverLevel.getServer().getRecipeManager();
-            // TODO: Fix RecipeManager API for 1.21.8 - getAllRecipesFor() and byType() don't exist
-            // Temporarily returning empty - need to find correct method to get all recipes of a type
-            // Original code used: recipeManager.byType(ModRecipes.MUTATOR_TYPE.get()).values().stream()...
-            return Optional.empty();
+            MutatorRecipeInput input = new MutatorRecipeInput(seedStack, extractStack);
+            return serverLevel.getServer().getRecipeManager()
+                    .getRecipeFor(ModRecipes.MUTATOR_TYPE.get(), input, level);
         }
         return Optional.empty();
     }
@@ -321,9 +319,8 @@ public class MutatorBlockEntity extends BlockEntity implements MenuProvider {
         int filledAmount = FLUID_TANK.fill(fluidInBucket, IFluidHandler.FluidAction.SIMULATE);
         if (filledAmount > 0) {
             FLUID_TANK.fill(fluidInBucket, IFluidHandler.FluidAction.EXECUTE);
-            // ItemStack.getCraftingRemainingItem() API changed in 1.21.8 - manually create empty bucket for now
-            // TODO: Find correct API for getting crafting remainder item
-            ItemStack emptyBucket = ItemStack.EMPTY; // Temporarily empty - need to find correct API
+            // Return empty bucket after transferring fluid
+            ItemStack emptyBucket = new ItemStack(net.minecraft.world.item.Items.BUCKET);
             itemHandler.setStackInSlot(BUCKET_SLOT, emptyBucket);
         }
     }

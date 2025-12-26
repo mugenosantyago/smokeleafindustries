@@ -50,11 +50,7 @@ public class GeneratorScreen extends AbstractContainerScreen<GeneratorMenu> {
 
 
     private void renderEnergyInfoArea(GuiGraphics guiGraphics, int mouseX, int mouseY, int x, int y) {
-        if (energyInfoArea != null && isMouseAboveArea(mouseX, mouseY, x, y, 125, 21, 13, 38)) {
-            // renderTooltip API changed in 1.21.8 - temporarily disabled
-            // TODO: Fix renderTooltip signature for 1.21.8
-            // guiGraphics.renderTooltip(this.font, energyInfoArea.getTooltips(), Optional.empty(), mouseX - x, mouseY - y);
-        }
+        // Tooltips temporarily disabled - GuiGraphics.renderTooltip API changed in 1.21.8
     }
 
     private void assignEnergyInfoArea() {
@@ -92,13 +88,7 @@ public class GeneratorScreen extends AbstractContainerScreen<GeneratorMenu> {
     }
 
     private void renderInfoIconTooltip(GuiGraphics g, int mouseX, int mouseY, int baseX, int baseY) {
-        if (isMouseAboveArea(mouseX, mouseY, baseX, baseY, ICON_SIZE, ICON_SIZE, ICON_SIZE, ICON_SIZE)) {
-            Component info = Component.translatable("gui.tooltip.generator.info");
-            List<FormattedCharSequence> wrapped = this.font.split(info, 300);
-            // renderTooltip API changed in 1.21.8 - temporarily disabled
-            // TODO: Fix renderTooltip signature for 1.21.8
-            // g.renderTooltip(this.font, wrapped, mouseX, mouseY);
-        }
+        // Tooltips temporarily disabled - GuiGraphics.renderTooltip API changed in 1.21.8
     }
 
     private void renderFuelProgress(GuiGraphics guiGraphics, int x, int y) {
