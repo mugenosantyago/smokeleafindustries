@@ -1,5 +1,6 @@
 package net.micaxs.smokeleaf.block.entity;
 
+import net.micaxs.smokeleaf.SmokeleafIndustries;
 import net.micaxs.smokeleaf.block.entity.energy.ModEnergyStorage;
 import net.micaxs.smokeleaf.item.ModItems;
 import net.micaxs.smokeleaf.recipe.*;
@@ -121,6 +122,16 @@ public class SequencerBlockEntity extends BlockEntity implements MenuProvider {
         if (level.isClientSide()) return; // Prevent client-side reset jitter
 
         boolean hasEnergy = ENERGY_STORAGE.getEnergyStored() > 0;
+        
+        // Debug logging - only log once per 5 seconds (every 100 ticks) to avoid spam
+        if (level.getGameTime() % 100 == 0 && (!itemHandler.getStackInSlot(DNA_SLOT).isEmpty() || !itemHandler.getStackInSlot(BASE_EXTRACT).isEmpty())) {
+            SmokeleafIndustries.LOGGER.info("[Sequencer] DNA: {}, BaseExtract: {}", itemHandler.getStackInSlot(DNA_SLOT).getItem(), itemHandler.getStackInSlot(BASE_EXTRACT).getItem());
+            SmokeleafIndustries.LOGGER.info("[Sequencer] Energy: {}/{}, hasEnergy: {}", ENERGY_STORAGE.getEnergyStored(), ENERGY_STORAGE.getMaxEnergyStored(), hasEnergy);
+            SmokeleafIndustries.LOGGER.info("[Sequencer] hasRecipe: {}", hasRecipe());
+            Optional<RecipeHolder<SequencerRecipe>> recipe = getCurrentRecipe();
+            SmokeleafIndustries.LOGGER.info("[Sequencer] Recipe found: {}", recipe.isPresent() ? recipe.get().id() : "NONE");
+        }
+        
         if (hasEnergy && hasRecipe()) {
             progress++;
             ENERGY_STORAGE.extractEnergy(20, false);

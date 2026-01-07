@@ -1,5 +1,6 @@
 package net.micaxs.smokeleaf.block.entity;
 
+import net.micaxs.smokeleaf.SmokeleafIndustries;
 import net.micaxs.smokeleaf.block.entity.energy.ModEnergyStorage;
 import net.micaxs.smokeleaf.component.ModDataComponentTypes;
 import net.micaxs.smokeleaf.item.custom.BaseBudItem;
@@ -196,6 +197,16 @@ public class ExtractorBlockEntity extends BlockEntity implements MenuProvider {
     public void tick(Level level, BlockPos blockPos, BlockState blockState) {
         // Check if has energy
         boolean hasEnergy = this.ENERGY_STORAGE.getEnergyStored() > 0;
+        
+        // Debug logging - only log once per 5 seconds (every 100 ticks) to avoid spam
+        if (level.getGameTime() % 100 == 0 && !itemHandler.getStackInSlot(INPUT_SLOT).isEmpty()) {
+            ItemStack input = itemHandler.getStackInSlot(INPUT_SLOT);
+            SmokeleafIndustries.LOGGER.info("[Extractor] Input item: {} ({})", input.getItem(), input);
+            SmokeleafIndustries.LOGGER.info("[Extractor] Energy: {}/{}, hasEnergy: {}", ENERGY_STORAGE.getEnergyStored(), ENERGY_STORAGE.getMaxEnergyStored(), hasEnergy);
+            SmokeleafIndustries.LOGGER.info("[Extractor] hasRecipe: {}", hasRecipe());
+            Optional<RecipeHolder<ExtractorRecipe>> recipe = getCurrentRecipe();
+            SmokeleafIndustries.LOGGER.info("[Extractor] Recipe found: {}", recipe.isPresent() ? recipe.get().id() : "NONE");
+        }
 
         if (hasEnergy && hasRecipe()) {
             increaseCraftingProgress();

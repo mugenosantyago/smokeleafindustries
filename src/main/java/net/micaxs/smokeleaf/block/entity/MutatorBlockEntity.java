@@ -1,5 +1,6 @@
 package net.micaxs.smokeleaf.block.entity;
 
+import net.micaxs.smokeleaf.SmokeleafIndustries;
 import net.micaxs.smokeleaf.block.entity.energy.ModEnergyStorage;
 import net.micaxs.smokeleaf.fluid.ModFluids;
 import net.micaxs.smokeleaf.recipe.*;
@@ -189,6 +190,16 @@ public class MutatorBlockEntity extends BlockEntity implements MenuProvider {
     public void tick(Level level, BlockPos blockPos, BlockState blockState) {
         boolean hasEnergy = this.ENERGY_STORAGE.getEnergyStored() > 0;
         boolean hasFluid = !this.FLUID_TANK.isEmpty();
+
+        // Debug logging - only log once per 5 seconds (every 100 ticks) to avoid spam
+        if (level.getGameTime() % 100 == 0 && (!itemHandler.getStackInSlot(SEED_INPUT_SLOT).isEmpty() || !itemHandler.getStackInSlot(EXTRACT_INPUT_SLOT).isEmpty())) {
+            SmokeleafIndustries.LOGGER.info("[Mutator] Seed: {}, Extract: {}", itemHandler.getStackInSlot(SEED_INPUT_SLOT).getItem(), itemHandler.getStackInSlot(EXTRACT_INPUT_SLOT).getItem());
+            SmokeleafIndustries.LOGGER.info("[Mutator] Energy: {}/{}, hasEnergy: {}, hasFluid: {} ({}mB)", 
+                ENERGY_STORAGE.getEnergyStored(), ENERGY_STORAGE.getMaxEnergyStored(), hasEnergy, hasFluid, FLUID_TANK.getFluidAmount());
+            SmokeleafIndustries.LOGGER.info("[Mutator] hasRecipe: {}", hasRecipe());
+            Optional<RecipeHolder<MutatorRecipe>> recipe = getCurrentRecipe();
+            SmokeleafIndustries.LOGGER.info("[Mutator] Recipe found: {}", recipe.isPresent() ? recipe.get().id() : "NONE");
+        }
 
         // Handle insertion of Hash oil Bucket into Fluid Tank
         if (hasFluidItemInSourceSlot()) {

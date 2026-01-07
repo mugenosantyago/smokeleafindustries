@@ -1,5 +1,6 @@
 package net.micaxs.smokeleaf.block.entity;
 
+import net.micaxs.smokeleaf.SmokeleafIndustries;
 import net.micaxs.smokeleaf.block.entity.energy.ModEnergyStorage;
 import net.micaxs.smokeleaf.component.ModDataComponentTypes;
 import net.micaxs.smokeleaf.recipe.DryingRecipe;
@@ -157,6 +158,14 @@ public class DryerBlockEntity extends BlockEntity implements MenuProvider {
 
         boolean hasEnergy = this.ENERGY_STORAGE.getEnergyStored() > 0;
         Optional<RecipeHolder<DryingRecipe>> recipeOpt = getCurrentRecipe();
+
+        // Debug logging - only log once per 5 seconds (every 100 ticks) to avoid spam
+        if (level.getGameTime() % 100 == 0 && !itemHandler.getStackInSlot(INPUT_SLOT).isEmpty()) {
+            ItemStack input = itemHandler.getStackInSlot(INPUT_SLOT);
+            SmokeleafIndustries.LOGGER.info("[Dryer] Input item: {} ({})", input.getItem(), input);
+            SmokeleafIndustries.LOGGER.info("[Dryer] Energy: {}/{}, hasEnergy: {}", ENERGY_STORAGE.getEnergyStored(), ENERGY_STORAGE.getMaxEnergyStored(), hasEnergy);
+            SmokeleafIndustries.LOGGER.info("[Dryer] Recipe found: {}", recipeOpt.isPresent() ? recipeOpt.get().id() : "NONE");
+        }
 
         Optional<ItemStack> plannedOutput = recipeOpt.flatMap(this::getPlannedOutput);
         boolean canOutput = plannedOutput.filter(this::canInsertIntoOutput).isPresent();

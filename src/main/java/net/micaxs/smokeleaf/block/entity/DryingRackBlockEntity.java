@@ -1,6 +1,7 @@
 // Java
 package net.micaxs.smokeleaf.block.entity;
 
+import net.micaxs.smokeleaf.SmokeleafIndustries;
 import net.micaxs.smokeleaf.component.ModDataComponentTypes;
 import net.micaxs.smokeleaf.item.custom.BaseBudItem;
 import net.micaxs.smokeleaf.recipe.DryingRecipe;
@@ -74,8 +75,18 @@ public class DryingRackBlockEntity extends BlockEntity {
 
             Optional<RecipeHolder<DryingRecipe>> recipeHolderOpt = Optional.empty();
             if (level instanceof net.minecraft.server.level.ServerLevel serverLevel) {
+                DryingRecipeInput input = new DryingRecipeInput(stack);
                 recipeHolderOpt = serverLevel.getServer().getRecipeManager()
-                        .getRecipeFor(ModRecipes.DRYING_TYPE.get(), new DryingRecipeInput(stack), level);
+                        .getRecipeFor(ModRecipes.DRYING_TYPE.get(), input, level);
+                
+                // Debug logging - only log once per second (every 20 ticks) to avoid spam
+                if (server.getGameTime() % 100 == 0) {
+                    SmokeleafIndustries.LOGGER.info("[DryingRack] Slot {} has item: {} ({})", i, stack.getItem(), stack);
+                    SmokeleafIndustries.LOGGER.info("[DryingRack] Recipe lookup result: {}", recipeHolderOpt.isPresent() ? "FOUND" : "NOT FOUND");
+                    if (recipeHolderOpt.isPresent()) {
+                        SmokeleafIndustries.LOGGER.info("[DryingRack] Recipe: dryBud={}", recipeHolderOpt.get().value().dryBud());
+                    }
+                }
             }
 
             if (recipeHolderOpt.isEmpty()) {

@@ -1,5 +1,6 @@
 package net.micaxs.smokeleaf.block.entity;
 
+import net.micaxs.smokeleaf.SmokeleafIndustries;
 import net.micaxs.smokeleaf.block.entity.energy.ModEnergyStorage;
 import net.micaxs.smokeleaf.block.entity.energy.ModEnergyUtil;
 import net.micaxs.smokeleaf.item.custom.BaseBudItem;
@@ -132,6 +133,15 @@ public class GeneratorBlockEntity extends BlockEntity implements MenuProvider {
 
         boolean changed = false;
         boolean hasSpace = ENERGY_STORAGE.getEnergyStored() < ENERGY_STORAGE.getMaxEnergyStored();
+
+        // Debug logging - only log once per 5 seconds (every 100 ticks) to avoid spam
+        if (level.getGameTime() % 100 == 0 && !itemHandler.getStackInSlot(INPUT_SLOT).isEmpty()) {
+            ItemStack input = itemHandler.getStackInSlot(INPUT_SLOT);
+            SmokeleafIndustries.LOGGER.info("[Generator] Input item: {} ({})", input.getItem(), input);
+            SmokeleafIndustries.LOGGER.info("[Generator] Energy: {}/{}, hasSpace: {}", ENERGY_STORAGE.getEnergyStored(), ENERGY_STORAGE.getMaxEnergyStored(), hasSpace);
+            SmokeleafIndustries.LOGGER.info("[Generator] Recipe found: {}", getRecipe(input).isPresent() ? "YES" : "NONE");
+            SmokeleafIndustries.LOGGER.info("[Generator] burnTime: {}, remainingEnergy: {}", burnTime, remainingEnergy);
+        }
 
         if (hasSpace) {
             if (burnTime <= 0 && remainingEnergy <= 0) {

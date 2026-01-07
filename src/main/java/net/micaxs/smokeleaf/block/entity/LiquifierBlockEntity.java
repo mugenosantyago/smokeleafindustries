@@ -1,5 +1,6 @@
 package net.micaxs.smokeleaf.block.entity;
 
+import net.micaxs.smokeleaf.SmokeleafIndustries;
 import net.micaxs.smokeleaf.block.entity.energy.ModEnergyStorage;
 import net.micaxs.smokeleaf.fluid.ModFluids;
 import net.micaxs.smokeleaf.recipe.LiquifierRecipe;
@@ -178,6 +179,14 @@ public class LiquifierBlockEntity extends BlockEntity implements MenuProvider {
     public void tick(Level level, BlockPos blockPos, BlockState blockState) {
         boolean hasEnergy = ENERGY_STORAGE.getEnergyStored() > 0;
         Optional<LiquifierRecipe> recipeOpt = getCurrentRecipe();
+
+        // Debug logging - only log once per 5 seconds (every 100 ticks) to avoid spam
+        if (level.getGameTime() % 100 == 0 && !itemHandler.getStackInSlot(INPUT_SLOT).isEmpty()) {
+            ItemStack input = itemHandler.getStackInSlot(INPUT_SLOT);
+            SmokeleafIndustries.LOGGER.info("[Liquifier] Input item: {} ({})", input.getItem(), input);
+            SmokeleafIndustries.LOGGER.info("[Liquifier] Energy: {}/{}, hasEnergy: {}", ENERGY_STORAGE.getEnergyStored(), ENERGY_STORAGE.getMaxEnergyStored(), hasEnergy);
+            SmokeleafIndustries.LOGGER.info("[Liquifier] Recipe found: {}", recipeOpt.isPresent() ? "YES" : "NONE");
+        }
 
         if (hasEnergy && recipeOpt.isPresent() && hasSpaceFor(recipeOpt.get())) {
             progress++;
