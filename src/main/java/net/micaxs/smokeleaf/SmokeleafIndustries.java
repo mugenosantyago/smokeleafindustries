@@ -31,8 +31,6 @@ import net.neoforged.fml.config.ModConfig;
 import net.neoforged.fml.ModContainer;
 import net.neoforged.fml.event.lifecycle.FMLCommonSetupEvent;
 import net.neoforged.fml.loading.FMLEnvironment;
-import net.neoforged.neoforge.client.gui.ConfigurationScreen;
-import net.neoforged.neoforge.client.gui.IConfigScreenFactory;
 import net.neoforged.neoforge.common.NeoForge;
 import net.neoforged.neoforge.event.BuildCreativeModeTabContentsEvent;
 import net.neoforged.neoforge.event.server.ServerStartingEvent;
@@ -56,12 +54,6 @@ public class SmokeleafIndustries {
         // Note that this is necessary if and only if we want *this* class (SmokeleafIndustries) to respond directly to events.
         // Do not add this line if there are no @SubscribeEvent-annotated functions in this class, like onServerStarting() below.
         NeoForge.EVENT_BUS.register(this);
-        
-        // Register client-side mod bus events if on client
-        if (FMLEnvironment.dist == Dist.CLIENT) {
-            // Register SmokeleafIndustriesClient to the MOD event bus for client initialization
-            modEventBus.register(SmokeleafIndustriesClient.class);
-        }
 
         ModCreativeModeTabs.register(modEventBus);
 
@@ -93,11 +85,6 @@ public class SmokeleafIndustries {
 
         // Register our mod's ModConfigSpec so that FML can create and load the config file for us
         modContainer.registerConfig(ModConfig.Type.COMMON, Config.SPEC);
-        
-        // Register config screen (client-side only)
-        if (FMLEnvironment.dist == Dist.CLIENT) {
-            modContainer.registerExtensionPoint(IConfigScreenFactory.class, ConfigurationScreen::new);
-        }
     }
 
     private void commonSetup(FMLCommonSetupEvent event) {
