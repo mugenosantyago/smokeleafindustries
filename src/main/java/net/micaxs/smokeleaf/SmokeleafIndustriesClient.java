@@ -45,8 +45,9 @@ import java.util.HashSet;
 import java.util.Map;
 import java.util.Set;
 
-@Mod(value = SmokeleafIndustries.MODID, dist = Dist.CLIENT)
-@EventBusSubscriber(modid = SmokeleafIndustries.MODID, value = Dist.CLIENT)
+// Removed @Mod annotation - only the main mod class should have it
+// Client-side event handlers only
+@EventBusSubscriber(modid = SmokeleafIndustries.MODID, value = Dist.CLIENT, bus = EventBusSubscriber.Bus.MOD)
 public class SmokeleafIndustriesClient {
 
     private static final Set<ResourceLocation> WIGGLED = new HashSet<>();
@@ -71,10 +72,6 @@ public class SmokeleafIndustriesClient {
             WIGGLE_SPECS.put(VanillaGuiLayers.SELECTED_ITEM_NAME, new WiggleSpec(0.08, 2.0, 1.0, false, 0.24, 1.3, 0.5, true));
         }
         return WIGGLE_SPECS;
-    }
-
-    public SmokeleafIndustriesClient(ModContainer container) {
-        container.registerExtensionPoint(IConfigScreenFactory.class, ConfigurationScreen::new);
     }
 
     private static boolean hasMelted(Player p) {
