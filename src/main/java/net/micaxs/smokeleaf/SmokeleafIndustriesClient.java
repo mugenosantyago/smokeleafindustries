@@ -46,8 +46,8 @@ import java.util.Map;
 import java.util.Set;
 
 // Removed @Mod annotation - only the main mod class should have it
-// Client-side event handlers only
-@EventBusSubscriber(modid = SmokeleafIndustries.MODID, value = Dist.CLIENT, bus = EventBusSubscriber.Bus.MOD)
+// Client-side event handlers only (NeoForge event bus)
+@EventBusSubscriber(modid = SmokeleafIndustries.MODID, value = Dist.CLIENT)
 public class SmokeleafIndustriesClient {
 
     private static final Set<ResourceLocation> WIGGLED = new HashSet<>();
