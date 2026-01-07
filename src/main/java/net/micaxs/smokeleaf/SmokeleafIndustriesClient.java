@@ -45,9 +45,9 @@ import java.util.HashSet;
 import java.util.Map;
 import java.util.Set;
 
-// Client-side MOD bus event handlers
-// This class is registered to the MOD event bus in SmokeleafIndustries constructor
-// For Forge event bus handlers (game events), see ClientEvents.java
+// Client-side event handlers (both MOD and Forge bus events)
+// NeoForge 1.21.8 automatically routes events to correct bus
+@EventBusSubscriber(modid = SmokeleafIndustries.MODID, value = Dist.CLIENT)
 public class SmokeleafIndustriesClient {
 
     private static final Set<ResourceLocation> WIGGLED = new HashSet<>();
