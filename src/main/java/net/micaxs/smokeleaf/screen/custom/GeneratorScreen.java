@@ -95,7 +95,7 @@ public class GeneratorScreen extends AbstractContainerScreen<GeneratorMenu> {
         int scaledHeight = menu.getFuelStoredScaled();
         if (scaledHeight > 0) {
             int adjustedY = y + 38 + (11 - scaledHeight);
-            guiGraphics.blit(GUI_TEXTURE, x + 81, adjustedY, 176, 14 - scaledHeight, 14, scaledHeight, 256, 256);
+            guiGraphics.blit(RenderPipelines.GUI_TEXTURED, GUI_TEXTURE, x + 81, adjustedY, 176.0F, (float)(14 - scaledHeight), 14, scaledHeight, 256, 256);
         }
     }
 

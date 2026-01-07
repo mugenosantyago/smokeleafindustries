@@ -83,7 +83,8 @@ public class SequencerScreen extends AbstractContainerScreen<SequencerMenu> {
 
     private void renderProgressArrow(GuiGraphics guiGraphics, int x, int y) {
         if(menu.isCrafting()) {
-            guiGraphics.blit(GUI_TEXTURE, x + 62, y + 33, 0, 166, menu.getScaledProgress(), 16, 256, 256);
+            int progress = menu.getScaledProgress();
+            guiGraphics.blit(RenderPipelines.GUI_TEXTURED, GUI_TEXTURE, x + 62, y + 33, 0.0F, 166.0F, progress, 16, 256, 256);
         }
     }
 
