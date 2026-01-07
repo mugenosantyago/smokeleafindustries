@@ -56,6 +56,12 @@ public class SmokeleafIndustries {
         // Note that this is necessary if and only if we want *this* class (SmokeleafIndustries) to respond directly to events.
         // Do not add this line if there are no @SubscribeEvent-annotated functions in this class, like onServerStarting() below.
         NeoForge.EVENT_BUS.register(this);
+        
+        // Register client-side mod bus events if on client
+        if (FMLEnvironment.dist == Dist.CLIENT) {
+            // Register SmokeleafIndustriesClient to the MOD event bus for client initialization
+            modEventBus.register(SmokeleafIndustriesClient.class);
+        }
 
         ModCreativeModeTabs.register(modEventBus);
 
