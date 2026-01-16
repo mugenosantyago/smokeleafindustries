@@ -3,6 +3,7 @@ package net.micaxs.smokeleaf.block.entity;
 import com.mojang.serialization.Codec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
 import net.micaxs.smokeleaf.Config;
+import net.micaxs.smokeleaf.SmokeleafIndustries;
 import net.micaxs.smokeleaf.block.custom.BaseWeedCropBlock;
 import net.micaxs.smokeleaf.item.custom.BaseBudItem;
 import net.micaxs.smokeleaf.utils.ModTags;
@@ -115,10 +116,17 @@ public class GrowPotBlockEntity extends BlockEntity {
     }
 
     public static void tick(Level level, BlockPos pos, BlockState state, GrowPotBlockEntity be) {
-        if (!(level instanceof ServerLevel)) return;
+        if (!(level instanceof ServerLevel serverLevel)) return;
         if (!be.hasCrop()) return;
 
         int light = level.getMaxLocalRawBrightness(pos.above());
+        
+        // Debug logging - only log once per 5 seconds (every 100 ticks) to avoid spam
+        if (serverLevel.getGameTime() % 100 == 0) {
+            SmokeleafIndustries.LOGGER.info("[GrowPot] Pos: {}, Light: {}, Age: {}/{}, Progress: {}", 
+                pos, light, be.cropAge, be.cropBlock.getMaxAge(), be.growthProgressTicks);
+        }
+        
         if (light < 12) return;
 
         int maxAge = be.cropBlock.getMaxAge();

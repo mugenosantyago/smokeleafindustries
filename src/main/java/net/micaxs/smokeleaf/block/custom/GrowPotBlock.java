@@ -271,6 +271,61 @@ public class GrowPotBlock extends BaseEntityBlock {
         return InteractionResult.PASS;
     }
 
+    // @Override removed - base Block method signature changed in 1.21.8
+    public void onRemove(BlockState state, Level level, BlockPos pos, BlockState newState, boolean isMoving) {
+        if (state.getBlock() != newState.getBlock() && !level.isClientSide) {
+            // Get block entity before it's removed
+            BlockEntity be = level.getBlockEntity(pos);
+            if (be instanceof GrowPotBlockEntity pot) {
+                // Drop soil if present
+                if (pot.hasSoil() && pot.getSoilState() != null) {
+                    Block.popResource(level, pos, new ItemStack(pot.getSoilState().getBlock()));
+                }
+                
+                // Drop seed if crop is present
+                if (pot.hasCrop() && !pot.canHarvest()) {
+                    BaseWeedCropBlock crop = (BaseWeedCropBlock) pot.getBottomCropStateForRender().getBlock();
+                    Item seedItem = crop.getBaseSeedId().asItem();
+                    Block.popResource(level, pos, new ItemStack(seedItem));
+                }
+                
+                // Harvest and drop items if crop is mature
+                if (pot.canHarvest() && level instanceof ServerLevel serverLevel) {
+                    pot.harvest(serverLevel);
+                }
+            }
+        }
+    }
+    
+    @Override
+    public BlockState playerWillDestroy(Level level, BlockPos pos, BlockState state, Player player) {
+        // Called BEFORE the block is removed, so block entity still exists
+        if (!level.isClientSide) {
+            BlockEntity be = level.getBlockEntity(pos);
+            if (be instanceof GrowPotBlockEntity pot) {
+                // Drop soil if present
+                if (pot.hasSoil() && pot.getSoilState() != null) {
+                    Block.popResource(level, pos, new ItemStack(pot.getSoilState().getBlock()));
+                }
+                
+                // Drop seed if crop is present but not mature
+                if (pot.hasCrop() && !pot.canHarvest()) {
+                    BlockState cropState = pot.getBottomCropStateForRender();
+                    if (cropState != null && cropState.getBlock() instanceof BaseWeedCropBlock crop) {
+                        Item seedItem = crop.getBaseSeedId().asItem();
+                        Block.popResource(level, pos, new ItemStack(seedItem));
+                    }
+                }
+                
+                // Harvest and drop items if crop is mature
+                if (pot.canHarvest() && level instanceof ServerLevel serverLevel) {
+                    pot.harvest(serverLevel);
+                }
+            }
+        }
+        return super.playerWillDestroy(level, pos, state, player);
+    }
+
     // @Override removed - base Block class appendHoverText signature doesn't match in 1.21.8
     public void appendHoverText(ItemStack stack, Item.TooltipContext context, List<Component> tooltipComponents, TooltipFlag tooltipFlag) {
         // super.appendHoverText removed - base Block class signature doesn't match in 1.21.8
