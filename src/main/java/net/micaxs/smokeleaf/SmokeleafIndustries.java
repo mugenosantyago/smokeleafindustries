@@ -87,6 +87,9 @@ public class SmokeleafIndustries {
 
         modEventBus.register(ModPayloads.class);
 
+        // Register config events to MOD bus
+        Config.register(modEventBus);
+        
         // Register our mod's ModConfigSpec so that FML can create and load the config file for us
         modContainer.registerConfig(ModConfig.Type.COMMON, Config.SPEC);
     }

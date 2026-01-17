@@ -5,13 +5,18 @@ import java.util.*;
 import com.electronwill.nightconfig.core.UnmodifiableConfig;
 
 import net.minecraft.resources.ResourceLocation;
-import net.neoforged.bus.api.SubscribeEvent;
-import net.neoforged.fml.common.EventBusSubscriber;
+import net.neoforged.bus.api.IEventBus;
 import net.neoforged.fml.event.config.ModConfigEvent;
 import net.neoforged.neoforge.common.ModConfigSpec;
 
-@EventBusSubscriber(modid = SmokeleafIndustries.MODID)
+/**
+ * Mod configuration. Must be registered to MOD event bus for config events.
+ */
 public class Config {
+    
+    public static void register(IEventBus modEventBus) {
+        modEventBus.addListener(Config::onConfigLoadOrReload);
+    }
     private static final ModConfigSpec.Builder BUILDER = new ModConfigSpec.Builder();
 
     public static final ModConfigSpec.ConfigValue<List<? extends UnmodifiableConfig>> PLANT_NUTRIENTS =
@@ -164,8 +169,7 @@ public class Config {
         return Optional.ofNullable(t);
     }
 
-    @SubscribeEvent
-    static void onConfigLoadOrReload(final ModConfigEvent event) {
+    private static void onConfigLoadOrReload(final ModConfigEvent event) {
         rebuildPlantNutrientsCache();
     }
 }
