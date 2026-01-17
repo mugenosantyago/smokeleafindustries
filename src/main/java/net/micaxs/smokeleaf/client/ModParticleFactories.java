@@ -18,5 +18,10 @@ public class ModParticleFactories {
     
     private static void registerFactories(RegisterParticleProvidersEvent evt) {
         evt.registerSpriteSet(ModParticles.ECHO_LOCATION_PARTICLE.get(), EchoLocationParticle.Provider::new);
+        // Register missing particle providers to prevent crashes
+        // Using FlameParticle.Provider for spark-like effects (compatible with SimpleParticleType)
+        evt.registerSpriteSet(ModParticles.DRY_BUD_SPARK.get(), net.minecraft.client.particle.FlameParticle.Provider::new);
+        // Using GlowParticle.GlowSquidProvider for xray effect (compatible with SimpleParticleType)
+        evt.registerSpriteSet(ModParticles.XRAY_PARTICLE.get(), net.minecraft.client.particle.GlowParticle.GlowSquidProvider::new);
     }
 }

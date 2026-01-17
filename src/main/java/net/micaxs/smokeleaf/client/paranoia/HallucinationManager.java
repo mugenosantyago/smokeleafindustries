@@ -38,6 +38,15 @@ public final class HallucinationManager {
 
     private HallucinationManager() {}
 
+    /**
+     * Reset static state when leaving a world to prevent stale references on next launch.
+     * Call this when disconnecting from a world/server.
+     */
+    public static void reset() {
+        LIFETIMES.clear();
+        NEXT_FAKE_ID.set(-1);
+    }
+
     public static void spawn(EntityType<?> type,
                              double x, double y, double z,
                              float yaw,

@@ -34,8 +34,14 @@ public class ModClientEvents {
         ModParticleFactories.register(modEventBus);
     }
 
+    private static boolean brainMeltHandlerRegistered = false;
+
     private static void onClientSetup(FMLClientSetupEvent event) {
-        NeoForge.EVENT_BUS.addListener(EventPriority.LOWEST, BrainMeltInputHandler::onInputUpdate);
+        // Prevent double-registration of event handlers on second launch
+        if (!brainMeltHandlerRegistered) {
+            NeoForge.EVENT_BUS.addListener(EventPriority.LOWEST, BrainMeltInputHandler::onInputUpdate);
+            brainMeltHandlerRegistered = true;
+        }
         event.enqueueWork(() -> {
             // Render layer API changed in 1.21.8 - fluid rendering now handled via IClientFluidTypeExtensions
             // ItemBlockRenderTypes.setRenderLayer(ModFluids.SOURCE_HASH_OIL_FLUID.get(), RenderType.translucent());

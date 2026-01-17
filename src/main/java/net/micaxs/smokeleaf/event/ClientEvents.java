@@ -13,6 +13,7 @@ import net.minecraft.world.effect.MobEffectInstance;
 import net.minecraft.world.entity.monster.Zombie;
 import net.minecraft.world.entity.npc.Villager;
 import net.minecraft.world.entity.player.Player;
+import net.micaxs.smokeleaf.client.paranoia.HallucinationManager;
 import net.neoforged.api.distmarker.Dist;
 import net.neoforged.bus.api.SubscribeEvent;
 import net.neoforged.fml.common.EventBusSubscriber;
@@ -20,6 +21,7 @@ import net.neoforged.neoforge.client.event.*;
 import net.neoforged.neoforge.client.event.sound.PlaySoundEvent;
 import net.neoforged.neoforge.client.gui.VanillaGuiLayers;
 import net.neoforged.neoforge.event.entity.player.PlayerInteractEvent;
+import net.neoforged.neoforge.client.event.ClientPlayerNetworkEvent;
 
 import java.awt.*;
 import java.util.*;
@@ -276,5 +278,16 @@ public class ClientEvents {
             double modified = event.getFOV() * (1.0 + boost);
             event.setFOV((float)Math.min(170.0, modified));
         }
+    }
+
+    // -------- Reset static state on logout to prevent second-launch crashes --------
+    @SubscribeEvent
+    public static void onLogout(ClientPlayerNetworkEvent.LoggingOut event) {
+        // Reset all static state that could hold stale references
+        CACHE.clear();
+        WIGGLED.clear();
+        WIGGLE_SPECS = null;
+        // Reset hallucination manager state
+        HallucinationManager.reset();
     }
 }
