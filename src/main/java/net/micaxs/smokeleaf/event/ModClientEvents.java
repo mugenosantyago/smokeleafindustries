@@ -22,8 +22,9 @@ import net.neoforged.neoforge.common.NeoForge;
 /**
  * MOD bus client events (lifecycle and registration)
  * These fire during mod initialization
- * Registered programmatically in SmokeleafIndustries constructor
+ * Auto-registered via @EventBusSubscriber - NeoForge routes to MOD bus based on event types
  */
+@EventBusSubscriber(modid = SmokeleafIndustries.MODID, value = Dist.CLIENT)
 public class ModClientEvents {
 
     @SubscribeEvent

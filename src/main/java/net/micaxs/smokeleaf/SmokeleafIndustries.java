@@ -17,23 +17,18 @@ import net.micaxs.smokeleaf.screen.ModMenuTypes;
 import net.micaxs.smokeleaf.sound.ModSounds;
 import net.micaxs.smokeleaf.villager.ModVillagers;
 import net.micaxs.smokeleaf.event.ModBusEvents;
-import net.micaxs.smokeleaf.event.ModClientEvents;
 import net.minecraft.resources.ResourceLocation;
-import net.minecraft.world.level.block.ComposterBlock;
 import org.slf4j.Logger;
 
 import com.mojang.logging.LogUtils;
 
 import net.neoforged.bus.api.IEventBus;
 import net.neoforged.bus.api.SubscribeEvent;
-import net.neoforged.api.distmarker.Dist;
 import net.neoforged.fml.common.Mod;
 import net.neoforged.fml.config.ModConfig;
 import net.neoforged.fml.ModContainer;
 import net.neoforged.fml.event.lifecycle.FMLCommonSetupEvent;
-import net.neoforged.fml.loading.FMLEnvironment;
 import net.neoforged.neoforge.common.NeoForge;
-import net.neoforged.neoforge.event.BuildCreativeModeTabContentsEvent;
 import net.neoforged.neoforge.event.server.ServerStartingEvent;
 
 import java.util.List;
@@ -81,11 +76,6 @@ public class SmokeleafIndustries {
         
         // Register capabilities for block entities
         ModBusEvents.register(modEventBus);
-        
-        // Register client MOD bus events (screens, renderers, etc.)
-        if (FMLEnvironment.dist == Dist.CLIENT) {
-            modEventBus.register(ModClientEvents.class);
-        }
 
         modEventBus.register(ModPayloads.class);
 
