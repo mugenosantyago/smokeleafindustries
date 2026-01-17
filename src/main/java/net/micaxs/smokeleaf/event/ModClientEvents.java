@@ -22,13 +22,18 @@ import net.neoforged.neoforge.common.NeoForge;
 /**
  * MOD bus client events (lifecycle and registration)
  * These fire during mod initialization
- * Auto-registered via @EventBusSubscriber - NeoForge routes to MOD bus based on event types
+ * Must be registered programmatically to MOD event bus
  */
-@EventBusSubscriber(modid = SmokeleafIndustries.MODID, value = Dist.CLIENT)
 public class ModClientEvents {
+    
+    public static void register(net.neoforged.bus.api.IEventBus modEventBus) {
+        modEventBus.addListener(ModClientEvents::onClientSetup);
+        modEventBus.addListener(ModClientEvents::registerBER);
+        modEventBus.addListener(ModClientEvents::onClientExtensions);
+        modEventBus.addListener(ModClientEvents::registerScreens);
+    }
 
-    @SubscribeEvent
-    public static void onClientSetup(FMLClientSetupEvent event) {
+    private static void onClientSetup(FMLClientSetupEvent event) {
         NeoForge.EVENT_BUS.addListener(EventPriority.LOWEST, BrainMeltInputHandler::onInputUpdate);
         event.enqueueWork(() -> {
             // Render layer API changed in 1.21.8 - fluid rendering now handled via IClientFluidTypeExtensions
@@ -46,21 +51,18 @@ public class ModClientEvents {
         });
     }
 
-    @SubscribeEvent
-    public static void registerBER(EntityRenderersEvent.RegisterRenderers event) {
+    private static void registerBER(EntityRenderersEvent.RegisterRenderers event) {
         event.registerBlockEntityRenderer(ModBlockEntities.DRYING_RACK_BE.get(), DryingRackRenderer::new);
         event.registerBlockEntityRenderer(ModBlockEntities.GROW_POT.get(), GrowPotRenderer::new);
     }
 
-    @SubscribeEvent
-    public static void onClientExtensions(RegisterClientExtensionsEvent event) {
+    private static void onClientExtensions(RegisterClientExtensionsEvent event) {
         event.registerFluidType(((BaseFluidType) ModFluidTypes.HEMP_OIL_FLUID_TYPE.get()).getClientFluidTypeExtensions(), ModFluidTypes.HEMP_OIL_FLUID_TYPE.get());
         event.registerFluidType(((BaseFluidType) ModFluidTypes.HASH_OIL_FLUID_TYPE.get()).getClientFluidTypeExtensions(), ModFluidTypes.HASH_OIL_FLUID_TYPE.get());
         event.registerFluidType(((BaseFluidType) ModFluidTypes.HASH_OIL_SLUDGE_FLUID_TYPE.get()).getClientFluidTypeExtensions(), ModFluidTypes.HASH_OIL_SLUDGE_FLUID_TYPE.get());
     }
 
-    @SubscribeEvent
-    public static void registerScreens(RegisterMenuScreensEvent event) {
+    private static void registerScreens(RegisterMenuScreensEvent event) {
         event.register(ModMenuTypes.GENERATOR_MENU.get(), GeneratorScreen::new);
         event.register(ModMenuTypes.GRINDER_MENU.get(), GrinderScreen::new);
         event.register(ModMenuTypes.EXTRACTOR_MENU.get(), ExtractorScreen::new);

@@ -17,7 +17,10 @@ import net.micaxs.smokeleaf.screen.ModMenuTypes;
 import net.micaxs.smokeleaf.sound.ModSounds;
 import net.micaxs.smokeleaf.villager.ModVillagers;
 import net.micaxs.smokeleaf.event.ModBusEvents;
+import net.micaxs.smokeleaf.event.ModClientEvents;
 import net.minecraft.resources.ResourceLocation;
+import net.neoforged.api.distmarker.Dist;
+import net.neoforged.fml.loading.FMLEnvironment;
 import org.slf4j.Logger;
 
 import com.mojang.logging.LogUtils;
@@ -76,6 +79,11 @@ public class SmokeleafIndustries {
         
         // Register capabilities for block entities
         ModBusEvents.register(modEventBus);
+        
+        // Register client-side MOD bus events (screens, renderers, etc.)
+        if (FMLEnvironment.dist == Dist.CLIENT) {
+            ModClientEvents.register(modEventBus);
+        }
 
         modEventBus.register(ModPayloads.class);
 
