@@ -4,15 +4,13 @@ import net.micaxs.smokeleaf.SmokeleafIndustries;
 import net.micaxs.smokeleaf.block.entity.ModBlockEntities;
 import net.micaxs.smokeleaf.block.entity.client.DryingRackRenderer;
 import net.micaxs.smokeleaf.block.entity.render.GrowPotRenderer;
+import net.micaxs.smokeleaf.client.ModParticleFactories;
 import net.micaxs.smokeleaf.client.brainmelt.BrainMeltInputHandler;
 import net.micaxs.smokeleaf.fluid.BaseFluidType;
 import net.micaxs.smokeleaf.fluid.ModFluidTypes;
 import net.micaxs.smokeleaf.screen.ModMenuTypes;
 import net.micaxs.smokeleaf.screen.custom.*;
-import net.neoforged.api.distmarker.Dist;
 import net.neoforged.bus.api.EventPriority;
-import net.neoforged.bus.api.SubscribeEvent;
-import net.neoforged.fml.common.EventBusSubscriber;
 import net.neoforged.fml.event.lifecycle.FMLClientSetupEvent;
 import net.neoforged.neoforge.client.event.EntityRenderersEvent;
 import net.neoforged.neoforge.client.event.RegisterMenuScreensEvent;
@@ -31,6 +29,9 @@ public class ModClientEvents {
         modEventBus.addListener(ModClientEvents::registerBER);
         modEventBus.addListener(ModClientEvents::onClientExtensions);
         modEventBus.addListener(ModClientEvents::registerScreens);
+        
+        // Register particle factories (also MOD bus event)
+        ModParticleFactories.register(modEventBus);
     }
 
     private static void onClientSetup(FMLClientSetupEvent event) {

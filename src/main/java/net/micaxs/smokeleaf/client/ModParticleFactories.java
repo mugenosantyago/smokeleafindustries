@@ -1,19 +1,22 @@
 // Java
 package net.micaxs.smokeleaf.client;
 
-import net.micaxs.smokeleaf.SmokeleafIndustries;
 import net.micaxs.smokeleaf.client.particle.EchoLocationParticle;
 import net.micaxs.smokeleaf.effect.ModParticles;
-import net.neoforged.api.distmarker.Dist;
-import net.neoforged.bus.api.SubscribeEvent;
-import net.neoforged.fml.common.EventBusSubscriber;
+import net.neoforged.bus.api.IEventBus;
 import net.neoforged.neoforge.client.event.RegisterParticleProvidersEvent;
 
-@EventBusSubscriber(modid = SmokeleafIndustries.MODID, value = Dist.CLIENT)
+/**
+ * Particle factory registration - must be on MOD event bus.
+ * Registered programmatically from ModClientEvents.register()
+ */
 public class ModParticleFactories {
 
-    @SubscribeEvent
-    public static void registerFactories(RegisterParticleProvidersEvent evt) {
+    public static void register(IEventBus modEventBus) {
+        modEventBus.addListener(ModParticleFactories::registerFactories);
+    }
+    
+    private static void registerFactories(RegisterParticleProvidersEvent evt) {
         evt.registerSpriteSet(ModParticles.ECHO_LOCATION_PARTICLE.get(), EchoLocationParticle.Provider::new);
     }
 }
