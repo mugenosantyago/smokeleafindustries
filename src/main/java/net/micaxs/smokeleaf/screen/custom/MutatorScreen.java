@@ -1,15 +1,22 @@
 package net.micaxs.smokeleaf.screen.custom;
 
+import com.mojang.blaze3d.systems.RenderSystem;
 import net.micaxs.smokeleaf.SmokeleafIndustries;
 import net.micaxs.smokeleaf.screen.renderer.EnergyDisplayTooltipArea;
 import net.micaxs.smokeleaf.screen.renderer.FluidTankRenderer;
 import net.micaxs.smokeleaf.utils.MouseUtil;
 import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.client.gui.screens.inventory.AbstractContainerScreen;
+import net.minecraft.client.renderer.RenderPipelines;
 import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
+import net.minecraft.util.FormattedCharSequence;
 import net.minecraft.world.entity.player.Inventory;
+import net.minecraft.world.item.TooltipFlag;
 import net.neoforged.neoforge.fluids.FluidStack;
+
+import java.util.List;
+import java.util.Optional;
 
 public class MutatorScreen extends AbstractContainerScreen<MutatorMenu> {
 
@@ -61,7 +68,7 @@ public class MutatorScreen extends AbstractContainerScreen<MutatorMenu> {
         int y = this.topPos;
         
         // Render the background texture
-        guiGraphics.blit(GUI_TEXTURE, x, y, 0, 0, this.imageWidth, this.imageHeight, 256, 256);
+        guiGraphics.blit(RenderPipelines.GUI_TEXTURED, GUI_TEXTURE, x, y, 0.0F, 0.0F, this.imageWidth, this.imageHeight, 256, 256);
 
         // Render energy bar if initialized
         if (energyInfoArea != null) {
@@ -89,7 +96,7 @@ public class MutatorScreen extends AbstractContainerScreen<MutatorMenu> {
     private void renderProgressArrow(GuiGraphics guiGraphics, int x, int y) {
         if(menu.isCrafting()) {
             int progress = menu.getScaledProgress();
-            guiGraphics.blit(GUI_TEXTURE, x + 103, y + 37, 176, 0, 8, progress, 256, 256);
+            guiGraphics.blit(RenderPipelines.GUI_TEXTURED, GUI_TEXTURE, x + 103, y + 37, 176.0F, 0.0F, 8, progress, 256, 256);
         }
     }
 
@@ -125,8 +132,6 @@ public class MutatorScreen extends AbstractContainerScreen<MutatorMenu> {
 
     @Override
     public void render(GuiGraphics guiGraphics, int mouseX, int mouseY, float partialTick) {
-        // Render the background first
-        this.renderBackground(guiGraphics, mouseX, mouseY, partialTick);
         super.render(guiGraphics, mouseX, mouseY, partialTick);
 
         // Use leftPos and topPos for tooltip positioning
