@@ -102,14 +102,13 @@ public class MagnifyingGlassScreen extends Screen {
 
 
         Level level = Minecraft.getInstance().level;
+        if (level == null) return; // Safety check - no level, nothing to render
+        
         BlockPos bePos = this.pos;
-        if (level != null) {
-            BlockState stateAtPos = level.getBlockState(this.pos);
-            if (stateAtPos.getBlock() instanceof BaseWeedCropBlock && stateAtPos.getValue(BaseWeedCropBlock.TOP)) {
-                bePos = this.pos.below();
-            }
+        BlockState stateAtPos = level.getBlockState(this.pos);
+        if (stateAtPos.getBlock() instanceof BaseWeedCropBlock && stateAtPos.getValue(BaseWeedCropBlock.TOP)) {
+            bePos = this.pos.below();
         }
-
 
         BlockEntity be = level.getBlockEntity(bePos);
         if (be instanceof BaseWeedCropBlockEntity crop) {
