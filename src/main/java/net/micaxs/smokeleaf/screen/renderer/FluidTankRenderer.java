@@ -3,13 +3,9 @@ package net.micaxs.smokeleaf.screen.renderer;
 import com.google.common.base.Preconditions;
 import net.micaxs.smokeleaf.SmokeleafIndustries;
 import net.minecraft.ChatFormatting;
-import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.GuiGraphics;
-import net.minecraft.client.renderer.texture.TextureAtlas;
-import net.minecraft.client.renderer.texture.TextureAtlasSprite;
 import net.minecraft.network.chat.Component;
 import net.minecraft.network.chat.MutableComponent;
-import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.item.TooltipFlag;
 import net.minecraft.world.level.material.Fluid;
 import net.minecraft.world.level.material.Fluids;
@@ -58,12 +54,15 @@ public class FluidTankRenderer {
     }
 
     private void drawFluid(GuiGraphics guiGraphics, final int x, final int y, final int width, final int height, FluidStack fluidStack) {
+        if (fluidStack == null || fluidStack.isEmpty()) {
+            return;
+        }
+        
         Fluid fluid = fluidStack.getFluid();
-        if (fluid.isSame(Fluids.EMPTY)) {
+        if (fluid == null || fluid.isSame(Fluids.EMPTY)) {
             return;
         }
 
-        TextureAtlasSprite fluidStillSprite = getStillFluidSprite(fluidStack);
         int fluidColor = getColorTint(fluidStack);
 
         long amount = fluidStack.getAmount();
@@ -76,58 +75,41 @@ public class FluidTankRenderer {
             scaledAmount = height;
         }
 
-        drawTiledSprite(guiGraphics, x, y, width, height, fluidColor, scaledAmount, fluidStillSprite);
+        drawFluidRect(guiGraphics, x, y, width, height, fluidColor, scaledAmount);
     }
 
-    private TextureAtlasSprite getStillFluidSprite(FluidStack fluidStack) {
-        Fluid fluid = fluidStack.getFluid();
-        IClientFluidTypeExtensions renderProperties = IClientFluidTypeExtensions.of(fluid);
-        ResourceLocation fluidStill = renderProperties.getStillTexture(fluidStack);
-
-        Minecraft minecraft = Minecraft.getInstance();
-        return minecraft.getTextureAtlas(TextureAtlas.LOCATION_BLOCKS).apply(fluidStill);
-    }
-
-    private int getColorTint(FluidStack ingredient) {
-        Fluid fluid = ingredient.getFluid();
-        IClientFluidTypeExtensions renderProperties = IClientFluidTypeExtensions.of(fluid);
-        return renderProperties.getTintColor(ingredient);
-    }
-
-    private static void drawTiledSprite(GuiGraphics guiGraphics, final int x, final int y, final int tiledWidth, final int tiledHeight, int color, long scaledAmount, TextureAtlasSprite sprite) {
-        final int xTileCount = tiledWidth / TEXTURE_SIZE;
-        final int xRemainder = tiledWidth - (xTileCount * TEXTURE_SIZE);
-        final long yTileCount = scaledAmount / TEXTURE_SIZE;
-        final long yRemainder = scaledAmount - (yTileCount * TEXTURE_SIZE);
-
-        final int yStart = y + tiledHeight;
-
-        // Extract color components for tinting
-        float alpha = ((color >> 24) & 0xFF) / 255.0F;
-        float red = ((color >> 16) & 0xFF) / 255.0F;
-        float green = ((color >> 8) & 0xFF) / 255.0F;
-        float blue = (color & 0xFF) / 255.0F;
-        
-        // Use alpha of 1 if the color has no alpha specified
-        if (alpha <= 0.01F) alpha = 1.0F;
-
-        for (int xTile = 0; xTile <= xTileCount; xTile++) {
-            for (int yTile = 0; yTile <= yTileCount; yTile++) {
-                int currentWidth = (xTile == xTileCount) ? xRemainder : TEXTURE_SIZE;
-                long currentHeight = (yTile == yTileCount) ? yRemainder : TEXTURE_SIZE;
-                int drawX = x + (xTile * TEXTURE_SIZE);
-                int drawY = yStart - ((int)((yTile + 1) * TEXTURE_SIZE));
-
-                if (currentWidth > 0 && currentHeight > 0) {
-                    int maskTop = (int)(TEXTURE_SIZE - currentHeight);
-                    
-                    // Draw a colored rect as a simple fallback that works in 1.21.8
-                    // Convert the fluid tint to an ARGB color
-                    int argbColor = ((int)(alpha * 255) << 24) | ((int)(red * 255) << 16) | ((int)(green * 255) << 8) | (int)(blue * 255);
-                    guiGraphics.fill(drawX, drawY + maskTop, drawX + currentWidth, drawY + maskTop + (int)currentHeight, argbColor);
-                }
-            }
+    private int getColorTint(FluidStack fluidStack) {
+        try {
+            Fluid fluid = fluidStack.getFluid();
+            if (fluid == null) return 0xFFFFFFFF;
+            IClientFluidTypeExtensions renderProperties = IClientFluidTypeExtensions.of(fluid);
+            if (renderProperties == null) return 0xFFFFFFFF;
+            return renderProperties.getTintColor(fluidStack);
+        } catch (Exception e) {
+            // Fallback to white if there's any issue getting the color
+            return 0xFFFFFFFF;
         }
+    }
+
+    private static void drawFluidRect(GuiGraphics guiGraphics, final int x, final int y, final int tiledWidth, final int tiledHeight, int color, long scaledAmount) {
+        if (scaledAmount <= 0) return;
+        
+        // Extract color components for tinting
+        int alpha = (color >> 24) & 0xFF;
+        int red = (color >> 16) & 0xFF;
+        int green = (color >> 8) & 0xFF;
+        int blue = color & 0xFF;
+        
+        // Use alpha of 255 if the color has no alpha specified
+        if (alpha <= 1) alpha = 255;
+
+        // Calculate the position to draw the fluid (from bottom up)
+        int yStart = y + tiledHeight;
+        int drawY = yStart - (int)scaledAmount;
+        
+        // Draw a single colored rect representing the fluid level
+        int argbColor = (alpha << 24) | (red << 16) | (green << 8) | blue;
+        guiGraphics.fill(x, drawY, x + tiledWidth, yStart, argbColor);
     }
 
     public List<Component> getTooltip(FluidStack fluidStack, TooltipFlag tooltipFlag) {

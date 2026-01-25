@@ -14,8 +14,6 @@ import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.phys.Vec3;
 
 public class GrowPotRenderer implements BlockEntityRenderer<GrowPotBlockEntity> {
-    private final BlockRenderDispatcher dispatcher;
-
     private static final float XZ_SCALE = 12f / 16f;
     private static final float Y_BASE = 1.0f;
     private static final float POT_HEIGHT = 8f / 16f;
@@ -25,7 +23,7 @@ public class GrowPotRenderer implements BlockEntityRenderer<GrowPotBlockEntity> 
     private static final float CROP_Y_SCALE = Math.max(0f, (MAX_TOTAL_HEIGHT - POT_HEIGHT - SOIL_HEIGHT) / MAX_CROP_HEIGHT);
 
     public GrowPotRenderer(BlockEntityRendererProvider.Context ctx) {
-        this.dispatcher = Minecraft.getInstance().getBlockRenderer();
+        // Don't cache dispatcher - get it fresh each render to avoid stale references
     }
 
     @Override
@@ -33,6 +31,10 @@ public class GrowPotRenderer implements BlockEntityRenderer<GrowPotBlockEntity> 
                        MultiBufferSource buffers, int packedLight, int packedOverlay, Vec3 offset) {
         Level level = be.getLevel();
         if (level == null) return;
+
+        // Get dispatcher fresh each render to avoid stale references on second launch
+        BlockRenderDispatcher dispatcher = Minecraft.getInstance().getBlockRenderer();
+        if (dispatcher == null) return;
 
         BlockState soil = be.getSoilState();
         if (soil != null) {

@@ -284,11 +284,25 @@ public class ClientEvents {
     // -------- Reset static state on logout to prevent second-launch crashes --------
     @SubscribeEvent
     public static void onLogout(ClientPlayerNetworkEvent.LoggingOut event) {
-        // Reset all static state that could hold stale references
+        resetAllClientState();
+    }
+    
+    /**
+     * Reset all static state that could hold stale references.
+     * Call this when disconnecting from a world/server to prevent second-launch crashes.
+     */
+    public static void resetAllClientState() {
+        // Clear entity caches
         CACHE.clear();
+        
+        // Clear UI state
         WIGGLED.clear();
         WIGGLE_SPECS = null;
+        
         // Reset hallucination manager state
         HallucinationManager.reset();
+        
+        // Log for debugging
+        net.micaxs.smokeleaf.SmokeleafIndustries.LOGGER.debug("[ClientEvents] Reset all client state on logout");
     }
 }
