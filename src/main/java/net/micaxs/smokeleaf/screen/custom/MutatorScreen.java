@@ -118,11 +118,15 @@ public class MutatorScreen extends AbstractContainerScreen<MutatorMenu> {
         int x = this.leftPos;
         int y = this.topPos;
         renderEnergyInfoArea(guiGraphics, mouseX, mouseY, x, y);
-        renderFluidTooltipArea(guiGraphics, mouseX, mouseY, x, y, menu.blockEntity.getFluid(), 55, 15, fluidRenderer);
+        if (menu.blockEntity != null) {
+            renderFluidTooltipArea(guiGraphics, mouseX, mouseY, x, y, menu.blockEntity.getFluid(), 55, 15, fluidRenderer);
+        }
     }
 
     @Override
     public void render(GuiGraphics guiGraphics, int mouseX, int mouseY, float partialTick) {
+        // Render the background first
+        this.renderBackground(guiGraphics, mouseX, mouseY, partialTick);
         super.render(guiGraphics, mouseX, mouseY, partialTick);
 
         // Use leftPos and topPos for tooltip positioning

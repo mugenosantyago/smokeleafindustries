@@ -32,8 +32,9 @@ public class MutatorBlock extends BaseEntityBlock {
 
     public MutatorBlock(Properties properties) {
         super(properties);
-        registerDefaultState(defaultBlockState().setValue(FACING, Direction.NORTH));
-        registerDefaultState(defaultBlockState().setValue(BlockStateProperties.POWERED, false));
+        registerDefaultState(defaultBlockState()
+            .setValue(FACING, Direction.NORTH)
+            .setValue(BlockStateProperties.POWERED, false));
     }
 
 
@@ -76,8 +77,7 @@ public class MutatorBlock extends BaseEntityBlock {
                 mutatorBlockEntity.drops();
             }
         }
-        // super.onRemove removed - base Block method signature changed in 1.21.8
-        // super.onRemove(state, level, pos, newState, movedByPiston);
+        // super.onRemove() call removed - method signature changed in 1.21.8
     }
 
     @Override
