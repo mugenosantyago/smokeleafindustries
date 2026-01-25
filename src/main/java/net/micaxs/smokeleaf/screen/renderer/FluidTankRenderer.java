@@ -1,18 +1,14 @@
 package net.micaxs.smokeleaf.screen.renderer;
 
 import com.google.common.base.Preconditions;
-import com.mojang.blaze3d.systems.RenderSystem;
-import com.mojang.blaze3d.vertex.*;
 import net.micaxs.smokeleaf.SmokeleafIndustries;
 import net.minecraft.ChatFormatting;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.GuiGraphics;
-import net.minecraft.client.renderer.GameRenderer;
+import net.minecraft.client.renderer.texture.TextureAtlas;
 import net.minecraft.client.renderer.texture.TextureAtlasSprite;
 import net.minecraft.network.chat.Component;
 import net.minecraft.network.chat.MutableComponent;
-import net.minecraft.resources.ResourceLocation;
-import net.minecraft.client.renderer.texture.TextureAtlas;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.item.TooltipFlag;
 import net.minecraft.world.level.material.Fluid;
@@ -20,7 +16,6 @@ import net.minecraft.world.level.material.Fluids;
 import net.neoforged.neoforge.client.extensions.common.IClientFluidTypeExtensions;
 import net.neoforged.neoforge.fluids.FluidStack;
 import net.neoforged.neoforge.fluids.FluidType;
-import org.joml.Matrix4f;
 
 import java.text.NumberFormat;
 import java.util.ArrayList;
@@ -100,21 +95,21 @@ public class FluidTankRenderer {
     }
 
     private static void drawTiledSprite(GuiGraphics guiGraphics, final int x, final int y, final int tiledWidth, final int tiledHeight, int color, long scaledAmount, TextureAtlasSprite sprite) {
-        // TODO: Color tinting - RenderSystem.setShaderColor() may have been removed in 1.21.8
-        // For now, render without color tinting - need to find correct API for color application
-        // Extract color components (not used currently)
-        // float red = (color >> 16 & 0xFF) / 255.0F;
-        // float green = (color >> 8 & 0xFF) / 255.0F;
-        // float blue = (color & 0xFF) / 255.0F;
-        // float alpha = ((color >> 24) & 0xFF) / 255F;
-
         final int xTileCount = tiledWidth / TEXTURE_SIZE;
         final int xRemainder = tiledWidth - (xTileCount * TEXTURE_SIZE);
         final long yTileCount = scaledAmount / TEXTURE_SIZE;
         final long yRemainder = scaledAmount - (yTileCount * TEXTURE_SIZE);
 
         final int yStart = y + tiledHeight;
-        ResourceLocation atlas = sprite.atlasLocation();
+
+        // Extract color components for tinting
+        float alpha = ((color >> 24) & 0xFF) / 255.0F;
+        float red = ((color >> 16) & 0xFF) / 255.0F;
+        float green = ((color >> 8) & 0xFF) / 255.0F;
+        float blue = (color & 0xFF) / 255.0F;
+        
+        // Use alpha of 1 if the color has no alpha specified
+        if (alpha <= 0.01F) alpha = 1.0F;
 
         for (int xTile = 0; xTile <= xTileCount; xTile++) {
             for (int yTile = 0; yTile <= yTileCount; yTile++) {
@@ -125,22 +120,14 @@ public class FluidTankRenderer {
 
                 if (currentWidth > 0 && currentHeight > 0) {
                     int maskTop = (int)(TEXTURE_SIZE - currentHeight);
-                    int maskRight = TEXTURE_SIZE - currentWidth;
                     
-                    // Calculate UV coordinates with masking
-                    int spriteWidth = sprite.contents().width();
-                    int spriteHeight = sprite.contents().height();
-                    int u0 = (int)(sprite.getU0() * spriteWidth);
-                    int u1 = (int)((sprite.getU1() - (maskRight / 16F * (sprite.getU1() - sprite.getU0()))) * spriteWidth);
-                    int v0 = (int)((sprite.getV0() + (maskTop / 16F * (sprite.getV1() - sprite.getV0()))) * spriteHeight);
-                    int v1 = (int)(sprite.getV1() * spriteHeight);
-                    
-                    // Use GuiGraphics.blit with ResourceLocation - API signature: blit(ResourceLocation, int x, int y, int uOffset, int vOffset, int uWidth, int vHeight, int textureWidth, int textureHeight)
-                    guiGraphics.blit(atlas, drawX, drawY + maskTop, u0, v0, currentWidth, (int)currentHeight, spriteWidth, spriteHeight);
+                    // Draw a colored rect as a simple fallback that works in 1.21.8
+                    // Convert the fluid tint to an ARGB color
+                    int argbColor = ((int)(alpha * 255) << 24) | ((int)(red * 255) << 16) | ((int)(green * 255) << 8) | (int)(blue * 255);
+                    guiGraphics.fill(drawX, drawY + maskTop, drawX + currentWidth, drawY + maskTop + (int)currentHeight, argbColor);
                 }
             }
         }
-        // Color reset not needed if we're not setting color
     }
 
     public List<Component> getTooltip(FluidStack fluidStack, TooltipFlag tooltipFlag) {

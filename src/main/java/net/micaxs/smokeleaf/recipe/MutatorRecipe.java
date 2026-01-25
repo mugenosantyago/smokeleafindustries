@@ -44,7 +44,10 @@ public record MutatorRecipe(NonNullList<IngredientWithCount> inputItems, FluidSt
     public boolean matches(MutatorRecipeInput input, Level level) {
         // Allow client-side matching for JEI and display purposes
         // Actual crafting validation happens server-side in BlockEntity
-        if (inputItems.size() != 2) return false;
+        if (inputItems.size() != 2) {
+            net.micaxs.smokeleaf.SmokeleafIndustries.LOGGER.debug("[MutatorRecipe] Rejecting - inputItems size != 2, got: {}", inputItems.size());
+            return false;
+        }
 
         IngredientWithCount a = inputItems.get(0);
         IngredientWithCount b = inputItems.get(1);
@@ -52,11 +55,24 @@ public record MutatorRecipe(NonNullList<IngredientWithCount> inputItems, FluidSt
         ItemStack seed = input.seedInput();
         ItemStack extract = input.extractInput();
 
-        if (!a.ingredient().test(seed) || seed.getCount() < a.count()) return false;
-        if (!b.ingredient().test(extract) || extract.getCount() < b.count()) return false;
+        boolean aTestResult = a.ingredient().test(seed);
+        boolean aCountOk = seed.getCount() >= a.count();
+        boolean bTestResult = b.ingredient().test(extract);
+        boolean bCountOk = extract.getCount() >= b.count();
+
+        if (!aTestResult || !aCountOk) {
+            net.micaxs.smokeleaf.SmokeleafIndustries.LOGGER.debug("[MutatorRecipe] Seed check failed - test: {}, countOk: {} (need {} have {}), seed: {}", 
+                aTestResult, aCountOk, a.count(), seed.getCount(), seed.getItem());
+            return false;
+        }
+        if (!bTestResult || !bCountOk) {
+            net.micaxs.smokeleaf.SmokeleafIndustries.LOGGER.debug("[MutatorRecipe] Extract check failed - test: {}, countOk: {} (need {} have {}), extract: {}", 
+                bTestResult, bCountOk, b.count(), extract.getCount(), extract.getItem());
+            return false;
+        }
 
         // Fluid Check is done in BlockEntity for now..
-
+        net.micaxs.smokeleaf.SmokeleafIndustries.LOGGER.debug("[MutatorRecipe] Recipe MATCHED for seed: {} and extract: {}", seed.getItem(), extract.getItem());
         return true;
     }
 

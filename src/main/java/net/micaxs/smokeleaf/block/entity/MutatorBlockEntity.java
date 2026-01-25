@@ -301,8 +301,18 @@ public class MutatorBlockEntity extends BlockEntity implements MenuProvider {
 
         if (this.level instanceof net.minecraft.server.level.ServerLevel serverLevel) {
             MutatorRecipeInput input = new MutatorRecipeInput(seedStack, extractStack);
-            return serverLevel.getServer().getRecipeManager()
+            
+            Optional<RecipeHolder<MutatorRecipe>> result = serverLevel.getServer().getRecipeManager()
                     .getRecipeFor(ModRecipes.MUTATOR_TYPE.get(), input, level);
+            
+            if (result.isEmpty()) {
+                SmokeleafIndustries.LOGGER.debug("[Mutator] No matching recipe found for seed={} x{}, extract={} x{}", 
+                    seedStack.getItem(), seedStack.getCount(), extractStack.getItem(), extractStack.getCount());
+            } else {
+                SmokeleafIndustries.LOGGER.debug("[Mutator] Found recipe: {}", result.get().id());
+            }
+            
+            return result;
         }
         return Optional.empty();
     }
