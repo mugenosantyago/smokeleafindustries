@@ -390,7 +390,7 @@ public class MutatorBlockEntity extends BlockEntity implements MenuProvider {
         }
         ENERGY_STORAGE.setEnergy(input.getIntOr("mutator.energy", 0));
         progress = input.getIntOr("mutator.progress", 0);
-        maxProgress = input.getIntOr("mutator.maxProgress", 78);
+        maxProgress = input.getIntOr("mutator.maxProgress", 82);
         FLUID_TANK.setFluid(input.read("mutator.fluid", FluidStack.CODEC).orElse(FluidStack.EMPTY));
     }
 

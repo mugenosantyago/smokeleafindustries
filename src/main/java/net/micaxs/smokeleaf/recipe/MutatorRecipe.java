@@ -42,7 +42,8 @@ public record MutatorRecipe(NonNullList<IngredientWithCount> inputItems, FluidSt
 
     @Override
     public boolean matches(MutatorRecipeInput input, Level level) {
-        if (level.isClientSide()) return false;
+        // Allow client-side matching for JEI and display purposes
+        // Actual crafting validation happens server-side in BlockEntity
         if (inputItems.size() != 2) return false;
 
         IngredientWithCount a = inputItems.get(0);
