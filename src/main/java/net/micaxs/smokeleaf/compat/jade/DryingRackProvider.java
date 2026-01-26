@@ -9,13 +9,10 @@ import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
-import net.minecraft.world.phys.Vec2;
 import snownee.jade.api.BlockAccessor;
 import snownee.jade.api.IBlockComponentProvider;
 import snownee.jade.api.ITooltip;
 import snownee.jade.api.config.IPluginConfig;
-import snownee.jade.api.ui.IElement;
-import snownee.jade.api.ui.IElementHelper;
 
 /**
  * Client-side only component provider for drying racks.
@@ -34,8 +31,6 @@ public enum DryingRackProvider implements IBlockComponentProvider {
 
     @Override
     public void appendTooltip(ITooltip tooltip, BlockAccessor accessor, IPluginConfig config) {
-        IElementHelper elements = IElementHelper.get();
-
         for (int i = 0; i < DryingRackBlockEntity.SLOT_COUNT; i++) {
             String key = "S" + i;
             if (!accessor.getServerData().contains(key)) continue;
@@ -45,8 +40,9 @@ public enum DryingRackProvider implements IBlockComponentProvider {
             ResourceLocation id = ResourceLocation.tryParse(s.getString("id").orElse(""));
             if (id == null) continue;
 
-            Item item = BuiltInRegistries.ITEM.get(id).orElseThrow().value();
-            IElement icon = elements.item(new ItemStack(item), 0.5f).size(new Vec2(10, 10)).translate(new Vec2(-2, -1));
+            var itemHolder = BuiltInRegistries.ITEM.get(id);
+            if (itemHolder.isEmpty()) continue;
+            Item item = itemHolder.get().value();
 
             boolean isBud = s.getBoolean("bud").orElse(false);
             boolean isDryBud = s.getBoolean("dry").orElse(false);
@@ -70,12 +66,10 @@ public enum DryingRackProvider implements IBlockComponentProvider {
                         .append(Component.literal("Time Left: " + mmss).withStyle(ChatFormatting.GRAY))
                         .append(Component.literal(")").withStyle(ChatFormatting.DARK_GRAY));
             } else {
-                line = name; // finished non-bud item; just the name (e.g., "Dried Tobacco Leaves")
+                line = name;
             }
 
-            // Icon + text on the same line
-            tooltip.add(icon);
-            tooltip.append(elements.text(line));
+            tooltip.add(line);
         }
     }
 
