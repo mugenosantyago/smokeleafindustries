@@ -195,12 +195,24 @@ public class MutatorBlockEntity extends BlockEntity implements MenuProvider {
 
         // Debug logging - only log once per 5 seconds (every 100 ticks) to avoid spam
         if (level.getGameTime() % 100 == 0 && (!itemHandler.getStackInSlot(SEED_INPUT_SLOT).isEmpty() || !itemHandler.getStackInSlot(EXTRACT_INPUT_SLOT).isEmpty())) {
-            SmokeleafIndustries.LOGGER.info("[Mutator] Seed: {}, Extract: {}", itemHandler.getStackInSlot(SEED_INPUT_SLOT).getItem(), itemHandler.getStackInSlot(EXTRACT_INPUT_SLOT).getItem());
-            SmokeleafIndustries.LOGGER.info("[Mutator] Energy: {}/{}, hasEnergy: {}, hasFluid: {} ({}mB)", 
-                ENERGY_STORAGE.getEnergyStored(), ENERGY_STORAGE.getMaxEnergyStored(), hasEnergy, hasFluid, FLUID_TANK.getFluidAmount());
-            SmokeleafIndustries.LOGGER.info("[Mutator] hasRecipe: {}", hasRecipe());
+            ItemStack seedStack = itemHandler.getStackInSlot(SEED_INPUT_SLOT);
+            ItemStack extractStack = itemHandler.getStackInSlot(EXTRACT_INPUT_SLOT);
+            SmokeleafIndustries.LOGGER.info("[Mutator] === MUTATOR STATUS ===");
+            SmokeleafIndustries.LOGGER.info("[Mutator] Seed: {} x{}", seedStack.getItem(), seedStack.getCount());
+            SmokeleafIndustries.LOGGER.info("[Mutator] Extract: {} x{}", extractStack.getItem(), extractStack.getCount());
+            SmokeleafIndustries.LOGGER.info("[Mutator] Fluid: {} ({}mB)", FLUID_TANK.getFluid().getFluid(), FLUID_TANK.getFluidAmount());
+            SmokeleafIndustries.LOGGER.info("[Mutator] Energy: {}/{} FE", ENERGY_STORAGE.getEnergyStored(), ENERGY_STORAGE.getMaxEnergyStored());
+            SmokeleafIndustries.LOGGER.info("[Mutator] hasEnergy: {}, hasFluid: {}, hasRecipe: {}", hasEnergy, hasFluid, hasRecipe());
             Optional<RecipeHolder<MutatorRecipe>> recipe = getCurrentRecipe();
-            SmokeleafIndustries.LOGGER.info("[Mutator] Recipe found: {}", recipe.isPresent() ? recipe.get().id() : "NONE");
+            if (recipe.isPresent()) {
+                SmokeleafIndustries.LOGGER.info("[Mutator] Recipe found: {}", recipe.get().id());
+                MutatorRecipe rec = recipe.get().value();
+                SmokeleafIndustries.LOGGER.info("[Mutator] Recipe needs: Seed x{}, Extract x{}, Fluid {}mB", 
+                    rec.inputItems().get(0).count(), rec.inputItems().get(1).count(), rec.getFluid().getAmount());
+            } else {
+                SmokeleafIndustries.LOGGER.info("[Mutator] NO RECIPE FOUND - check counts and fluid type!");
+            }
+            SmokeleafIndustries.LOGGER.info("[Mutator] ===================");
         }
 
         // Handle insertion of Hash oil Bucket into Fluid Tank
