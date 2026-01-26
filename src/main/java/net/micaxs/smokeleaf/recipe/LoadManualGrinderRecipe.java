@@ -43,14 +43,17 @@ public class LoadManualGrinderRecipe extends CustomRecipe {
     }
 
     private boolean hasManualGrinderRecipe(Level level, ItemStack stack) {
-        if (stack.isEmpty()) return false;
+        if (stack.isEmpty() || level == null) return false;
         ManualGrinderInput in = new ManualGrinderInput(stack.copyWithCount(1));
+        
+        // On server side, check recipes
         if (level instanceof net.minecraft.server.level.ServerLevel serverLevel) {
             return serverLevel.getServer().getRecipeManager()
                     .getRecipeFor(ModRecipes.MANUAL_GRINDER_TYPE.get(), in, level)
                     .isPresent();
         }
-        return false;
+        // On client side, allow it (server will validate)
+        return true;
     }
 
     @Override

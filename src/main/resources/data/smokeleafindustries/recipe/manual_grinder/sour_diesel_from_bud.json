@@ -1,0 +1,9 @@
+{
+  "type": "smokeleafindustries:manual_grinder",
+  "ingredient": "smokeleafindustries:sour_diesel_bud",
+  "grind_time": 40,
+  "result": {
+    "id": "smokeleafindustries:sour_diesel_weed",
+    "count": 2
+  }
+}

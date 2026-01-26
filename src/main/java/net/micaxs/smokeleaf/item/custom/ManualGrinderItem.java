@@ -113,6 +113,8 @@ public class ManualGrinderItem extends Item {
     private Optional<ManualGrinderRecipe> getRecipe(Level level, ItemStack ingredient) {
         if (level == null || ingredient.isEmpty()) return Optional.empty();
         ManualGrinderInput input = new ManualGrinderInput(ingredient.copyWithCount(1));
+        
+        // Only works server-side
         if (level instanceof net.minecraft.server.level.ServerLevel serverLevel) {
             return serverLevel.getServer().getRecipeManager()
                     .getRecipeFor(ModRecipes.MANUAL_GRINDER_TYPE.get(), input, level)

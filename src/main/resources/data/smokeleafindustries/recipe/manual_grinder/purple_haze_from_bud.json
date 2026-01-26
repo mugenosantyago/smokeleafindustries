@@ -1,0 +1,9 @@
+{
+  "type": "smokeleafindustries:manual_grinder",
+  "ingredient": "smokeleafindustries:purple_haze_bud",
+  "grind_time": 40,
+  "result": {
+    "id": "smokeleafindustries:purple_haze_weed",
+    "count": 2
+  }
+}

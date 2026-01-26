@@ -1,0 +1,9 @@
+{
+  "type": "smokeleafindustries:manual_grinder",
+  "ingredient": "smokeleafindustries:hemp_leaf",
+  "grind_time": 40,
+  "result": {
+    "id": "smokeleafindustries:hemp_fibers",
+    "count": 2
+  }
+}

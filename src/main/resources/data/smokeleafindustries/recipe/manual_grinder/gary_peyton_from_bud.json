@@ -1,0 +1,9 @@
+{
+  "type": "smokeleafindustries:manual_grinder",
+  "ingredient": "smokeleafindustries:gary_peyton_bud",
+  "grind_time": 40,
+  "result": {
+    "id": "smokeleafindustries:gary_peyton_weed",
+    "count": 2
+  }
+}

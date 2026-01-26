@@ -58,36 +58,23 @@ public record IngredientWithCount(Ingredient ingredient, int count) {
                 }
                 
                 // Check for legacy "tag" field (old format: {"tag": "mod:tag", "count": N})
-                // Create Ingredient directly from TagKey instead of parsing string
+                // Convert to new "#tagname" format for Ingredient.CODEC
                 T tagElem = m.get("tag");
                 if (tagElem != null) {
                     var idResult = ops.getStringValue(tagElem);
                     if (idResult.result().isPresent()) {
                         String tagId = idResult.result().get();
                         try {
-                            // Create TagKey directly and build Ingredient from it
-                            ResourceLocation tagLocation = ResourceLocation.parse(tagId);
-                            TagKey<Item> tagKey = ItemTags.create(tagLocation);
-                            
-                            // Get the tag from registry and create Ingredient
-                            var tagHolder = BuiltInRegistries.ITEM.get(tagKey);
-                            if (tagHolder.isPresent()) {
-                                Ingredient ing = Ingredient.of(tagHolder.get());
-                                SmokeleafIndustries.LOGGER.debug("[IngredientWithCount] Parsed legacy 'tag' field: {} -> created Ingredient", tagId);
-                                return DataResult.success(Pair.of(new IngredientWithCount(ing, Math.max(1, count)), input));
+                            // Convert tag format from "modid:tagname" to "#modid:tagname"
+                            String newFormat = "#" + tagId;
+                            T converted = ops.createString(newFormat);
+                            DataResult<Ingredient> ingr = Ingredient.CODEC.parse(ops, converted);
+                            if (ingr.error().isPresent()) {
+                                SmokeleafIndustries.LOGGER.error("[IngredientWithCount] Failed to parse tag '{}': {}", tagId, ingr.error().get().message());
                             } else {
-                                SmokeleafIndustries.LOGGER.warn("[IngredientWithCount] Tag not found in registry: {}, will try string parse", tagId);
-                                // Fallback to string parsing
-                                String newFormat = "#" + tagId;
-                                T converted = ops.createString(newFormat);
-                                DataResult<Ingredient> ingr = Ingredient.CODEC.parse(ops, converted);
-                                if (ingr.error().isPresent()) {
-                                    SmokeleafIndustries.LOGGER.error("[IngredientWithCount] Failed to parse tag '{}' as string: {}", tagId, ingr.error().get().message());
-                                } else {
-                                    SmokeleafIndustries.LOGGER.debug("[IngredientWithCount] Successfully parsed tag '{}' as string format", tagId);
-                                }
-                                return ingr.map(i -> Pair.of(new IngredientWithCount(i, Math.max(1, count)), input));
+                                SmokeleafIndustries.LOGGER.debug("[IngredientWithCount] Successfully parsed tag '{}' as '{}'", tagId, newFormat);
                             }
+                            return ingr.map(i -> Pair.of(new IngredientWithCount(i, Math.max(1, count)), input));
                         } catch (Exception e) {
                             SmokeleafIndustries.LOGGER.error("[IngredientWithCount] Error creating tag ingredient for '{}': {}", tagId, e.getMessage());
                         }

@@ -1,0 +1,9 @@
+{
+  "type": "smokeleafindustries:manual_grinder",
+  "ingredient": "smokeleafindustries:blue_cookies_bud",
+  "grind_time": 40,
+  "result": {
+    "id": "smokeleafindustries:blue_cookies_weed",
+    "count": 2
+  }
+}
