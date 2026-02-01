@@ -296,8 +296,8 @@ public class MutatorBlockEntity extends BlockEntity implements MenuProvider {
         FluidStack required = rec.getFluid();
         if (tank.isEmpty()) return false;
 
-        // Check Fluids
-        if (tank.getFluid() != required.getFluid()) return false;
+        // Check Fluids - use isSameFluid() instead of reference equality
+        if (!tank.getFluid().isSame(required.getFluid())) return false;
         if (tank.getAmount() < required.getAmount()) return false;
 
         return true;
