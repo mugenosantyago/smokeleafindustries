@@ -78,15 +78,6 @@ public class DryingRackBlockEntity extends BlockEntity {
                 DryingRecipeInput input = new DryingRecipeInput(stack);
                 recipeHolderOpt = serverLevel.getServer().getRecipeManager()
                         .getRecipeFor(ModRecipes.DRYING_TYPE.get(), input, level);
-                
-                // Debug logging - only log once per second (every 20 ticks) to avoid spam
-                if (server.getGameTime() % 100 == 0) {
-                    SmokeleafIndustries.LOGGER.info("[DryingRack] Slot {} has item: {} ({})", i, stack.getItem(), stack);
-                    SmokeleafIndustries.LOGGER.info("[DryingRack] Recipe lookup result: {}", recipeHolderOpt.isPresent() ? "FOUND" : "NOT FOUND");
-                    if (recipeHolderOpt.isPresent()) {
-                        SmokeleafIndustries.LOGGER.info("[DryingRack] Recipe: dryBud={}", recipeHolderOpt.get().value().dryBud());
-                    }
-                }
             }
 
             if (recipeHolderOpt.isEmpty()) {

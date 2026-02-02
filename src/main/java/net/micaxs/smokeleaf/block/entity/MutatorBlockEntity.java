@@ -193,28 +193,6 @@ public class MutatorBlockEntity extends BlockEntity implements MenuProvider {
         boolean hasEnergy = this.ENERGY_STORAGE.getEnergyStored() > 0;
         boolean hasFluid = !this.FLUID_TANK.isEmpty();
 
-        // Debug logging - only log once per 5 seconds (every 100 ticks) to avoid spam
-        if (level.getGameTime() % 100 == 0 && (!itemHandler.getStackInSlot(SEED_INPUT_SLOT).isEmpty() || !itemHandler.getStackInSlot(EXTRACT_INPUT_SLOT).isEmpty())) {
-            ItemStack seedStack = itemHandler.getStackInSlot(SEED_INPUT_SLOT);
-            ItemStack extractStack = itemHandler.getStackInSlot(EXTRACT_INPUT_SLOT);
-            SmokeleafIndustries.LOGGER.info("[Mutator] === MUTATOR STATUS ===");
-            SmokeleafIndustries.LOGGER.info("[Mutator] Seed: {} x{}", seedStack.getItem(), seedStack.getCount());
-            SmokeleafIndustries.LOGGER.info("[Mutator] Extract: {} x{}", extractStack.getItem(), extractStack.getCount());
-            SmokeleafIndustries.LOGGER.info("[Mutator] Fluid: {} ({}mB)", FLUID_TANK.getFluid().getFluid(), FLUID_TANK.getFluidAmount());
-            SmokeleafIndustries.LOGGER.info("[Mutator] Energy: {}/{} FE", ENERGY_STORAGE.getEnergyStored(), ENERGY_STORAGE.getMaxEnergyStored());
-            SmokeleafIndustries.LOGGER.info("[Mutator] hasEnergy: {}, hasFluid: {}, hasRecipe: {}", hasEnergy, hasFluid, hasRecipe());
-            Optional<RecipeHolder<MutatorRecipe>> recipe = getCurrentRecipe();
-            if (recipe.isPresent()) {
-                SmokeleafIndustries.LOGGER.info("[Mutator] Recipe found: {}", recipe.get().id());
-                MutatorRecipe rec = recipe.get().value();
-                SmokeleafIndustries.LOGGER.info("[Mutator] Recipe needs: Seed x{}, Extract x{}, Fluid {}mB", 
-                    rec.inputItems().get(0).count(), rec.inputItems().get(1).count(), rec.getFluid().getAmount());
-            } else {
-                SmokeleafIndustries.LOGGER.info("[Mutator] NO RECIPE FOUND - check counts and fluid type!");
-            }
-            SmokeleafIndustries.LOGGER.info("[Mutator] ===================");
-        }
-
         // Handle insertion of Hash oil Bucket into Fluid Tank
         if (hasFluidItemInSourceSlot()) {
             transferItemFluidToFluidTank();
@@ -314,17 +292,8 @@ public class MutatorBlockEntity extends BlockEntity implements MenuProvider {
         if (this.level instanceof net.minecraft.server.level.ServerLevel serverLevel) {
             MutatorRecipeInput input = new MutatorRecipeInput(seedStack, extractStack);
             
-            Optional<RecipeHolder<MutatorRecipe>> result = serverLevel.getServer().getRecipeManager()
+            return serverLevel.getServer().getRecipeManager()
                     .getRecipeFor(ModRecipes.MUTATOR_TYPE.get(), input, level);
-            
-            if (result.isEmpty()) {
-                SmokeleafIndustries.LOGGER.debug("[Mutator] No matching recipe found for seed={} x{}, extract={} x{}", 
-                    seedStack.getItem(), seedStack.getCount(), extractStack.getItem(), extractStack.getCount());
-            } else {
-                SmokeleafIndustries.LOGGER.debug("[Mutator] Found recipe: {}", result.get().id());
-            }
-            
-            return result;
         }
         return Optional.empty();
     }

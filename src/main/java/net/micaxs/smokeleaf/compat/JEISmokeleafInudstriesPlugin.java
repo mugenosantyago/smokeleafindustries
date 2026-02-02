@@ -12,7 +12,6 @@ import net.micaxs.smokeleaf.compat.jei.*;
 import net.micaxs.smokeleaf.item.ModItems;
 import net.micaxs.smokeleaf.recipe.*;
 import net.micaxs.smokeleaf.screen.custom.*;
-import net.minecraft.client.Minecraft;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
@@ -50,80 +49,26 @@ public class JEISmokeleafInudstriesPlugin implements IModPlugin {
 
     @Override
     public void registerRecipes(IRecipeRegistration registration) {
-        Minecraft mc = Minecraft.getInstance();
-        if (mc.level == null) return;
-        // TODO: Update for 1.21.8 - RecipeManager.getAllRecipesFor() API changed
-        // ClientLevel doesn't have getRecipeManager() - need to use server-side recipe manager or JEI's system
-        // RecipeManager recipeManager = mc.level.getRecipeManager(); // Removed - ClientLevel doesn't have this method
+        // Use cached recipes loaded from server
+        // Note: Recipes are cached when the server starts in ServerEvents
         
-        // Temporarily disabled - getAllRecipesFor() method signature changed in 1.21.8
-        // Need to find the new API or use JEI's recipe discovery system
-        /*
-        List<ExtractorRecipe> extractorRecipes =
-                recipeManager.getAllRecipesFor(ModRecipes.EXTRACTOR_TYPE.get())
-                        .stream().map(RecipeHolder::value).toList();
-        registration.addRecipes(ExtractorRecipeCategory.EXTRACTOR_RECIPE_RECIPE_TYPE, extractorRecipes);
-
-        List<GeneratorRecipe> generatorRecipes =
-                recipeManager.getAllRecipesFor(ModRecipes.GENERATOR_TYPE.get())
-                        .stream().map(RecipeHolder::value).toList();
-        registration.addRecipes(GeneratorRecipeCategory.GENERATOR_RECIPE_TYPE, generatorRecipes);
-
-        List<LiquifierRecipe> liquifierRecipes =
-                recipeManager.getAllRecipesFor(ModRecipes.LIQUIFIER_TYPE.get())
-                        .stream().map(RecipeHolder::value).toList();
-        registration.addRecipes(LiquifierRecipeCategory.LIQUIFIER_RECIPE_TYPE, liquifierRecipes);
-
-        List<GrinderRecipe> grinderRecipes =
-                recipeManager.getAllRecipesFor(ModRecipes.GRINDER_TYPE.get())
-                        .stream().map(RecipeHolder::value).toList();
-        registration.addRecipes(GrinderRecipeCategory.GRINDER_RECIPE_TYPE, grinderRecipes);
-
-        List<DryingRecipe> dryingRecipes =
-                recipeManager.getAllRecipesFor(ModRecipes.DRYING_TYPE.get())
-                        .stream().map(RecipeHolder::value).toList();
-        registration.addRecipes(DryingRecipeCategory.DRYING_RECIPE_TYPE, dryingRecipes);
-
-        List<MutatorRecipe> mutatorRecipes =
-                recipeManager.getAllRecipesFor(ModRecipes.MUTATOR_TYPE.get())
-                        .stream().map(RecipeHolder::value).toList();
-        registration.addRecipes(MutatorRecipeCategory.MUTATOR_RECIPE_TYPE, mutatorRecipes);
-
-        List<SequencerRecipe> sequencerRecipes =
-                recipeManager.getAllRecipesFor(ModRecipes.SEQUENCER_TYPE.get())
-                        .stream().map(RecipeHolder::value).toList();
-        registration.addRecipes(SequencerRecipeCategory.SEQUENCER_RECIPE_TYPE, sequencerRecipes);
-
-        List<SynthesizerRecipe> synthesizer =
-                recipeManager.getAllRecipesFor(ModRecipes.SYNTHESIZER_TYPE.get())
-                        .stream().map(RecipeHolder::value).toList();
-        var synthDisplays = synthesizer.stream()
-                .flatMap(r -> SynthesizerRecipeCategory.buildValidStrainDisplays(r, sequencerRecipes).stream())
+        registration.addRecipes(ExtractorRecipeCategory.EXTRACTOR_RECIPE_RECIPE_TYPE, RecipeCache.getExtractorRecipes());
+        registration.addRecipes(GeneratorRecipeCategory.GENERATOR_RECIPE_TYPE, RecipeCache.getGeneratorRecipes());
+        registration.addRecipes(LiquifierRecipeCategory.LIQUIFIER_RECIPE_TYPE, RecipeCache.getLiquifierRecipes());
+        registration.addRecipes(GrinderRecipeCategory.GRINDER_RECIPE_TYPE, RecipeCache.getGrinderRecipes());
+        registration.addRecipes(DryingRecipeCategory.DRYING_RECIPE_TYPE, RecipeCache.getDryingRecipes());
+        registration.addRecipes(MutatorRecipeCategory.MUTATOR_RECIPE_TYPE, RecipeCache.getMutatorRecipes());
+        registration.addRecipes(SequencerRecipeCategory.SEQUENCER_RECIPE_TYPE, RecipeCache.getSequencerRecipes());
+        
+        // Build synthesizer displays from cached recipes
+        var synthDisplays = RecipeCache.getSynthesizerRecipes().stream()
+                .flatMap(r -> SynthesizerRecipeCategory.buildValidStrainDisplays(r, RecipeCache.getSequencerRecipes()).stream())
                 .toList();
         registration.addRecipes(SynthesizerRecipeCategory.SYNTHESIZER_RECIPE_TYPE, synthDisplays);
-
-        List<ManualGrinderRecipe> manualGrinderRecipes =
-                recipeManager.getAllRecipesFor(ModRecipes.MANUAL_GRINDER_TYPE.get())
-                        .stream().map(RecipeHolder::value).toList();
-        registration.addRecipes(ManualGrinderRecipeCategory.RECIPE_TYPE, manualGrinderRecipes);
-
-        List<JointRecipe> jointRecipes =
-                recipeManager.getAllRecipesFor(RecipeType.CRAFTING).stream()
-                        .map(RecipeHolder::value)
-                        .filter(r -> r.getSerializer() == ModRecipes.JOINT_SERIALIZER.get())
-                        .map(r -> (JointRecipe) r)
-                        .toList();
-        registration.addRecipes(JointRecipeCategory.JOINT_RECIPE_TYPE, jointRecipes);
-
-        // Robust: pick all loaded BluntRecipe instances
-        List<BluntRecipe> bluntRecipes =
-                recipeManager.getAllRecipesFor(RecipeType.CRAFTING).stream()
-                        .map(RecipeHolder::value)
-                        .filter(BluntRecipe.class::isInstance)
-                        .map(BluntRecipe.class::cast)
-                        .toList();
-        registration.addRecipes(BluntRecipeCategory.BLUNT_RECIPE_TYPE, bluntRecipes);
-        */
+        
+        registration.addRecipes(ManualGrinderRecipeCategory.RECIPE_TYPE, RecipeCache.getManualGrinderRecipes());
+        registration.addRecipes(JointRecipeCategory.JOINT_RECIPE_TYPE, RecipeCache.getJointRecipes());
+        registration.addRecipes(BluntRecipeCategory.BLUNT_RECIPE_TYPE, RecipeCache.getBluntRecipes());
     }
 
     @Override

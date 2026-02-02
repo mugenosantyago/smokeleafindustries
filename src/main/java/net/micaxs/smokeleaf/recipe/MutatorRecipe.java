@@ -45,7 +45,6 @@ public record MutatorRecipe(NonNullList<IngredientWithCount> inputItems, FluidSt
         // Allow client-side matching for JEI and display purposes
         // Actual crafting validation happens server-side in BlockEntity
         if (inputItems.size() != 2) {
-            net.micaxs.smokeleaf.SmokeleafIndustries.LOGGER.debug("[MutatorRecipe] Rejecting - inputItems size != 2, got: {}", inputItems.size());
             return false;
         }
 
@@ -61,18 +60,13 @@ public record MutatorRecipe(NonNullList<IngredientWithCount> inputItems, FluidSt
         boolean bCountOk = extract.getCount() >= b.count();
 
         if (!aTestResult || !aCountOk) {
-            net.micaxs.smokeleaf.SmokeleafIndustries.LOGGER.debug("[MutatorRecipe] Seed check failed - test: {}, countOk: {} (need {} have {}), seed: {}", 
-                aTestResult, aCountOk, a.count(), seed.getCount(), seed.getItem());
             return false;
         }
         if (!bTestResult || !bCountOk) {
-            net.micaxs.smokeleaf.SmokeleafIndustries.LOGGER.debug("[MutatorRecipe] Extract check failed - test: {}, countOk: {} (need {} have {}), extract: {}", 
-                bTestResult, bCountOk, b.count(), extract.getCount(), extract.getItem());
             return false;
         }
 
         // Fluid Check is done in BlockEntity for now..
-        net.micaxs.smokeleaf.SmokeleafIndustries.LOGGER.debug("[MutatorRecipe] Recipe MATCHED for seed: {} and extract: {}", seed.getItem(), extract.getItem());
         return true;
     }
 
