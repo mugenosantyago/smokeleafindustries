@@ -12,9 +12,12 @@ import net.micaxs.smokeleaf.compat.jei.*;
 import net.micaxs.smokeleaf.item.ModItems;
 import net.micaxs.smokeleaf.recipe.*;
 import net.micaxs.smokeleaf.screen.custom.*;
+import net.minecraft.client.Minecraft;
+import net.minecraft.client.multiplayer.ClientLevel;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
+import net.minecraft.world.item.crafting.RecipeAccess;
 import net.minecraft.world.item.crafting.RecipeHolder;
 import net.minecraft.world.item.crafting.RecipeManager;
 import net.minecraft.world.item.crafting.RecipeType;
@@ -31,6 +34,7 @@ public class JEISmokeleafInudstriesPlugin implements IModPlugin {
 
     @Override
     public void registerCategories(IRecipeCategoryRegistration registration) {
+        SmokeleafIndustries.LOGGER.info("JEI: Registering recipe categories...");
         var guiHelper = registration.getJeiHelpers().getGuiHelper();
         registration.addRecipeCategories(
                 new ExtractorRecipeCategory(guiHelper),
@@ -45,30 +49,120 @@ public class JEISmokeleafInudstriesPlugin implements IModPlugin {
                 new JointRecipeCategory(guiHelper),
                 new BluntRecipeCategory(guiHelper)
         );
+        SmokeleafIndustries.LOGGER.info("JEI: Registered 11 recipe categories");
     }
 
     @Override
     public void registerRecipes(IRecipeRegistration registration) {
-        // Use cached recipes loaded from server
-        // Note: Recipes are cached when the server starts in ServerEvents
+        SmokeleafIndustries.LOGGER.info("JEI: Registering recipes...");
         
-        registration.addRecipes(ExtractorRecipeCategory.EXTRACTOR_RECIPE_RECIPE_TYPE, RecipeCache.getExtractorRecipes());
-        registration.addRecipes(GeneratorRecipeCategory.GENERATOR_RECIPE_TYPE, RecipeCache.getGeneratorRecipes());
-        registration.addRecipes(LiquifierRecipeCategory.LIQUIFIER_RECIPE_TYPE, RecipeCache.getLiquifierRecipes());
-        registration.addRecipes(GrinderRecipeCategory.GRINDER_RECIPE_TYPE, RecipeCache.getGrinderRecipes());
-        registration.addRecipes(DryingRecipeCategory.DRYING_RECIPE_TYPE, RecipeCache.getDryingRecipes());
-        registration.addRecipes(MutatorRecipeCategory.MUTATOR_RECIPE_TYPE, RecipeCache.getMutatorRecipes());
-        registration.addRecipes(SequencerRecipeCategory.SEQUENCER_RECIPE_TYPE, RecipeCache.getSequencerRecipes());
+        // JEI loads after the game is running, so we can access the connection's recipe manager
+        var connection = Minecraft.getInstance().getConnection();
+        if (connection == null) {
+            SmokeleafIndustries.LOGGER.error("JEI: No connection available! Cannot load recipes.");
+            return;
+        }
         
-        // Build synthesizer displays from cached recipes
-        var synthDisplays = RecipeCache.getSynthesizerRecipes().stream()
-                .flatMap(r -> SynthesizerRecipeCategory.buildValidStrainDisplays(r, RecipeCache.getSequencerRecipes()).stream())
+        RecipeManager recipeManager = connection.recipeManager();
+        var allRecipes = recipeManager.getRecipes();
+        SmokeleafIndustries.LOGGER.info("JEI: Found {} total recipes from connection", allRecipes.size());
+        
+        // Extract recipes by type directly from client recipe manager
+        var extractorRecipes = allRecipes.stream()
+                .filter(r -> r.value().getType() == ModRecipes.EXTRACTOR_TYPE.get())
+                .map(RecipeHolder::value)
+                .map(r -> (ExtractorRecipe) r)
+                .toList();
+        registration.addRecipes(ExtractorRecipeCategory.EXTRACTOR_RECIPE_RECIPE_TYPE, extractorRecipes);
+        SmokeleafIndustries.LOGGER.info("JEI: Added {} extractor recipes", extractorRecipes.size());
+        
+        var generatorRecipes = allRecipes.stream()
+                .filter(r -> r.value().getType() == ModRecipes.GENERATOR_TYPE.get())
+                .map(RecipeHolder::value)
+                .map(r -> (GeneratorRecipe) r)
+                .toList();
+        registration.addRecipes(GeneratorRecipeCategory.GENERATOR_RECIPE_TYPE, generatorRecipes);
+        SmokeleafIndustries.LOGGER.info("JEI: Added {} generator recipes", generatorRecipes.size());
+        
+        var liquifierRecipes = allRecipes.stream()
+                .filter(r -> r.value().getType() == ModRecipes.LIQUIFIER_TYPE.get())
+                .map(RecipeHolder::value)
+                .map(r -> (LiquifierRecipe) r)
+                .toList();
+        registration.addRecipes(LiquifierRecipeCategory.LIQUIFIER_RECIPE_TYPE, liquifierRecipes);
+        SmokeleafIndustries.LOGGER.info("JEI: Added {} liquifier recipes", liquifierRecipes.size());
+        
+        var grinderRecipes = allRecipes.stream()
+                .filter(r -> r.value().getType() == ModRecipes.GRINDER_TYPE.get())
+                .map(RecipeHolder::value)
+                .map(r -> (GrinderRecipe) r)
+                .toList();
+        registration.addRecipes(GrinderRecipeCategory.GRINDER_RECIPE_TYPE, grinderRecipes);
+        SmokeleafIndustries.LOGGER.info("JEI: Added {} grinder recipes", grinderRecipes.size());
+        
+        var dryingRecipes = allRecipes.stream()
+                .filter(r -> r.value().getType() == ModRecipes.DRYING_TYPE.get())
+                .map(RecipeHolder::value)
+                .map(r -> (DryingRecipe) r)
+                .toList();
+        registration.addRecipes(DryingRecipeCategory.DRYING_RECIPE_TYPE, dryingRecipes);
+        SmokeleafIndustries.LOGGER.info("JEI: Added {} drying recipes", dryingRecipes.size());
+        
+        var mutatorRecipes = allRecipes.stream()
+                .filter(r -> r.value().getType() == ModRecipes.MUTATOR_TYPE.get())
+                .map(RecipeHolder::value)
+                .map(r -> (MutatorRecipe) r)
+                .toList();
+        registration.addRecipes(MutatorRecipeCategory.MUTATOR_RECIPE_TYPE, mutatorRecipes);
+        SmokeleafIndustries.LOGGER.info("JEI: Added {} mutator recipes", mutatorRecipes.size());
+        
+        var sequencerRecipes = allRecipes.stream()
+                .filter(r -> r.value().getType() == ModRecipes.SEQUENCER_TYPE.get())
+                .map(RecipeHolder::value)
+                .map(r -> (SequencerRecipe) r)
+                .toList();
+        registration.addRecipes(SequencerRecipeCategory.SEQUENCER_RECIPE_TYPE, sequencerRecipes);
+        SmokeleafIndustries.LOGGER.info("JEI: Added {} sequencer recipes", sequencerRecipes.size());
+        
+        var synthesizerRecipes = allRecipes.stream()
+                .filter(r -> r.value().getType() == ModRecipes.SYNTHESIZER_TYPE.get())
+                .map(RecipeHolder::value)
+                .map(r -> (SynthesizerRecipe) r)
+                .toList();
+        // Build synthesizer displays from recipes
+        var synthDisplays = synthesizerRecipes.stream()
+                .flatMap(r -> SynthesizerRecipeCategory.buildValidStrainDisplays(r, sequencerRecipes).stream())
                 .toList();
         registration.addRecipes(SynthesizerRecipeCategory.SYNTHESIZER_RECIPE_TYPE, synthDisplays);
+        SmokeleafIndustries.LOGGER.info("JEI: Added {} synthesizer displays", synthDisplays.size());
         
-        registration.addRecipes(ManualGrinderRecipeCategory.RECIPE_TYPE, RecipeCache.getManualGrinderRecipes());
-        registration.addRecipes(JointRecipeCategory.JOINT_RECIPE_TYPE, RecipeCache.getJointRecipes());
-        registration.addRecipes(BluntRecipeCategory.BLUNT_RECIPE_TYPE, RecipeCache.getBluntRecipes());
+        var manualGrinderRecipes = allRecipes.stream()
+                .filter(r -> r.value().getType() == ModRecipes.MANUAL_GRINDER_TYPE.get())
+                .map(RecipeHolder::value)
+                .map(r -> (ManualGrinderRecipe) r)
+                .toList();
+        registration.addRecipes(ManualGrinderRecipeCategory.RECIPE_TYPE, manualGrinderRecipes);
+        SmokeleafIndustries.LOGGER.info("JEI: Added {} manual grinder recipes", manualGrinderRecipes.size());
+        
+        var jointRecipes = allRecipes.stream()
+                .filter(r -> r.value().getType() == RecipeType.CRAFTING)
+                .map(RecipeHolder::value)
+                .filter(r -> r.getSerializer() == ModRecipes.JOINT_SERIALIZER.get())
+                .map(r -> (JointRecipe) r)
+                .toList();
+        registration.addRecipes(JointRecipeCategory.JOINT_RECIPE_TYPE, jointRecipes);
+        SmokeleafIndustries.LOGGER.info("JEI: Added {} joint recipes", jointRecipes.size());
+        
+        var bluntRecipes = allRecipes.stream()
+                .filter(r -> r.value().getType() == RecipeType.CRAFTING)
+                .map(RecipeHolder::value)
+                .filter(BluntRecipe.class::isInstance)
+                .map(BluntRecipe.class::cast)
+                .toList();
+        registration.addRecipes(BluntRecipeCategory.BLUNT_RECIPE_TYPE, bluntRecipes);
+        SmokeleafIndustries.LOGGER.info("JEI: Added {} blunt recipes", bluntRecipes.size());
+        
+        SmokeleafIndustries.LOGGER.info("JEI: Recipe registration complete!");
     }
 
     @Override

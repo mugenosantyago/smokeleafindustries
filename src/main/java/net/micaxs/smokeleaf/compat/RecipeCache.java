@@ -1,5 +1,6 @@
 package net.micaxs.smokeleaf.compat;
 
+import net.micaxs.smokeleaf.SmokeleafIndustries;
 import net.micaxs.smokeleaf.recipe.*;
 import net.minecraft.world.item.crafting.RecipeHolder;
 import net.minecraft.world.item.crafting.RecipeManager;
@@ -28,59 +29,71 @@ public class RecipeCache {
         // Get all recipes and filter by type
         var allRecipes = recipeManager.getRecipes();
         
+        SmokeleafIndustries.LOGGER.info("Caching recipes for JEI...");
+        SmokeleafIndustries.LOGGER.info("Total recipes found: {}", allRecipes.size());
+        
         extractorRecipes = allRecipes.stream()
                 .filter(r -> r.value().getType() == ModRecipes.EXTRACTOR_TYPE.get())
                 .map(RecipeHolder::value)
                 .map(r -> (ExtractorRecipe) r)
                 .toList();
+        SmokeleafIndustries.LOGGER.info("Extractor recipes: {}", extractorRecipes.size());
         
         generatorRecipes = allRecipes.stream()
                 .filter(r -> r.value().getType() == ModRecipes.GENERATOR_TYPE.get())
                 .map(RecipeHolder::value)
                 .map(r -> (GeneratorRecipe) r)
                 .toList();
+        SmokeleafIndustries.LOGGER.info("Generator recipes: {}", generatorRecipes.size());
         
         liquifierRecipes = allRecipes.stream()
                 .filter(r -> r.value().getType() == ModRecipes.LIQUIFIER_TYPE.get())
                 .map(RecipeHolder::value)
                 .map(r -> (LiquifierRecipe) r)
                 .toList();
+        SmokeleafIndustries.LOGGER.info("Liquifier recipes: {}", liquifierRecipes.size());
         
         grinderRecipes = allRecipes.stream()
                 .filter(r -> r.value().getType() == ModRecipes.GRINDER_TYPE.get())
                 .map(RecipeHolder::value)
                 .map(r -> (GrinderRecipe) r)
                 .toList();
+        SmokeleafIndustries.LOGGER.info("Grinder recipes: {}", grinderRecipes.size());
         
         dryingRecipes = allRecipes.stream()
                 .filter(r -> r.value().getType() == ModRecipes.DRYING_TYPE.get())
                 .map(RecipeHolder::value)
                 .map(r -> (DryingRecipe) r)
                 .toList();
+        SmokeleafIndustries.LOGGER.info("Drying recipes: {}", dryingRecipes.size());
         
         mutatorRecipes = allRecipes.stream()
                 .filter(r -> r.value().getType() == ModRecipes.MUTATOR_TYPE.get())
                 .map(RecipeHolder::value)
                 .map(r -> (MutatorRecipe) r)
                 .toList();
+        SmokeleafIndustries.LOGGER.info("Mutator recipes: {}", mutatorRecipes.size());
         
         sequencerRecipes = allRecipes.stream()
                 .filter(r -> r.value().getType() == ModRecipes.SEQUENCER_TYPE.get())
                 .map(RecipeHolder::value)
                 .map(r -> (SequencerRecipe) r)
                 .toList();
+        SmokeleafIndustries.LOGGER.info("Sequencer recipes: {}", sequencerRecipes.size());
         
         synthesizerRecipes = allRecipes.stream()
                 .filter(r -> r.value().getType() == ModRecipes.SYNTHESIZER_TYPE.get())
                 .map(RecipeHolder::value)
                 .map(r -> (SynthesizerRecipe) r)
                 .toList();
+        SmokeleafIndustries.LOGGER.info("Synthesizer recipes: {}", synthesizerRecipes.size());
         
         manualGrinderRecipes = allRecipes.stream()
                 .filter(r -> r.value().getType() == ModRecipes.MANUAL_GRINDER_TYPE.get())
                 .map(RecipeHolder::value)
                 .map(r -> (ManualGrinderRecipe) r)
                 .toList();
+        SmokeleafIndustries.LOGGER.info("Manual Grinder recipes: {}", manualGrinderRecipes.size());
         
         jointRecipes = allRecipes.stream()
                 .filter(r -> r.value().getType() == RecipeType.CRAFTING)
@@ -88,6 +101,7 @@ public class RecipeCache {
                 .filter(r -> r.getSerializer() == ModRecipes.JOINT_SERIALIZER.get())
                 .map(r -> (JointRecipe) r)
                 .toList();
+        SmokeleafIndustries.LOGGER.info("Joint recipes: {}", jointRecipes.size());
         
         bluntRecipes = allRecipes.stream()
                 .filter(r -> r.value().getType() == RecipeType.CRAFTING)
@@ -95,6 +109,9 @@ public class RecipeCache {
                 .filter(BluntRecipe.class::isInstance)
                 .map(BluntRecipe.class::cast)
                 .toList();
+        SmokeleafIndustries.LOGGER.info("Blunt recipes: {}", bluntRecipes.size());
+        
+        SmokeleafIndustries.LOGGER.info("Recipe caching complete!");
     }
 
     public static List<ExtractorRecipe> getExtractorRecipes() { return extractorRecipes; }
