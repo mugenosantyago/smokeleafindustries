@@ -1,6 +1,6 @@
 {
   "type": "smokeleafindustries:grinder",
-  "ingredient": "smokeleafindustries:amnesia_haze_bud",
+  "ingredient": {"item": "smokeleafindustries:amnesia_haze_bud"},
   "result": {
     "id": "smokeleafindustries:amnesia_haze_weed",
     "count": 2

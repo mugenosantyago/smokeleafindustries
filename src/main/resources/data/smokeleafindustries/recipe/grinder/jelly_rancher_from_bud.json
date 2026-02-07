@@ -1,6 +1,6 @@
 {
   "type": "smokeleafindustries:grinder",
-  "ingredient": "smokeleafindustries:jelly_rancher_bud",
+  "ingredient": {"item": "smokeleafindustries:jelly_rancher_bud"},
   "result": {
     "id": "smokeleafindustries:jelly_rancher_weed",
     "count": 2

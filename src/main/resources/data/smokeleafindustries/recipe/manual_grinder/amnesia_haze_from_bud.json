@@ -1,6 +1,6 @@
 {
   "type": "smokeleafindustries:manual_grinder",
-  "ingredient": "smokeleafindustries:amnesia_haze_bud",
+  "ingredient": {"item": "smokeleafindustries:amnesia_haze_bud"},
   "grind_time": 40,
   "result": {
     "id": "smokeleafindustries:amnesia_haze_weed",

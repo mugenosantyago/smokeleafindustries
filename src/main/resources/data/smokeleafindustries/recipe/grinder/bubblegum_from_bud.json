@@ -1,6 +1,6 @@
 {
   "type": "smokeleafindustries:grinder",
-  "ingredient": "smokeleafindustries:bubblegum_bud",
+  "ingredient": {"item": "smokeleafindustries:bubblegum_bud"},
   "result": {
     "id": "smokeleafindustries:bubblegum_weed",
     "count": 2

@@ -1,6 +1,6 @@
 {
   "type": "smokeleafindustries:manual_grinder",
-  "ingredient": "smokeleafindustries:strawberry_shortcake_bud",
+  "ingredient": {"item": "smokeleafindustries:strawberry_shortcake_bud"},
   "grind_time": 40,
   "result": {
     "id": "smokeleafindustries:strawberry_shortcake_weed",

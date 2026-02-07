@@ -1,6 +1,6 @@
 {
   "type": "smokeleafindustries:manual_grinder",
-  "ingredient": "smokeleafindustries:bubble_kush_bud",
+  "ingredient": {"item": "smokeleafindustries:bubble_kush_bud"},
   "grind_time": 40,
   "result": {
     "id": "smokeleafindustries:bubble_kush_weed",

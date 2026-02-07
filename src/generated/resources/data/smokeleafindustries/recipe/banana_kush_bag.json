@@ -2,12 +2,8 @@
   "type": "minecraft:crafting_shaped",
   "category": "misc",
   "key": {
-    "B": {
-      "item": "smokeleafindustries:empty_bag"
-    },
-    "W": {
-      "item": "smokeleafindustries:banana_kush_weed"
-    }
+    "B": "smokeleafindustries:empty_bag",
+    "W": "smokeleafindustries:banana_kush_weed"
   },
   "pattern": [
     "BWW",

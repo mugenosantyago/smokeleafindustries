@@ -2,12 +2,8 @@
   "type": "minecraft:crafting_shaped",
   "category": "misc",
   "key": {
-    "B": {
-      "item": "smokeleafindustries:empty_bag"
-    },
-    "W": {
-      "item": "smokeleafindustries:gary_peyton_weed"
-    }
+    "B": "smokeleafindustries:empty_bag",
+    "W": "smokeleafindustries:gary_peyton_weed"
   },
   "pattern": [
     "BWW",

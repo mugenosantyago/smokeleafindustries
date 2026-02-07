@@ -1,6 +1,6 @@
 {
   "type": "smokeleafindustries:extractor",
-  "ingredient": "smokeleafindustries:ghost_train_weed",
+  "ingredient": {"item": "smokeleafindustries:ghost_train_weed"},
   "result": {
     "id": "smokeleafindustries:ghost_train_extract",
     "count": 1

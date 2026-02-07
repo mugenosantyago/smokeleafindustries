@@ -2,12 +2,8 @@
   "type": "minecraft:crafting_shaped",
   "category": "misc",
   "key": {
-    "B": {
-      "item": "smokeleafindustries:empty_bag"
-    },
-    "W": {
-      "item": "smokeleafindustries:jelly_rancher_weed"
-    }
+    "B": "smokeleafindustries:empty_bag",
+    "W": "smokeleafindustries:jelly_rancher_weed"
   },
   "pattern": [
     "BWW",

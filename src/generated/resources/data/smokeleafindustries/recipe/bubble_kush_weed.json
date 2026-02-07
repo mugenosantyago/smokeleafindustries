@@ -2,9 +2,7 @@
   "type": "minecraft:crafting_shapeless",
   "category": "misc",
   "ingredients": [
-    {
-      "item": "smokeleafindustries:bubble_kush_bag"
-    }
+    "smokeleafindustries:bubble_kush_bag"
   ],
   "result": {
     "count": 8,

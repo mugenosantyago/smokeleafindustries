@@ -2,9 +2,7 @@
   "type": "minecraft:crafting_shapeless",
   "category": "misc",
   "ingredients": [
-    {
-      "item": "smokeleafindustries:grape_ape_bag"
-    }
+    "smokeleafindustries:grape_ape_bag"
   ],
   "result": {
     "count": 8,

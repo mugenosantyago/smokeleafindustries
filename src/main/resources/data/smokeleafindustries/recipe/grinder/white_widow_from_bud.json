@@ -1,6 +1,8 @@
 {
   "type": "smokeleafindustries:grinder",
-  "ingredient": "smokeleafindustries:white_widow_bud",
+  "ingredient": {
+    "item": "smokeleafindustries:white_widow_bud"
+  },
   "result": {
     "id": "smokeleafindustries:white_widow_weed",
     "count": 2

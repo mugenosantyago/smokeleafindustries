@@ -2,15 +2,9 @@
   "type": "minecraft:crafting_shaped",
   "category": "misc",
   "key": {
-    "B": {
-      "item": "minecraft:water_bucket"
-    },
-    "G": {
-      "item": "minecraft:glass_bottle"
-    },
-    "P": {
-      "item": "minecraft:glass_pane"
-    }
+    "B": "minecraft:water_bucket",
+    "G": "minecraft:glass_bottle",
+    "P": "minecraft:glass_pane"
   },
   "pattern": [
     "P  ",

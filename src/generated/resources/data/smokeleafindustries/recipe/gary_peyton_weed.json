@@ -2,9 +2,7 @@
   "type": "minecraft:crafting_shapeless",
   "category": "misc",
   "ingredients": [
-    {
-      "item": "smokeleafindustries:gary_peyton_bag"
-    }
+    "smokeleafindustries:gary_peyton_bag"
   ],
   "result": {
     "count": 8,

@@ -1,6 +1,6 @@
 {
   "type": "smokeleafindustries:extractor",
-  "ingredient": "smokeleafindustries:carbon_fiber_weed",
+  "ingredient": {"item": "smokeleafindustries:carbon_fiber_weed"},
   "result": {
     "id": "smokeleafindustries:carbon_fiber_extract",
     "count": 1

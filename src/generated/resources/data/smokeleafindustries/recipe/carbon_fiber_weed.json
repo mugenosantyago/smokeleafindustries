@@ -2,9 +2,7 @@
   "type": "minecraft:crafting_shapeless",
   "category": "misc",
   "ingredients": [
-    {
-      "item": "smokeleafindustries:carbon_fiber_bag"
-    }
+    "smokeleafindustries:carbon_fiber_bag"
   ],
   "result": {
     "count": 8,

@@ -2,9 +2,7 @@
   "type": "minecraft:crafting_shapeless",
   "category": "misc",
   "ingredients": [
-    {
-      "item": "smokeleafindustries:jelly_rancher_bag"
-    }
+    "smokeleafindustries:jelly_rancher_bag"
   ],
   "result": {
     "count": 8,

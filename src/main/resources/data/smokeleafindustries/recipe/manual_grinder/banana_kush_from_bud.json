@@ -1,6 +1,6 @@
 {
   "type": "smokeleafindustries:manual_grinder",
-  "ingredient": "smokeleafindustries:banana_kush_bud",
+  "ingredient": {"item": "smokeleafindustries:banana_kush_bud"},
   "grind_time": 40,
   "result": {
     "id": "smokeleafindustries:banana_kush_weed",

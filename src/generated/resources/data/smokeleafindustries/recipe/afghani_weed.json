@@ -2,9 +2,7 @@
   "type": "minecraft:crafting_shapeless",
   "category": "misc",
   "ingredients": [
-    {
-      "item": "smokeleafindustries:afghani_bag"
-    }
+    "smokeleafindustries:afghani_bag"
   ],
   "result": {
     "count": 8,

@@ -1,6 +1,6 @@
 {
   "type": "smokeleafindustries:extractor",
-  "ingredient": "smokeleafindustries:blue_cookies_weed",
+  "ingredient": {"item": "smokeleafindustries:blue_cookies_weed"},
   "result": {
     "id": "smokeleafindustries:blue_cookies_extract",
     "count": 1

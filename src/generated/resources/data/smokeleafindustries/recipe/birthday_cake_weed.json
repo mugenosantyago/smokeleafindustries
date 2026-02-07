@@ -2,9 +2,7 @@
   "type": "minecraft:crafting_shapeless",
   "category": "misc",
   "ingredients": [
-    {
-      "item": "smokeleafindustries:birthday_cake_bag"
-    }
+    "smokeleafindustries:birthday_cake_bag"
   ],
   "result": {
     "count": 8,

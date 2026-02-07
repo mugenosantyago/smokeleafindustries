@@ -1,6 +1,6 @@
 {
   "type": "smokeleafindustries:manual_grinder",
-  "ingredient": "smokeleafindustries:ghost_train_bud",
+  "ingredient": {"item": "smokeleafindustries:ghost_train_bud"},
   "grind_time": 40,
   "result": {
     "id": "smokeleafindustries:ghost_train_weed",

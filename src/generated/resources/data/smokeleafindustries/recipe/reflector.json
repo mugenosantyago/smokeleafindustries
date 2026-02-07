@@ -2,12 +2,8 @@
   "type": "minecraft:crafting_shaped",
   "category": "misc",
   "key": {
-    "I": {
-      "item": "smokeleafindustries:hemp_plastic"
-    },
-    "R": {
-      "item": "minecraft:redstone"
-    }
+    "I": "smokeleafindustries:hemp_plastic",
+    "R": "minecraft:redstone"
   },
   "pattern": [
     " I ",

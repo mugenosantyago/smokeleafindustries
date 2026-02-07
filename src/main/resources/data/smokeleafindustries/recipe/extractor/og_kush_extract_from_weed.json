@@ -1,6 +1,6 @@
 {
   "type": "smokeleafindustries:extractor",
-  "ingredient": "smokeleafindustries:og_kush_weed",
+  "ingredient": {"item": "smokeleafindustries:og_kush_weed"},
   "result": {
     "id": "smokeleafindustries:og_kush_extract",
     "count": 1

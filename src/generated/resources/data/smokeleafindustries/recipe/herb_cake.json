@@ -2,18 +2,10 @@
   "type": "minecraft:crafting_shaped",
   "category": "misc",
   "key": {
-    "B": {
-      "item": "smokeleafindustries:infused_butter"
-    },
-    "E": {
-      "item": "minecraft:egg"
-    },
-    "M": {
-      "item": "minecraft:milk_bucket"
-    },
-    "S": {
-      "item": "minecraft:sugar"
-    },
+    "B": "smokeleafindustries:infused_butter",
+    "E": "minecraft:egg",
+    "M": "minecraft:milk_bucket",
+    "S": "minecraft:sugar",
     "W": {
       "tag": "smokeleafindustries:weeds"
     }

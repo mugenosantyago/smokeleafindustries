@@ -430,9 +430,9 @@ public class CommonEvents {
     // -------- Villager Trades --------
     @SubscribeEvent
     public static void addCustomTrades(net.neoforged.neoforge.event.village.VillagerTradesEvent event) {
-        // TODO: Fix villager profession type comparison for 1.21.8 - event.getType() API changed
-        // if (event.getType() == ModVillagers.STONER.value()) {
-        if (false) { // Temporarily disabled
+        // Fixed for 1.21.8: event.getType() now returns ResourceKey<VillagerProfession>
+        // Compare using the holder's key
+        if (event.getType() == ModVillagers.STONER.getKey()) {
             Int2ObjectMap<List<net.minecraft.world.entity.npc.VillagerTrades.ItemListing>> trades = event.getTrades();
 
             addRandomTrades(trades, 1, 2,
@@ -496,9 +496,9 @@ public class CommonEvents {
             );
         }
 
-        // TODO: Fix villager profession type comparison for 1.21.8 - event.getType() API changed
-        // if (event.getType() == ModVillagers.DEALER.value()) {
-        if (false) { // Temporarily disabled
+        // Fixed for 1.21.8: event.getType() now returns ResourceKey<VillagerProfession>
+        // Compare using the holder's key
+        if (event.getType() == ModVillagers.DEALER.getKey()) {
             Int2ObjectMap<List<net.minecraft.world.entity.npc.VillagerTrades.ItemListing>> trades = event.getTrades();
 
             trades.get(1).add((pTrader, pRandom) -> new MerchantOffer(

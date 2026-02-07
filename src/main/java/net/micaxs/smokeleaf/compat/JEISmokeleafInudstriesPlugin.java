@@ -6,6 +6,7 @@ import mezz.jei.api.registration.IGuiHandlerRegistration;
 import mezz.jei.api.registration.IRecipeCatalystRegistration;
 import mezz.jei.api.registration.IRecipeCategoryRegistration;
 import mezz.jei.api.registration.IRecipeRegistration;
+import mezz.jei.api.runtime.IJeiRuntime;
 import net.micaxs.smokeleaf.SmokeleafIndustries;
 import net.micaxs.smokeleaf.block.ModBlocks;
 import net.micaxs.smokeleaf.compat.jei.*;
@@ -15,11 +16,15 @@ import net.micaxs.smokeleaf.screen.custom.*;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
+import net.minecraft.world.item.crafting.RecipeHolder;
+import net.minecraft.world.item.crafting.RecipeType;
 
 import java.util.List;
 
 @JeiPlugin
 public class JEISmokeleafInudstriesPlugin implements IModPlugin {
+    
+    private static IJeiRuntime jeiRuntime;
 
     @Override
     public ResourceLocation getPluginUid() {
@@ -48,48 +53,57 @@ public class JEISmokeleafInudstriesPlugin implements IModPlugin {
 
     @Override
     public void registerRecipes(IRecipeRegistration registration) {
-        // Use cached recipes loaded from server
-        // Note: Recipes are cached when the server starts in ServerEvents
-        SmokeleafIndustries.LOGGER.info("JEI: Registering recipes from cache...");
+        // Recipes will be added later via onRuntimeAvailable after the server loads
+        // This is necessary because recipes are only available after ServerStartingEvent
+        SmokeleafIndustries.LOGGER.info("JEI: registerRecipes called (recipes will be added on runtime available)");
+    }
+    
+    @Override
+    public void onRuntimeAvailable(IJeiRuntime jeiRuntime) {
+        // This is called after the game is fully loaded and running
+        // At this point, the integrated server has started and recipes are available
+        JEISmokeleafInudstriesPlugin.jeiRuntime = jeiRuntime;
+        SmokeleafIndustries.LOGGER.info("JEI Runtime available - adding recipes now...");
         
-        registration.addRecipes(ExtractorRecipeCategory.EXTRACTOR_RECIPE_RECIPE_TYPE, RecipeCache.getExtractorRecipes());
+        // Add recipes using the runtime API
+        jeiRuntime.getRecipeManager().addRecipes(ExtractorRecipeCategory.EXTRACTOR_RECIPE_RECIPE_TYPE, RecipeCache.getExtractorRecipes());
         SmokeleafIndustries.LOGGER.info("JEI: Added {} extractor recipes", RecipeCache.getExtractorRecipes().size());
         
-        registration.addRecipes(GeneratorRecipeCategory.GENERATOR_RECIPE_TYPE, RecipeCache.getGeneratorRecipes());
+        jeiRuntime.getRecipeManager().addRecipes(GeneratorRecipeCategory.GENERATOR_RECIPE_TYPE, RecipeCache.getGeneratorRecipes());
         SmokeleafIndustries.LOGGER.info("JEI: Added {} generator recipes", RecipeCache.getGeneratorRecipes().size());
         
-        registration.addRecipes(LiquifierRecipeCategory.LIQUIFIER_RECIPE_TYPE, RecipeCache.getLiquifierRecipes());
+        jeiRuntime.getRecipeManager().addRecipes(LiquifierRecipeCategory.LIQUIFIER_RECIPE_TYPE, RecipeCache.getLiquifierRecipes());
         SmokeleafIndustries.LOGGER.info("JEI: Added {} liquifier recipes", RecipeCache.getLiquifierRecipes().size());
         
-        registration.addRecipes(GrinderRecipeCategory.GRINDER_RECIPE_TYPE, RecipeCache.getGrinderRecipes());
+        jeiRuntime.getRecipeManager().addRecipes(GrinderRecipeCategory.GRINDER_RECIPE_TYPE, RecipeCache.getGrinderRecipes());
         SmokeleafIndustries.LOGGER.info("JEI: Added {} grinder recipes", RecipeCache.getGrinderRecipes().size());
         
-        registration.addRecipes(DryingRecipeCategory.DRYING_RECIPE_TYPE, RecipeCache.getDryingRecipes());
+        jeiRuntime.getRecipeManager().addRecipes(DryingRecipeCategory.DRYING_RECIPE_TYPE, RecipeCache.getDryingRecipes());
         SmokeleafIndustries.LOGGER.info("JEI: Added {} drying recipes", RecipeCache.getDryingRecipes().size());
         
-        registration.addRecipes(MutatorRecipeCategory.MUTATOR_RECIPE_TYPE, RecipeCache.getMutatorRecipes());
+        jeiRuntime.getRecipeManager().addRecipes(MutatorRecipeCategory.MUTATOR_RECIPE_TYPE, RecipeCache.getMutatorRecipes());
         SmokeleafIndustries.LOGGER.info("JEI: Added {} mutator recipes", RecipeCache.getMutatorRecipes().size());
         
-        registration.addRecipes(SequencerRecipeCategory.SEQUENCER_RECIPE_TYPE, RecipeCache.getSequencerRecipes());
+        jeiRuntime.getRecipeManager().addRecipes(SequencerRecipeCategory.SEQUENCER_RECIPE_TYPE, RecipeCache.getSequencerRecipes());
         SmokeleafIndustries.LOGGER.info("JEI: Added {} sequencer recipes", RecipeCache.getSequencerRecipes().size());
         
         // Build synthesizer displays from cached recipes
         var synthDisplays = RecipeCache.getSynthesizerRecipes().stream()
                 .flatMap(r -> SynthesizerRecipeCategory.buildValidStrainDisplays(r, RecipeCache.getSequencerRecipes()).stream())
                 .toList();
-        registration.addRecipes(SynthesizerRecipeCategory.SYNTHESIZER_RECIPE_TYPE, synthDisplays);
+        jeiRuntime.getRecipeManager().addRecipes(SynthesizerRecipeCategory.SYNTHESIZER_RECIPE_TYPE, synthDisplays);
         SmokeleafIndustries.LOGGER.info("JEI: Added {} synthesizer displays", synthDisplays.size());
         
-        registration.addRecipes(ManualGrinderRecipeCategory.RECIPE_TYPE, RecipeCache.getManualGrinderRecipes());
+        jeiRuntime.getRecipeManager().addRecipes(ManualGrinderRecipeCategory.RECIPE_TYPE, RecipeCache.getManualGrinderRecipes());
         SmokeleafIndustries.LOGGER.info("JEI: Added {} manual grinder recipes", RecipeCache.getManualGrinderRecipes().size());
         
-        registration.addRecipes(JointRecipeCategory.JOINT_RECIPE_TYPE, RecipeCache.getJointRecipes());
+        jeiRuntime.getRecipeManager().addRecipes(JointRecipeCategory.JOINT_RECIPE_TYPE, RecipeCache.getJointRecipes());
         SmokeleafIndustries.LOGGER.info("JEI: Added {} joint recipes", RecipeCache.getJointRecipes().size());
         
-        registration.addRecipes(BluntRecipeCategory.BLUNT_RECIPE_TYPE, RecipeCache.getBluntRecipes());
+        jeiRuntime.getRecipeManager().addRecipes(BluntRecipeCategory.BLUNT_RECIPE_TYPE, RecipeCache.getBluntRecipes());
         SmokeleafIndustries.LOGGER.info("JEI: Added {} blunt recipes", RecipeCache.getBluntRecipes().size());
         
-        SmokeleafIndustries.LOGGER.info("JEI: Recipe registration complete!");
+        SmokeleafIndustries.LOGGER.info("JEI: All recipes added via runtime API!");
     }
 
     @Override

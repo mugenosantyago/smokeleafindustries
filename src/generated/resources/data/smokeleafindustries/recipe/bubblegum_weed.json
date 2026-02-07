@@ -2,9 +2,7 @@
   "type": "minecraft:crafting_shapeless",
   "category": "misc",
   "ingredients": [
-    {
-      "item": "smokeleafindustries:bubblegum_bag"
-    }
+    "smokeleafindustries:bubblegum_bag"
   ],
   "result": {
     "count": 8,

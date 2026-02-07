@@ -2,9 +2,7 @@
   "type": "minecraft:crafting_shapeless",
   "category": "misc",
   "ingredients": [
-    {
-      "item": "smokeleafindustries:blue_ice_bag"
-    }
+    "smokeleafindustries:blue_ice_bag"
   ],
   "result": {
     "count": 8,

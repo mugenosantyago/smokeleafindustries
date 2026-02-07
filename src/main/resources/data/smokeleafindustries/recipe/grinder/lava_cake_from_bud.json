@@ -1,6 +1,6 @@
 {
   "type": "smokeleafindustries:grinder",
-  "ingredient": "smokeleafindustries:lava_cake_bud",
+  "ingredient": {"item": "smokeleafindustries:lava_cake_bud"},
   "result": {
     "id": "smokeleafindustries:lava_cake_weed",
     "count": 2

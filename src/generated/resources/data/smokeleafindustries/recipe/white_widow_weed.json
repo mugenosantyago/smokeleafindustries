@@ -2,9 +2,7 @@
   "type": "minecraft:crafting_shapeless",
   "category": "misc",
   "ingredients": [
-    {
-      "item": "smokeleafindustries:white_widow_bag"
-    }
+    "smokeleafindustries:white_widow_bag"
   ],
   "result": {
     "count": 8,

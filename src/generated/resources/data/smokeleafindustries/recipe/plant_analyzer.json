@@ -2,15 +2,9 @@
   "type": "minecraft:crafting_shaped",
   "category": "misc",
   "key": {
-    "C": {
-      "item": "smokeleafindustries:hemp_core"
-    },
-    "I": {
-      "item": "minecraft:iron_ingot"
-    },
-    "P": {
-      "item": "smokeleafindustries:hemp_plastic"
-    },
+    "C": "smokeleafindustries:hemp_core",
+    "I": "minecraft:iron_ingot",
+    "P": "smokeleafindustries:hemp_plastic",
     "W": {
       "tag": "smokeleafindustries:weeds"
     }
