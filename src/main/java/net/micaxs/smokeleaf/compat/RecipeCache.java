@@ -13,6 +13,7 @@ import java.util.List;
  * Caches recipes server-side for JEI integration
  */
 public class RecipeCache {
+    private static volatile boolean cachePopulated = false;
     private static List<ExtractorRecipe> extractorRecipes = new ArrayList<>();
     private static List<GeneratorRecipe> generatorRecipes = new ArrayList<>();
     private static List<LiquifierRecipe> liquifierRecipes = new ArrayList<>();
@@ -24,6 +25,10 @@ public class RecipeCache {
     private static List<ManualGrinderRecipe> manualGrinderRecipes = new ArrayList<>();
     private static List<JointRecipe> jointRecipes = new ArrayList<>();
     private static List<BluntRecipe> bluntRecipes = new ArrayList<>();
+    
+    public static boolean isCachePopulated() {
+        return cachePopulated;
+    }
 
     public static void cacheRecipes(RecipeManager recipeManager) {
         // Get all recipes and filter by type
@@ -111,7 +116,8 @@ public class RecipeCache {
                 .toList();
         SmokeleafIndustries.LOGGER.info("Blunt recipes: {}", bluntRecipes.size());
         
-        SmokeleafIndustries.LOGGER.info("Recipe caching complete!");
+        cachePopulated = true;
+        SmokeleafIndustries.LOGGER.info("Recipe caching complete! Cache is now available for JEI.");
     }
 
     public static List<ExtractorRecipe> getExtractorRecipes() { return extractorRecipes; }
