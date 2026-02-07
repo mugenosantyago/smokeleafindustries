@@ -6,35 +6,20 @@ import net.micaxs.smokeleaf.item.ModItems;
 import net.micaxs.smokeleaf.utils.ModTags;
 import net.minecraft.core.HolderLookup;
 import net.minecraft.data.PackOutput;
+import net.minecraft.data.tags.TagsProvider;
 import net.neoforged.neoforge.common.data.ItemTagsProvider;
 import net.minecraft.tags.BlockTags;
 import net.minecraft.world.item.Items;
 import net.minecraft.world.level.block.Block;
-import net.neoforged.neoforge.common.data.BlockTagsProvider;
-import org.jetbrains.annotations.Nullable;
 
 import java.util.concurrent.CompletableFuture;
 
-// Tag providers temporarily disabled - constructor signature changed in 1.21.8
-// TODO: Fix ItemTagsProvider constructor for 1.21.8 - TagLookup API changed
-// This class is currently not used as tag providers are commented out in DataGenerators.java
-// Entire class temporarily commented out to allow compilation
-/*
-public class ModItemTagProvider extends net.neoforged.neoforge.common.data.ItemTagsProvider {
+public class ModItemTagProvider extends ItemTagsProvider {
 
-    public ModItemTagProvider(PackOutput output, CompletableFuture<HolderLookup.Provider> lookupProvider, CompletableFuture<?> blockTags, @Nullable Object existingFileHelper) {
-        super(output, lookupProvider, blockTags, SmokeleafIndustries.MODID);
-    }
-*/
-public class ModItemTagProvider {
-    // Stub class - actual implementation commented out due to API changes in 1.21.8
-    // TODO: Fix ItemTagsProvider constructor for 1.21.8
-    private ModItemTagProvider() {
-        throw new UnsupportedOperationException("ModItemTagProvider is temporarily disabled due to API changes in 1.21.8");
+    public ModItemTagProvider(PackOutput output, CompletableFuture<HolderLookup.Provider> lookupProvider, CompletableFuture<TagsProvider.TagLookup<Block>> blockTags) {
+        super(output, lookupProvider, SmokeleafIndustries.MODID);
     }
 
-    // All methods commented out - class is a stub
-    /*
     @Override
     protected void addTags(HolderLookup.Provider provider) {
         this.tag(ModTags.WEED_SEEDS).add(
@@ -171,5 +156,4 @@ public class ModItemTagProvider {
         );
 
     }
-    */
 }

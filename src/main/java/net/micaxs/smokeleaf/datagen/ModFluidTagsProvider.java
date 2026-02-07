@@ -6,13 +6,11 @@ import net.minecraft.core.HolderLookup;
 import net.minecraft.data.PackOutput;
 import net.minecraft.data.tags.FluidTagsProvider;
 import net.minecraft.tags.FluidTags;
-import org.jetbrains.annotations.Nullable;
 
 import java.util.concurrent.CompletableFuture;
 
 public class ModFluidTagsProvider extends FluidTagsProvider {
-    // existingFileHelper parameter removed in 1.21.8
-    public ModFluidTagsProvider(PackOutput output, CompletableFuture<HolderLookup.Provider> provider, @Nullable Object existingFileHelper) {
+    public ModFluidTagsProvider(PackOutput output, CompletableFuture<HolderLookup.Provider> provider) {
         super(output, provider, SmokeleafIndustries.MODID);
     }
 

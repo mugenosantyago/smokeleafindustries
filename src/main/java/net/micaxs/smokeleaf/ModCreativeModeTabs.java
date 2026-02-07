@@ -160,7 +160,7 @@ public class ModCreativeModeTabs {
                         output.accept(ModItems.PINK_KUSH_SEEDS);
 
                         output.accept(ModItems.WHITE_WIDOW_BUD);
-                        output.accept(ModItems.BUBBLE_KUSH_WEED);
+                        output.accept(ModItems.BUBBLE_KUSH_BUD);
                         output.accept(ModItems.LEMON_HAZE_BUD);
                         output.accept(ModItems.SOUR_DIESEL_BUD);
                         output.accept(ModItems.BLUE_ICE_BUD);
@@ -265,10 +265,8 @@ public class ModCreativeModeTabs {
 
                         output.accept(ModItems.WHITE_WIDOW_GUMMY);
                         output.accept(ModItems.BUBBLE_KUSH_GUMMY);
-                        output.accept(ModItems.SOUR_DIESEL_GUMMY);
-                        output.accept(ModItems.PURPLE_HAZE_GUMMY);
                         output.accept(ModItems.LEMON_HAZE_GUMMY);
-                        output.accept(ModItems.BUBBLE_KUSH_GUMMY);
+                        output.accept(ModItems.SOUR_DIESEL_GUMMY);
                         output.accept(ModItems.BLUE_ICE_GUMMY);
                         output.accept(ModItems.BUBBLEGUM_GUMMY);
                         output.accept(ModItems.OG_KUSH_GUMMY);
