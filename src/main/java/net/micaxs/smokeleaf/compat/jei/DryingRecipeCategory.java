@@ -16,12 +16,12 @@ import net.micaxs.smokeleaf.item.custom.BaseBudItem;
 import net.micaxs.smokeleaf.recipe.DryingRecipe;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.GuiGraphics;
+import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.item.ItemStack;
 import org.jetbrains.annotations.Nullable;
 
-import java.util.Arrays;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -99,18 +99,17 @@ public class DryingRecipeCategory implements IRecipeCategory<DryingRecipe> {
             builder.addSlot(RecipeIngredientRole.OUTPUT, 80, 16)
                     .addItemStack(dried);
         } else {
-
-            // TODO: Update for 1.21.8 - Ingredient.getItems() removed
-            // For now, return empty list - this functionality may need to be reimplemented
-            List<ItemStack> driedVariants = List.of();
-            /* Arrays.stream(recipe.ingredient().getItems())
-                    .filter(s -> s.getItem() instanceof BaseBudItem)
+            // Enumerate all registered items that match the ingredient and are buds
+            List<ItemStack> driedVariants = BuiltInRegistries.ITEM.holders()
+                    .filter(h -> h.value() instanceof BaseBudItem)
+                    .map(h -> new ItemStack(h.value()))
+                    .filter(s -> recipe.ingredient().test(s))
                     .map(s -> {
                         ItemStack dried = s.copy();
                         dried.set(ModDataComponentTypes.DRY.get(), Boolean.TRUE);
                         return dried;
                     })
-                    .collect(Collectors.toList()); */
+                    .collect(Collectors.toList());
             builder.addSlot(RecipeIngredientRole.OUTPUT, 80, 16)
                     .addItemStacks(driedVariants);
         }
