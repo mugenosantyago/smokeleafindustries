@@ -6,13 +6,17 @@ import net.micaxs.smokeleaf.block.entity.client.DryingRackRenderer;
 import net.micaxs.smokeleaf.block.entity.render.GrowPotRenderer;
 import net.micaxs.smokeleaf.client.ModParticleFactories;
 import net.micaxs.smokeleaf.client.brainmelt.BrainMeltInputHandler;
+import net.micaxs.smokeleaf.client.model.FilledItemModelProperty;
+import net.micaxs.smokeleaf.client.model.FullItemModelProperty;
 import net.micaxs.smokeleaf.fluid.BaseFluidType;
 import net.micaxs.smokeleaf.fluid.ModFluidTypes;
 import net.micaxs.smokeleaf.screen.ModMenuTypes;
 import net.micaxs.smokeleaf.screen.custom.*;
+import net.minecraft.resources.ResourceLocation;
 import net.neoforged.bus.api.EventPriority;
 import net.neoforged.fml.event.lifecycle.FMLClientSetupEvent;
 import net.neoforged.neoforge.client.event.EntityRenderersEvent;
+import net.neoforged.neoforge.client.event.RegisterConditionalItemModelPropertyEvent;
 import net.neoforged.neoforge.client.event.RegisterMenuScreensEvent;
 import net.neoforged.neoforge.client.extensions.common.RegisterClientExtensionsEvent;
 import net.neoforged.neoforge.common.NeoForge;
@@ -29,7 +33,8 @@ public class ModClientEvents {
         modEventBus.addListener(ModClientEvents::registerBER);
         modEventBus.addListener(ModClientEvents::onClientExtensions);
         modEventBus.addListener(ModClientEvents::registerScreens);
-        
+        modEventBus.addListener(ModClientEvents::registerConditionalItemModelProperties);
+
         // Register particle factories (also MOD bus event)
         ModParticleFactories.register(modEventBus);
     }
@@ -42,20 +47,17 @@ public class ModClientEvents {
             NeoForge.EVENT_BUS.addListener(EventPriority.LOWEST, BrainMeltInputHandler::onInputUpdate);
             brainMeltHandlerRegistered = true;
         }
-        event.enqueueWork(() -> {
-            // Render layer API changed in 1.21.8 - fluid rendering now handled via IClientFluidTypeExtensions
-            // ItemBlockRenderTypes.setRenderLayer(ModFluids.SOURCE_HASH_OIL_FLUID.get(), RenderType.translucent());
-            // ItemBlockRenderTypes.setRenderLayer(ModFluids.FLOWING_HASH_OIL_FLUID.get(), RenderType.translucent());
-            // ItemBlockRenderTypes.setRenderLayer(ModFluids.SOURCE_HEMP_OIL_FLUID.get(), RenderType.translucent());
-            // ItemBlockRenderTypes.setRenderLayer(ModFluids.FLOWING_HEMP_OIL_FLUID.get(), RenderType.translucent());
-            // ItemBlockRenderTypes.setRenderLayer(ModFluids.SOURCE_HASH_OIL_SLUDGE_FLUID.get(), RenderType.translucent());
-            // ItemBlockRenderTypes.setRenderLayer(ModFluids.FLOWING_HASH_OIL_SLUDGE_FLUID.get(), RenderType.translucent());
-            // ItemProperties API changed in 1.21.8 - temporarily commented out
-            // ItemModelPredicates.register(ModItems.DNA_STRAND.get(), ResourceLocation.fromNamespaceAndPath(SmokeleafIndustries.MODID, "full"), (stack, level, entity, seed) -> DNAStrandItem.isFull(stack) ? 1.0F : 0.0F);
-            // ItemModelPredicates.register(ModItems.MANUAL_GRINDER.get(), ResourceLocation.fromNamespaceAndPath(SmokeleafIndustries.MODID, "filled"), (stack, level, entity, seed) -> stack.has(ModDataComponentTypes.MANUAL_GRINDER_CONTENTS.get()) ? 1.0F : 0.0F);
+    }
 
-            // ItemBlockRenderTypes.setRenderLayer(ModBlocks.REFLECTOR.get(), RenderType.translucent());
-        });
+    private static void registerConditionalItemModelProperties(RegisterConditionalItemModelPropertyEvent event) {
+        event.register(
+                ResourceLocation.fromNamespaceAndPath(SmokeleafIndustries.MODID, "filled"),
+                FilledItemModelProperty.MAP_CODEC
+        );
+        event.register(
+                ResourceLocation.fromNamespaceAndPath(SmokeleafIndustries.MODID, "full"),
+                FullItemModelProperty.MAP_CODEC
+        );
     }
 
     private static void registerBER(EntityRenderersEvent.RegisterRenderers event) {

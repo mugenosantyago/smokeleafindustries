@@ -23,6 +23,7 @@ import net.neoforged.neoforge.client.gui.VanillaGuiLayers;
 import net.neoforged.neoforge.event.entity.player.PlayerInteractEvent;
 import net.neoforged.neoforge.client.event.ClientPlayerNetworkEvent;
 import net.neoforged.neoforge.client.event.ClientPlayerNetworkEvent.LoggingOut;
+import net.minecraft.world.entity.monster.Monster;
 
 import java.awt.*;
 import java.util.*;
@@ -72,8 +73,23 @@ public class ClientEvents {
 
 
     // -------- Friend or Foe spoofed name tags --------
-    // TODO: Re-implement using concrete subclass of RenderNameTagEvent (e.g., RenderNameTagEvent.Entity)
-    // The abstract RenderNameTagEvent cannot be subscribed to directly in NeoForge 1.21.8
+    @SubscribeEvent
+    public static void onRenderNameTag(RenderNameTagEvent.Entity event) {
+        Minecraft mc = Minecraft.getInstance();
+        net.minecraft.client.player.LocalPlayer player = mc.player;
+        if (player == null || !player.hasEffect(ModEffects.FRIEND_OR_FOE)) return;
+
+        net.minecraft.world.entity.Entity target = event.getEntity();
+        if (target == player) return;
+
+        if (target instanceof Player) {
+            event.setContent(net.minecraft.network.chat.Component.literal("Friend")
+                    .withStyle(net.minecraft.ChatFormatting.GREEN));
+        } else if (target instanceof Monster) {
+            event.setContent(net.minecraft.network.chat.Component.literal("Foe")
+                    .withStyle(net.minecraft.ChatFormatting.RED));
+        }
+    }
 
 
 
@@ -119,58 +135,62 @@ public class ClientEvents {
     // -------- Zombified: render player as a zombie --------
     private static final Map<UUID, Zombie> CACHE = new WeakHashMap<>();
 
+    @SuppressWarnings("unchecked")
     @SubscribeEvent
-    public static void onRenderLivingPre(RenderLivingEvent.Pre event) {
-        // TODO: Fix RenderLivingEvent.Pre API for 1.21.8 - getEntity() method changed
-        // LivingEntity le = event.getEntity();
-        // if (!(le instanceof Player player)) return;
-        // if (!player.hasEffect(ModEffects.ZOMBIFIED)) return;
-        //
-        // event.setCanceled(true);
-        // Temporarily disabled - TODO: Fix RenderLivingEvent.Pre API for 1.21.8
-        return;
+    public static void onRenderLivingPre(RenderLivingEvent.Pre<?, ?, ?> event) {
+        net.minecraft.world.entity.LivingEntity le = event.getEntity();
+        if (!(le instanceof Player player)) return;
+        if (!player.hasEffect(ModEffects.ZOMBIFIED)) return;
 
-        // float pt = event.getPartialTick();
-        // PoseStack pose = event.getPoseStack();
-        // MultiBufferSource buf = event.getMultiBufferSource();
-        // int light = event.getPackedLight();
-        //
-        // Zombie fake = CACHE.computeIfAbsent(player.getUUID(), id -> new Zombie(player.level()));
-        // fake.xo = player.xo;
-        // fake.yo = player.yo;
-        // fake.zo = player.zo;
-        // fake.setPos(player.getX(), player.getY(), player.getZ());
-        //
-        // float bodyYaw = Mth.lerp(pt, player.yBodyRotO, player.yBodyRot);
-        // float headYaw = Mth.lerp(pt, player.yHeadRotO, player.yHeadRot);
-        // float entityYaw = bodyYaw;
-        //
-        // fake.yBodyRotO = bodyYaw;
-        // fake.yBodyRot = bodyYaw;
-        // fake.yHeadRotO = headYaw;
-        // fake.yHeadRot = headYaw;
-        // fake.yRotO = entityYaw;
-        // fake.setYRot(entityYaw);
-        //
-        // float pitch = Mth.lerp(pt, player.xRotO, player.getXRot());
-        // fake.xRotO = pitch;
-        // fake.setXRot(pitch);
-        //
-        // fake.setAggressive(false);
-        // fake.setNoAi(true);
-        //
-        // for (EquipmentSlot slot : EquipmentSlot.values()) {
-        //     var stack = player.getItemBySlot(slot);
-        //     fake.setItemSlot(slot, stack);
-        // }
-        //
-        // // TODO: Fix LivingEntityRenderer type arguments for 1.21.8 - requires 3 type parameters
-        // // Minecraft mc = Minecraft.getInstance();
-        // // EntityRenderDispatcher disp = mc.getEntityRenderDispatcher();
-        // // @SuppressWarnings("unchecked")
-        // // LivingEntityRenderer<Zombie, ?, ?> renderer =
-        // //         (LivingEntityRenderer<Zombie, ?, ?>) disp.getRenderer(fake);
-        // // renderer.render(fake, entityYaw, pt, pose, buf, light);
+        event.setCanceled(true);
+
+        float pt = event.getPartialTick();
+        com.mojang.blaze3d.vertex.PoseStack pose = event.getPoseStack();
+        net.minecraft.client.renderer.MultiBufferSource buf = event.getMultiBufferSource();
+        int light = event.getPackedLight();
+
+        Zombie fake = CACHE.computeIfAbsent(player.getUUID(), id -> new Zombie(player.level()));
+        fake.xo = player.xo;
+        fake.yo = player.yo;
+        fake.zo = player.zo;
+        fake.setPos(player.getX(), player.getY(), player.getZ());
+
+        float bodyYaw = net.minecraft.util.Mth.lerp(pt, player.yBodyRotO, player.yBodyRot);
+        float headYaw = net.minecraft.util.Mth.lerp(pt, player.yHeadRotO, player.yHeadRot);
+        fake.yBodyRotO = bodyYaw;
+        fake.yBodyRot = bodyYaw;
+        fake.yHeadRotO = headYaw;
+        fake.yHeadRot = headYaw;
+        fake.yRotO = bodyYaw;
+        fake.setYRot(bodyYaw);
+        float pitch = net.minecraft.util.Mth.lerp(pt, player.xRotO, player.getXRot());
+        fake.xRotO = pitch;
+        fake.setXRot(pitch);
+        fake.setAggressive(false);
+        fake.setNoAi(true);
+
+        for (net.minecraft.world.entity.EquipmentSlot slot : net.minecraft.world.entity.EquipmentSlot.values()) {
+            fake.setItemSlot(slot, player.getItemBySlot(slot));
+        }
+
+        Minecraft mc = Minecraft.getInstance();
+        net.minecraft.client.renderer.entity.EntityRenderDispatcher disp = mc.getEntityRenderDispatcher();
+        // In 1.21.4+ EntityRenderer uses render states: extract state then render
+        var renderer = (net.minecraft.client.renderer.entity.EntityRenderer<Zombie, ?>) disp.getRenderer(fake);
+        renderZombieWithState(renderer, fake, pt, pose, buf, light);
+    }
+
+    @SuppressWarnings("unchecked")
+    private static <S extends net.minecraft.client.renderer.entity.state.EntityRenderState>
+    void renderZombieWithState(
+            net.minecraft.client.renderer.entity.EntityRenderer<Zombie, S> renderer,
+            Zombie fake, float pt,
+            com.mojang.blaze3d.vertex.PoseStack pose,
+            net.minecraft.client.renderer.MultiBufferSource buf,
+            int light) {
+        S state = renderer.createRenderState();
+        renderer.extractRenderState(fake, state, pt);
+        renderer.render(state, pose, buf, light);
     }
 
     // -------- Melted effect: screen wiggle --------
@@ -230,14 +250,15 @@ public class ClientEvents {
         double xOffset = phaseX * xAmp * (spec.ix() ? -1 : 1);
         double yOffset = phaseY * yAmp * (spec.iy() ? -1 : 1);
 
-        // TODO: RenderGuiLayerEvent pose stack API changed in 1.21.8
+        event.getGuiGraphics().pose().pushPose();
+        event.getGuiGraphics().pose().translate((float) xOffset, (float) yOffset, 0f);
         WIGGLED.add(id);
     }
 
     @SubscribeEvent
     public static void onRenderGuiLayerPost(RenderGuiLayerEvent.Post event) {
         if (!WIGGLED.remove(event.getName())) return;
-        // TODO: RenderGuiLayerEvent pose stack API changed in 1.21.8
+        event.getGuiGraphics().pose().popPose();
     }
 
     @SubscribeEvent

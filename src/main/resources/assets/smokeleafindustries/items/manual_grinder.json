@@ -1,0 +1,14 @@
+{
+  "model": {
+    "type": "minecraft:condition",
+    "property": "smokeleafindustries:filled",
+    "on_true": {
+      "type": "minecraft:model",
+      "model": "smokeleafindustries:item/manual_grinder_full"
+    },
+    "on_false": {
+      "type": "minecraft:model",
+      "model": "smokeleafindustries:item/manual_grinder"
+    }
+  }
+}
