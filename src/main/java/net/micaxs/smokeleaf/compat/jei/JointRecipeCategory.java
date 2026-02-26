@@ -17,7 +17,9 @@ import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
-import net.minecraft.world.item.crafting.Ingredient;
+
+import java.util.List;
+import java.util.stream.Collectors;
 
 public class JointRecipeCategory implements IRecipeCategory<JointRecipe> {
 
@@ -55,9 +57,12 @@ public class JointRecipeCategory implements IRecipeCategory<JointRecipe> {
         builder.addSlot(RecipeIngredientRole.INPUT, 19, 1).addItemStack(new ItemStack(Items.PAPER));
         builder.addSlot(RecipeIngredientRole.INPUT, 19, 37).addItemStack(new ItemStack(Items.PAPER));
 
-        Ingredient weedIngredient = Ingredient.of(BuiltInRegistries.ITEM.getOrCreateTag(ModTags.WEEDS));
-        builder.addSlot(RecipeIngredientRole.INPUT, 1, 19).addIngredients(weedIngredient);
-        builder.addSlot(RecipeIngredientRole.INPUT, 37, 19).addIngredients(weedIngredient);
+        List<ItemStack> weedStacks = BuiltInRegistries.ITEM.stream()
+                .map(ItemStack::new)
+                .filter(s -> s.is(ModTags.WEEDS))
+                .collect(Collectors.toList());
+        builder.addSlot(RecipeIngredientRole.INPUT, 1, 19).addItemStacks(weedStacks);
+        builder.addSlot(RecipeIngredientRole.INPUT, 37, 19).addItemStacks(weedStacks);
 
         builder.addSlot(RecipeIngredientRole.INPUT, 19, 19).addItemStack(new ItemStack(recipe.getTobaccoItem()));
         builder.addSlot(RecipeIngredientRole.OUTPUT, 95, 19).addItemStack(recipe.getResultItem(null));

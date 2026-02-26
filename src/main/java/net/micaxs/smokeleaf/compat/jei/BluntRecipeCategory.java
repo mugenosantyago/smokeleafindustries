@@ -17,7 +17,9 @@ import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
-import net.minecraft.world.item.crafting.Ingredient;
+
+import java.util.List;
+import java.util.stream.Collectors;
 
 public class BluntRecipeCategory implements IRecipeCategory<BluntRecipe> {
 
@@ -66,10 +68,13 @@ public class BluntRecipeCategory implements IRecipeCategory<BluntRecipe> {
         builder.addSlot(RecipeIngredientRole.INPUT, 37, 1).addItemStack(new ItemStack(Items.PAPER));
 
         // Middle row: weeds (tag)
-        Ingredient weedIngredient = Ingredient.of(BuiltInRegistries.ITEM.getOrCreateTag(ModTags.WEEDS));
-        builder.addSlot(RecipeIngredientRole.INPUT, 1, 19).addIngredients(weedIngredient);
-        builder.addSlot(RecipeIngredientRole.INPUT, 19, 19).addIngredients(weedIngredient);
-        builder.addSlot(RecipeIngredientRole.INPUT, 37, 19).addIngredients(weedIngredient);
+        List<ItemStack> weedStacks = BuiltInRegistries.ITEM.stream()
+                .map(ItemStack::new)
+                .filter(s -> s.is(ModTags.WEEDS))
+                .collect(Collectors.toList());
+        builder.addSlot(RecipeIngredientRole.INPUT, 1, 19).addItemStacks(weedStacks);
+        builder.addSlot(RecipeIngredientRole.INPUT, 19, 19).addItemStacks(weedStacks);
+        builder.addSlot(RecipeIngredientRole.INPUT, 37, 19).addItemStacks(weedStacks);
 
         // Bottom row: paper
         builder.addSlot(RecipeIngredientRole.INPUT, 1, 37).addItemStack(new ItemStack(Items.PAPER));
