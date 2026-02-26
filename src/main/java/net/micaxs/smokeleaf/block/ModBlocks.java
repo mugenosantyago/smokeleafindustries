@@ -215,7 +215,7 @@ public class ModBlocks {
         return toReturn;
     }
     public static <T extends Block> void registerBlockItem(String name, DeferredBlock<T> block) {
-        ModItems.ITEMS.register(name, () -> new BlockItem(block.get(), ModItems.itemProps(name)));
+        ModItems.ITEMS.register(name, () -> new BlockItem(block.get(), ModItems.itemProps(name).useBlockDescriptionPrefix()));
     }
 
     // Register
