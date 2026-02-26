@@ -266,6 +266,7 @@
   "block.smokeleafindustries.dryer": "Dryer",
 
 
+  "block.smokeleafindustries.tobacco_crop": "Tobacco Plant",
   "block.smokeleafindustries.hemp_crop": "Hemp Plant",
   "block.smokeleafindustries.white_widow_crop": "White Widow Plant",
     "block.smokeleafindustries.blue_ice_crop": "Blue Ice Plant",
@@ -295,6 +296,10 @@
 
 
 
+
+  "block.smokeleafindustries.hemp_oil_fluid_block": "Hemp Oil",
+  "block.smokeleafindustries.hash_oil_fluid_block": "Hash Oil",
+  "block.smokeleafindustries.hash_oil_sludge_fluid_block": "Sludge Hash Oil",
 
   "fluid_type.smokeleafindustries.hemp_oil_fluid": "Hemp Oil",
   "fluid_type.smokeleafindustries.hash_oil_fluid": "Hash Oil",
@@ -359,12 +364,15 @@
   "jei.smokeleafindustries.manual_grinder": "Manual Grinder",
   "jei.smokeleafindustries.grind_time": "Time: %s",
   "jei.smokeleafindustries.category.joint": "Joint Crafting",
+  "jei.smokeleafindustries.category.blunt": "Blunt Crafting",
   "jei.smokeleafindustries.bucket_use": "You can get a full bucket by right clicking 1000mb of Fluid on the tank with an empty bucket. Alternatively, you can also store fluids by left clicking.",
   "smokeleafindusties.tooltip.liquid.amount.with.capacity" : "%s / %s mB",
   "smokeleafindusties.tooltip.liquid.amount": "%s mB",
 
 
 
+  "effect.smokeleafindustries.stoned": "Stoned",
+  "effect.smokeleafindustries.euphoric": "Euphoric",
   "effect.smokeleafindustries.bubbled": "Bubbled Vision",
   "effect.smokeleafindustries.uplifted": "Uplifted",
   "effect.smokeleafindustries.paranoia": "Paranoia",
@@ -432,5 +440,5 @@
   "config.jade.plugin_smokeleafindustries.reflector": "Reflector",
 
 
-  "item.smokeleafindustries.guide_book": "Smokeleaf Guide"
+  "item.smokeleafindustries.smokeleaf_guide": "Smokeleaf Guide"
 }

@@ -13,31 +13,11 @@ import mezz.jei.api.recipe.category.IRecipeCategory;
 import net.micaxs.smokeleaf.SmokeleafIndustries;
 import net.micaxs.smokeleaf.recipe.JointRecipe;
 import net.micaxs.smokeleaf.utils.ModTags;
-import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
-import net.minecraft.tags.TagKey;
-import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
-
-import java.util.List;
-
-public class JointRecipeCategory implements IRecipeCategory<JointRecipe> {
-    public static final RecipeType<JointRecipe> JOINT_RECIPE_TYPE =
-            RecipeType.create(SmokeleafIndustries.MODID, "joint", JointRecipe.class);
-
-    private static final ResourceLocation VANILLA_BG =
-            ResourceLocation.withDefaultNamespace("textures/gui/container/crafting_table.png");
-
-    private static final TagKey<Item> JOINT_WEEDS = ModTags.WEEDS;
-
-    private static List<ItemStack> weedStacks() {
-        // TODO: Update for 1.21.8 - BuiltInRegistries.ITEM.getTag() removed
-        // Tags now need to be accessed through registry access
-        // For now, return empty list - this functionality may need to be reimplemented
-        return List.of();
-    }
+import net.minecraft.world.item.crafting.Ingredient;
 
     private final IDrawableStatic background;
     private final IDrawable icon;
@@ -67,9 +47,9 @@ public class JointRecipeCategory implements IRecipeCategory<JointRecipe> {
         builder.addSlot(RecipeIngredientRole.INPUT, 19, 1).addItemStack(new ItemStack(Items.PAPER));
         builder.addSlot(RecipeIngredientRole.INPUT, 19, 37).addItemStack(new ItemStack(Items.PAPER));
 
-        var weeds = weedStacks();
-        builder.addSlot(RecipeIngredientRole.INPUT, 1, 19).addItemStacks(weeds);
-        builder.addSlot(RecipeIngredientRole.INPUT, 37, 19).addItemStacks(weeds);
+        Ingredient weedIngredient = Ingredient.of(ModTags.WEEDS);
+        builder.addSlot(RecipeIngredientRole.INPUT, 1, 19).addIngredients(weedIngredient);
+        builder.addSlot(RecipeIngredientRole.INPUT, 37, 19).addIngredients(weedIngredient);
 
         builder.addSlot(RecipeIngredientRole.INPUT, 19, 19).addItemStack(new ItemStack(recipe.getTobaccoItem()));
         builder.addSlot(RecipeIngredientRole.OUTPUT, 95, 19).addItemStack(recipe.getResultItem(null));

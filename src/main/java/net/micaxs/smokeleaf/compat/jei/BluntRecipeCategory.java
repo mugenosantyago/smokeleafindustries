@@ -12,13 +12,11 @@ import mezz.jei.api.recipe.category.IRecipeCategory;
 import net.micaxs.smokeleaf.SmokeleafIndustries;
 import net.micaxs.smokeleaf.recipe.BluntRecipe;
 import net.micaxs.smokeleaf.utils.ModTags;
-import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
-
-import java.util.List;
+import net.minecraft.world.item.crafting.Ingredient;
 
 public class BluntRecipeCategory implements IRecipeCategory<BluntRecipe> {
 
@@ -27,13 +25,6 @@ public class BluntRecipeCategory implements IRecipeCategory<BluntRecipe> {
 
     private static final ResourceLocation VANILLA_BG =
             ResourceLocation.withDefaultNamespace("textures/gui/container/crafting_table.png");
-
-    private static List<ItemStack> weedStacks() {
-        // TODO: Update for 1.21.8 - BuiltInRegistries.ITEM.getTag() removed
-        // Tags now need to be accessed through registry access
-        // For now, return empty list - this functionality may need to be reimplemented
-        return List.of();
-    }
 
     private final IDrawableStatic background;
     private final IDrawable icon;
@@ -74,10 +65,10 @@ public class BluntRecipeCategory implements IRecipeCategory<BluntRecipe> {
         builder.addSlot(RecipeIngredientRole.INPUT, 37, 1).addItemStack(new ItemStack(Items.PAPER));
 
         // Middle row: weeds (tag)
-        var weeds = weedStacks();
-        builder.addSlot(RecipeIngredientRole.INPUT, 1, 19).addItemStacks(weeds);
-        builder.addSlot(RecipeIngredientRole.INPUT, 19, 19).addItemStacks(weeds);
-        builder.addSlot(RecipeIngredientRole.INPUT, 37, 19).addItemStacks(weeds);
+        Ingredient weedIngredient = Ingredient.of(ModTags.WEEDS);
+        builder.addSlot(RecipeIngredientRole.INPUT, 1, 19).addIngredients(weedIngredient);
+        builder.addSlot(RecipeIngredientRole.INPUT, 19, 19).addIngredients(weedIngredient);
+        builder.addSlot(RecipeIngredientRole.INPUT, 37, 19).addIngredients(weedIngredient);
 
         // Bottom row: paper
         builder.addSlot(RecipeIngredientRole.INPUT, 1, 37).addItemStack(new ItemStack(Items.PAPER));
