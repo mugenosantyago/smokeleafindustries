@@ -74,7 +74,7 @@ public class ClientEvents {
 
     // -------- Friend or Foe spoofed name tags --------
     @SubscribeEvent
-    public static void onRenderNameTag(RenderNameTagEvent.Entity event) {
+    public static void onRenderNameTag(RenderNameTagEvent.CanRender event) {
         Minecraft mc = Minecraft.getInstance();
         net.minecraft.client.player.LocalPlayer player = mc.player;
         if (player == null || !player.hasEffect(ModEffects.FRIEND_OR_FOE)) return;
@@ -133,65 +133,13 @@ public class ClientEvents {
 
 
     // -------- Zombified: render player as a zombie --------
+    // NOTE: In NeoForge 1.21.8, RenderLivingEvent.Pre no longer provides getEntity().
+    // The event exposes only getRenderState() (a snapshot), so the original entity
+    // cannot be identified from the render event alone.
+    // The server-side Zombified behaviour (mobs ignoring the player, sunlight burn) still
+    // works via CommonEvents. The client-side zombie skin swap requires a different
+    // approach (e.g. a custom EntityRenderer registration) and is deferred.
     private static final Map<UUID, Zombie> CACHE = new WeakHashMap<>();
-
-    @SuppressWarnings("unchecked")
-    @SubscribeEvent
-    public static void onRenderLivingPre(RenderLivingEvent.Pre<?, ?, ?> event) {
-        net.minecraft.world.entity.LivingEntity le = event.getEntity();
-        if (!(le instanceof Player player)) return;
-        if (!player.hasEffect(ModEffects.ZOMBIFIED)) return;
-
-        event.setCanceled(true);
-
-        float pt = event.getPartialTick();
-        com.mojang.blaze3d.vertex.PoseStack pose = event.getPoseStack();
-        net.minecraft.client.renderer.MultiBufferSource buf = event.getMultiBufferSource();
-        int light = event.getPackedLight();
-
-        Zombie fake = CACHE.computeIfAbsent(player.getUUID(), id -> new Zombie(player.level()));
-        fake.xo = player.xo;
-        fake.yo = player.yo;
-        fake.zo = player.zo;
-        fake.setPos(player.getX(), player.getY(), player.getZ());
-
-        float bodyYaw = net.minecraft.util.Mth.lerp(pt, player.yBodyRotO, player.yBodyRot);
-        float headYaw = net.minecraft.util.Mth.lerp(pt, player.yHeadRotO, player.yHeadRot);
-        fake.yBodyRotO = bodyYaw;
-        fake.yBodyRot = bodyYaw;
-        fake.yHeadRotO = headYaw;
-        fake.yHeadRot = headYaw;
-        fake.yRotO = bodyYaw;
-        fake.setYRot(bodyYaw);
-        float pitch = net.minecraft.util.Mth.lerp(pt, player.xRotO, player.getXRot());
-        fake.xRotO = pitch;
-        fake.setXRot(pitch);
-        fake.setAggressive(false);
-        fake.setNoAi(true);
-
-        for (net.minecraft.world.entity.EquipmentSlot slot : net.minecraft.world.entity.EquipmentSlot.values()) {
-            fake.setItemSlot(slot, player.getItemBySlot(slot));
-        }
-
-        Minecraft mc = Minecraft.getInstance();
-        net.minecraft.client.renderer.entity.EntityRenderDispatcher disp = mc.getEntityRenderDispatcher();
-        // In 1.21.4+ EntityRenderer uses render states: extract state then render
-        var renderer = (net.minecraft.client.renderer.entity.EntityRenderer<Zombie, ?>) disp.getRenderer(fake);
-        renderZombieWithState(renderer, fake, pt, pose, buf, light);
-    }
-
-    @SuppressWarnings("unchecked")
-    private static <S extends net.minecraft.client.renderer.entity.state.EntityRenderState>
-    void renderZombieWithState(
-            net.minecraft.client.renderer.entity.EntityRenderer<Zombie, S> renderer,
-            Zombie fake, float pt,
-            com.mojang.blaze3d.vertex.PoseStack pose,
-            net.minecraft.client.renderer.MultiBufferSource buf,
-            int light) {
-        S state = renderer.createRenderState();
-        renderer.extractRenderState(fake, state, pt);
-        renderer.render(state, pose, buf, light);
-    }
 
     // -------- Melted effect: screen wiggle --------
     private static final Set<ResourceLocation> WIGGLED = new HashSet<>();
@@ -250,15 +198,15 @@ public class ClientEvents {
         double xOffset = phaseX * xAmp * (spec.ix() ? -1 : 1);
         double yOffset = phaseY * yAmp * (spec.iy() ? -1 : 1);
 
-        event.getGuiGraphics().pose().pushPose();
-        event.getGuiGraphics().pose().translate((float) xOffset, (float) yOffset, 0f);
+        event.getGuiGraphics().pose().pushMatrix();
+        event.getGuiGraphics().pose().translate((float) xOffset, (float) yOffset);
         WIGGLED.add(id);
     }
 
     @SubscribeEvent
     public static void onRenderGuiLayerPost(RenderGuiLayerEvent.Post event) {
         if (!WIGGLED.remove(event.getName())) return;
-        event.getGuiGraphics().pose().popPose();
+        event.getGuiGraphics().pose().popMatrix();
     }
 
     @SubscribeEvent

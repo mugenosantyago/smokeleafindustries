@@ -100,9 +100,9 @@ public class DryingRecipeCategory implements IRecipeCategory<DryingRecipe> {
                     .addItemStack(dried);
         } else {
             // Enumerate all registered items that match the ingredient and are buds
-            List<ItemStack> driedVariants = BuiltInRegistries.ITEM.holders()
-                    .filter(h -> h.value() instanceof BaseBudItem)
-                    .map(h -> new ItemStack(h.value()))
+            List<ItemStack> driedVariants = BuiltInRegistries.ITEM.stream()
+                    .filter(item -> item instanceof BaseBudItem)
+                    .map(ItemStack::new)
                     .filter(s -> recipe.ingredient().test(s))
                     .map(s -> {
                         ItemStack dried = s.copy();

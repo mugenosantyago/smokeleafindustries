@@ -12,6 +12,7 @@ import mezz.jei.api.recipe.category.IRecipeCategory;
 import net.micaxs.smokeleaf.SmokeleafIndustries;
 import net.micaxs.smokeleaf.recipe.BluntRecipe;
 import net.micaxs.smokeleaf.utils.ModTags;
+import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.item.ItemStack;
@@ -65,7 +66,7 @@ public class BluntRecipeCategory implements IRecipeCategory<BluntRecipe> {
         builder.addSlot(RecipeIngredientRole.INPUT, 37, 1).addItemStack(new ItemStack(Items.PAPER));
 
         // Middle row: weeds (tag)
-        Ingredient weedIngredient = Ingredient.of(ModTags.WEEDS);
+        Ingredient weedIngredient = Ingredient.of(BuiltInRegistries.ITEM.getOrCreateTag(ModTags.WEEDS));
         builder.addSlot(RecipeIngredientRole.INPUT, 1, 19).addIngredients(weedIngredient);
         builder.addSlot(RecipeIngredientRole.INPUT, 19, 19).addIngredients(weedIngredient);
         builder.addSlot(RecipeIngredientRole.INPUT, 37, 19).addIngredients(weedIngredient);
