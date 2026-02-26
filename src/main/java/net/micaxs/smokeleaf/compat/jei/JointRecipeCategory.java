@@ -1,4 +1,3 @@
-// java
 package net.micaxs.smokeleaf.compat.jei;
 
 import mezz.jei.api.constants.VanillaTypes;
@@ -18,6 +17,14 @@ import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
 import net.minecraft.world.item.crafting.Ingredient;
+
+public class JointRecipeCategory implements IRecipeCategory<JointRecipe> {
+
+    public static final RecipeType<JointRecipe> JOINT_RECIPE_TYPE =
+            RecipeType.create(SmokeleafIndustries.MODID, "joint", JointRecipe.class);
+
+    private static final ResourceLocation VANILLA_BG =
+            ResourceLocation.withDefaultNamespace("textures/gui/container/crafting_table.png");
 
     private final IDrawableStatic background;
     private final IDrawable icon;
