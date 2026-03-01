@@ -21,6 +21,8 @@ import net.neoforged.neoforge.client.event.*;
 import net.neoforged.neoforge.client.event.sound.PlaySoundEvent;
 import net.neoforged.neoforge.client.gui.VanillaGuiLayers;
 import net.neoforged.neoforge.event.entity.player.PlayerInteractEvent;
+import net.micaxs.smokeleaf.compat.JEISmokeleafInudstriesPlugin;
+import net.micaxs.smokeleaf.compat.RecipeCache;
 import net.neoforged.neoforge.client.event.ClientPlayerNetworkEvent;
 import net.neoforged.neoforge.client.event.ClientPlayerNetworkEvent.LoggingOut;
 import net.minecraft.world.entity.monster.Monster;
@@ -248,6 +250,16 @@ public class ClientEvents {
             double modified = event.getFOV() * (1.0 + boost);
             event.setFOV((float)Math.min(170.0, modified));
         }
+    }
+
+    // -------- Populate JEI recipe cache on login (handles dedicated server) --------
+    // On a dedicated server, ServerStartingEvent fires on the server JVM but not the
+    // client JVM. LoggingIn fires on the client after recipes have been synced, so we
+    // use it as the trigger to populate RecipeCache and refresh JEI if it's already running.
+    @SubscribeEvent
+    public static void onLogin(ClientPlayerNetworkEvent.LoggingIn event) {
+        RecipeCache.invalidate();
+        JEISmokeleafInudstriesPlugin.populateFromClientAndRefresh();
     }
 
     // -------- Reset static state on logout to prevent second-launch crashes --------

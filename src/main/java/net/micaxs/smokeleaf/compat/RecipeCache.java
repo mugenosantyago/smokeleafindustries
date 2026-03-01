@@ -30,6 +30,22 @@ public class RecipeCache {
         return cachePopulated;
     }
 
+    /** Clears the cache so it will be re-populated on the next login. */
+    public static void invalidate() {
+        cachePopulated = false;
+        extractorRecipes = new ArrayList<>();
+        generatorRecipes = new ArrayList<>();
+        liquifierRecipes = new ArrayList<>();
+        grinderRecipes = new ArrayList<>();
+        dryingRecipes = new ArrayList<>();
+        mutatorRecipes = new ArrayList<>();
+        sequencerRecipes = new ArrayList<>();
+        synthesizerRecipes = new ArrayList<>();
+        manualGrinderRecipes = new ArrayList<>();
+        jointRecipes = new ArrayList<>();
+        bluntRecipes = new ArrayList<>();
+    }
+
     public static void cacheRecipes(RecipeManager recipeManager) {
         // Get all recipes and filter by type
         var allRecipes = recipeManager.getRecipes();
