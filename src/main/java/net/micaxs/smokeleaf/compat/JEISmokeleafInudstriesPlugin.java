@@ -30,9 +30,17 @@ public class JEISmokeleafInudstriesPlugin implements IModPlugin {
     public static void populateFromClientAndRefresh() {
         net.minecraft.client.Minecraft mc = net.minecraft.client.Minecraft.getInstance();
         if (mc.level != null) {
-            RecipeCache.cacheRecipes(mc.level.getRecipeManager());
-            SmokeleafIndustries.LOGGER.info("JEI: RecipeCache populated from client recipe manager ({} total recipes)",
-                    mc.level.getRecipeManager().getRecipes().size());
+            // ClientLevel.recipeAccess() returns RecipeAccess; the underlying object is
+            // always a RecipeManager in practice so the cast is safe.
+            var access = mc.level.recipeAccess();
+            if (access instanceof net.minecraft.world.item.crafting.RecipeManager rm) {
+                RecipeCache.cacheRecipes(rm);
+                SmokeleafIndustries.LOGGER.info("JEI: RecipeCache populated from client recipe manager ({} recipes)",
+                        rm.getRecipes().size());
+            } else {
+                SmokeleafIndustries.LOGGER.warn("JEI: recipeAccess() is not a RecipeManager ({}), JEI may be missing recipes",
+                        access.getClass().getSimpleName());
+            }
         }
         if (jeiRuntime != null && RecipeCache.isCachePopulated()) {
             addAllRecipesToRuntime(jeiRuntime);
