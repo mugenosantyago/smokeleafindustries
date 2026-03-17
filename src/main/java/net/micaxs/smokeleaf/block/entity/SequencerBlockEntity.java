@@ -53,7 +53,7 @@ public class SequencerBlockEntity extends BlockEntity implements MenuProvider {
         @Override
         protected void onContentsChanged(int slot) {
             setChanged();
-            if (!level.isClientSide()) {
+            if (level != null && !level.isClientSide()) {
                 level.sendBlockUpdated(getBlockPos(), getBlockState(), getBlockState(), 3);
             }
         }
@@ -72,7 +72,9 @@ public class SequencerBlockEntity extends BlockEntity implements MenuProvider {
         @Override
         public void onEnergyChanged() {
             setChanged();
-            getLevel().sendBlockUpdated(getBlockPos(), getBlockState(), getBlockState(), 1);
+            if (getLevel() != null) {
+                getLevel().sendBlockUpdated(getBlockPos(), getBlockState(), getBlockState(), 1);
+            }
         }
     };
 

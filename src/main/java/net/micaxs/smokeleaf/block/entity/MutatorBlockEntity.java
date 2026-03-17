@@ -113,7 +113,7 @@ public class MutatorBlockEntity extends BlockEntity implements MenuProvider {
             @Override
             protected void onContentsChanged() {
                 setChanged();
-                if (!level.isClientSide()) {
+                if (level != null && !level.isClientSide()) {
                     level.sendBlockUpdated(getBlockPos(), getBlockState(), getBlockState(), 3);
                 }
                 super.onContentsChanged();
